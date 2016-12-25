@@ -12,7 +12,7 @@ set(SOURCE_FILES
         code/debug.hpp
         code/debug.cpp
         code/Checker/src/Checker.cpp
-        code/Checker/inc/Scanner.hpp
+        code/Checker/inc/CheckerScanner.hpp
         code/Checker/inc/Checker.hpp
         )
 
@@ -24,12 +24,18 @@ BISON_TARGET(BisonChecker code/Checker/gen/checker.y ${CMAKE_CURRENT_BINARY_DIR}
 FLEX_TARGET(FlexChecker code/Checker/gen/checker.l  ${CMAKE_CURRENT_BINARY_DIR}/checker.l.cpp)
 ADD_FLEX_BISON_DEPENDENCY(FlexChecker BisonChecker)
 
+#BISON_TARGET(BisonOptimizer code/Optimizer/gen/optimizer.y ${CMAKE_CURRENT_BINARY_DIR}/optimizer.tab.y.cpp)
+#FLEX_TARGET(FlexOptimizer code/Optimizer/gen/optimizer.l  ${CMAKE_CURRENT_BINARY_DIR}/optimizer.l.cpp)
+#ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
+
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(compiler
         main.cpp
         ${BISON_BisonChecker_OUTPUTS}
         ${FLEX_FlexChecker_OUTPUTS}
+#        ${BISON_BisonOptimizer_OUTPUTS}
+#        ${FLEX_FlexOptimizer_OUTPUTS}
         ${SOURCE_FILES}
         )
 

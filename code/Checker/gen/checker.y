@@ -32,7 +32,7 @@
 
    /* include for all driver functions */
    #include "Checker.hpp"
-   #include "Scanner.hpp"
+   #include "CheckerScanner.hpp"
 
 #undef yylex
 #define yylex scanner.yylex

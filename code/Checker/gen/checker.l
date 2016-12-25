@@ -3,7 +3,7 @@
 #include <string>
 
 /* Implementation of yyFlexScanner */
-#include "Scanner.hpp"
+#include "CheckerScanner.hpp"
 #undef  YY_DECL
 #define YY_DECL int checker::Scanner::yylex( checker::LexParser::semantic_type * const lval, checker::LexParser::location_type *loc )
 

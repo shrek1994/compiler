@@ -1,5 +1,5 @@
 #include "Checker.hpp"
-#include "Scanner.hpp"
+#include "CheckerScanner.hpp"
 #include "debug.hpp"
 
 namespace checker {
