@@ -6,6 +6,7 @@ include_directories(code)
 include_directories(code/Checker/inc)
 include_directories(code/Generator/inc)
 include_directories(code/Optimizer/inc)
+include_directories(code/Interpreter/inc)
 
 
 set(SOURCE_FILES
@@ -14,6 +15,8 @@ set(SOURCE_FILES
         code/Checker/src/Checker.cpp
         code/Checker/inc/CheckerScanner.hpp
         code/Checker/inc/Checker.hpp
+        code/Interpreter/inc/Interpreter.hpp
+        code/Interpreter/src/Interpreter.cpp
         )
 
 ##### generated file ################
