@@ -1,10 +1,9 @@
-#include <Checker.hpp>
+#include <Optimizer.hpp>
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include <memory>
 
 namespace optimizer {
-
 
 
 class OptimizerTest : public ::testing::Test
@@ -27,11 +26,11 @@ public:
 };
 
 
-    TEST_F(OptimizerTest, shouldCheckEmptyCodeCorrectly)
-    {
-        in << "VAR BEGIN SKIP; END\n";
-        auto out = optimizer->run(in);
-        ASSERT_STREQ(in.str().c_str(), out.str().c_str());
-    }
+TEST_F(OptimizerTest, shouldCheckEmptyCodeCorrectly)
+{
+    in << "VAR BEGIN SKIP; END\n";
+    auto out = optimizer->run(in);
+    ASSERT_STREQ(in.str().c_str(), out.str().c_str());
+}
 
 }

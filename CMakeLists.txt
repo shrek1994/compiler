@@ -15,6 +15,9 @@ set(SOURCE_FILES
         code/Checker/src/Checker.cpp
         code/Checker/inc/CheckerScanner.hpp
         code/Checker/inc/Checker.hpp
+        code/Optimizer/src/Optimizer.cpp
+        code/Optimizer/inc/OptimizerScanner.hpp
+        code/Optimizer/inc/Optimizer.hpp
         code/Interpreter/inc/Interpreter.hpp
         code/Interpreter/src/Interpreter.cpp
         )
@@ -56,6 +59,7 @@ link_directories(/home/maciek/inc)
 # Add test cpp file
 add_executable(runUnitTests
         code/Checker/test/CheckerTest.cpp
+        code/Optimizer/test/OptimizerTest.cpp
         mainTest.cpp
         ${SOURCE_FILES}
         ${BISON_BisonChecker_OUTPUTS}

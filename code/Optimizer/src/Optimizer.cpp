@@ -8,10 +8,10 @@ std::stringstream Optimizer::run(std::istream& in) {
     std::stringstream out;
     auto scanner = std::make_shared<Scanner>(in, out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
-    DEBUG << "starting checking\n";
+    DEBUG << "starting optimizing\n";
     if (parser->parse())
         error << "Parse failed!!\n";
-    DEBUG << "ended checking\n";
+    DEBUG << "ended optimizing\n";
     return std::move(out);
 }
 
