@@ -20,8 +20,8 @@ using token = checker::LexParser::token;
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 
 namespace {
-bool enableDebug = false;
-//bool enableDebug = true;
+//bool enableDebug = false;
+bool enableDebug = true;
 }
 %}
 

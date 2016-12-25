@@ -20,16 +20,16 @@ set(SOURCE_FILES
 find_package(BISON 2.4.1)
 find_package(FLEX 2.5.35)
 
-BISON_TARGET(MyParser code/Checker/gen/checker.y ${CMAKE_CURRENT_BINARY_DIR}/checker.tab.y.cpp)
-FLEX_TARGET(MyScanner code/Checker/gen/checker.l  ${CMAKE_CURRENT_BINARY_DIR}/checker.l.cpp)
-ADD_FLEX_BISON_DEPENDENCY(MyScanner MyParser)
+BISON_TARGET(BisonChecker code/Checker/gen/checker.y ${CMAKE_CURRENT_BINARY_DIR}/checker.tab.y.cpp)
+FLEX_TARGET(FlexChecker code/Checker/gen/checker.l  ${CMAKE_CURRENT_BINARY_DIR}/checker.l.cpp)
+ADD_FLEX_BISON_DEPENDENCY(FlexChecker BisonChecker)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 add_executable(compiler
         main.cpp
-        ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS}
+        ${BISON_BisonChecker_OUTPUTS}
+        ${FLEX_FlexChecker_OUTPUTS}
         ${SOURCE_FILES}
         )
 
@@ -46,8 +46,8 @@ add_executable(runUnitTests
         code/Checker/test/CheckerTest.cpp
         mainTest.cpp
         ${SOURCE_FILES}
-        ${BISON_MyParser_OUTPUTS}
-        ${FLEX_MyScanner_OUTPUTS}
+        ${BISON_BisonChecker_OUTPUTS}
+        ${FLEX_FlexChecker_OUTPUTS}
         )
 
 # Link test executable against gtest & gtest_main
