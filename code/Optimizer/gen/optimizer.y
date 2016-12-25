@@ -2,13 +2,12 @@
 %require  "3.0"
 %debug
 %defines
-%define api.namespace {checker}
+%define api.namespace {optimizer}
 %define parser_class_name {LexParser}
-%define api.prefix {checker}
 
 %code requires{
-   namespace checker {
-      class Checker;
+   namespace optimizer {
+      class Optimizer;
       class Scanner;
    }
 
@@ -24,7 +23,7 @@
 }
 
 %parse-param { Scanner  &scanner  }
-%parse-param { Checker  &driver  }
+%parse-param { Optimizer  &driver  }
 
 %code{
    #include <iostream>
@@ -32,11 +31,11 @@
    #include <fstream>
 
    /* include for all driver functions */
-   #include "Checker.hpp"
-   #include "CheckerScanner.hpp"
+   #include "Optimizer.hpp"
+   #include "OptimizerScanner.hpp"
 
 #undef yylex
-#define yylex scanner.checkerlex
+#define yylex scanner.yylex
 }
 
 %define api.value.type variant
@@ -137,7 +136,7 @@ identifier  : pidentifier
 %%
 
 
-void checker::LexParser::error( const location_type &l, const std::string &err_message )
+void optimizer::LexParser::error( const location_type &l, const std::string &err_message )
 {
    std::cerr << "Error: " << err_message << " at " << l << "\n";
 }

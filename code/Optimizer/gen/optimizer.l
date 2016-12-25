@@ -3,12 +3,12 @@
 #include <string>
 
 /* Implementation of yyFlexScanner */
-#include "CheckerScanner.hpp"
+#include "OptimizerScanner.hpp"
 #undef  YY_DECL
-#define YY_DECL int checker::Scanner::yylex( checker::LexParser::semantic_type * const lval, checker::LexParser::location_type *loc )
+#define YY_DECL int optimizer::Scanner::yylex( optimizer::LexParser::semantic_type * const lval, optimizer::LexParser::location_type *loc )
 
 /* typedef to make the returns for the tokens shorter */
-using token = checker::LexParser::token;
+using token = optimizer::LexParser::token;
 
 /* define yyterminate as this instead of NULL */
 //#define yyterminate() return( token::END )
@@ -27,8 +27,7 @@ bool enableDebug = true;
 
 %option debug
 %option nodefault
-%option yyclass="checker::Scanner"
-%option prefix="checker"
+%option yyclass="optimizer::Scanner"
 %option noyywrap
 %option c++
 

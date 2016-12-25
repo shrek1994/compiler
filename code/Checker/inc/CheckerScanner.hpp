@@ -5,7 +5,7 @@
 #endif
 
 #include "checker.tab.y.hpp"
-#include "location.hh"
+#include "checker/location.hh"
 
 namespace checker{
 
