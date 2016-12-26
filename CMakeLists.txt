@@ -26,6 +26,11 @@ FLEX_TARGET(FlexOptimizer code/Optimizer/gen/optimizer.l  ${CMAKE_CURRENT_BINARY
 ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/optimizer)
 
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generator)
+BISON_TARGET(BisonGenerator code/Generator/gen/compiler.y ${CMAKE_CURRENT_BINARY_DIR}/generator/compiler.tab.y.cpp)
+FLEX_TARGET(FlexGenerator code/Generator/gen/compiler.l  ${CMAKE_CURRENT_BINARY_DIR}/generator/compiler.l.cpp)
+ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/generator)
 
 set(SOURCE_FILES
         code/debug.hpp
@@ -38,10 +43,18 @@ set(SOURCE_FILES
         code/Optimizer/inc/Optimizer.hpp
         code/Interpreter/inc/Interpreter.hpp
         code/Interpreter/src/Interpreter.cpp
+        code/Generator/src/Compiler.cpp
+        code/Generator/src/Driver.cpp
+        code/Generator/inc/Compiler.hpp
+        code/Generator/inc/Driver.hpp
+        code/Generator/inc/GeneratorScanner.hpp
+        code/Generator/inc/Variable.hpp
         ${BISON_BisonChecker_OUTPUTS}
         ${FLEX_FlexChecker_OUTPUTS}
         ${BISON_BisonOptimizer_OUTPUTS}
         ${FLEX_FlexOptimizer_OUTPUTS}
+        ${BISON_BisonGenerator_OUTPUTS}
+        ${FLEX_FlexGenerator_OUTPUTS}
         )
 
 add_executable(compiler
@@ -55,6 +68,13 @@ add_executable(compiler
 set(TEST_FILES
         code/Checker/test/CheckerTest.cpp
         code/Optimizer/test/OptimizerTest.cpp
+        code/Generator/test/AssignTest.cpp
+        code/Generator/test/BasicTest.cpp
+        code/Generator/test/CompilerTest.cpp
+        code/Generator/test/CompilerTest.hpp
+        code/Generator/test/DriverTest.cpp
+        code/Generator/test/IfElseTest.cpp
+        code/Generator/test/ReadWriteTest.cpp
         )
 
 # Setup testing
