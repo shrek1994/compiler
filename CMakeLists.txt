@@ -7,20 +7,8 @@ include_directories(code/Checker/inc)
 include_directories(code/Generator/inc)
 include_directories(code/Optimizer/inc)
 include_directories(code/Interpreter/inc)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-
-set(SOURCE_FILES
-        code/debug.hpp
-        code/debug.cpp
-        code/Checker/src/Checker.cpp
-        code/Checker/inc/CheckerScanner.hpp
-        code/Checker/inc/Checker.hpp
-        code/Optimizer/src/Optimizer.cpp
-        code/Optimizer/inc/OptimizerScanner.hpp
-        code/Optimizer/inc/Optimizer.hpp
-        code/Interpreter/inc/Interpreter.hpp
-        code/Interpreter/src/Interpreter.cpp
-        )
 
 ##### generated file ################
 find_package(BISON 2.4.1)
@@ -38,18 +26,36 @@ FLEX_TARGET(FlexOptimizer code/Optimizer/gen/optimizer.l  ${CMAKE_CURRENT_BINARY
 ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/optimizer)
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-add_executable(compiler
-        main.cpp
+
+set(SOURCE_FILES
+        code/debug.hpp
+        code/debug.cpp
+        code/Checker/src/Checker.cpp
+        code/Checker/inc/CheckerScanner.hpp
+        code/Checker/inc/Checker.hpp
+        code/Optimizer/src/Optimizer.cpp
+        code/Optimizer/inc/OptimizerScanner.hpp
+        code/Optimizer/inc/Optimizer.hpp
+        code/Interpreter/inc/Interpreter.hpp
+        code/Interpreter/src/Interpreter.cpp
         ${BISON_BisonChecker_OUTPUTS}
         ${FLEX_FlexChecker_OUTPUTS}
         ${BISON_BisonOptimizer_OUTPUTS}
         ${FLEX_FlexOptimizer_OUTPUTS}
+        )
+
+add_executable(compiler
+        main.cpp
         ${SOURCE_FILES}
         )
 
 
 ############## GTest ####################
+
+set(TEST_FILES
+        code/Checker/test/CheckerTest.cpp
+        code/Optimizer/test/OptimizerTest.cpp
+        )
 
 # Setup testing
 enable_testing()
@@ -58,14 +64,9 @@ include_directories(/home/maciek/inc)
 link_directories(/home/maciek/inc)
 # Add test cpp file
 add_executable(runUnitTests
-        code/Checker/test/CheckerTest.cpp
-        code/Optimizer/test/OptimizerTest.cpp
         mainTest.cpp
         ${SOURCE_FILES}
-        ${BISON_BisonChecker_OUTPUTS}
-        ${FLEX_FlexChecker_OUTPUTS}
-        ${BISON_BisonOptimizer_OUTPUTS}
-        ${FLEX_FlexOptimizer_OUTPUTS}
+        ${TEST_FILES}
         )
 
 # Link test executable against gtest & gtest_main
