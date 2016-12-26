@@ -33,4 +33,11 @@ TEST_F(OptimizerTest, shouldCheckEmptyCodeCorrectly)
     ASSERT_STREQ(in.str().c_str(), out.str().c_str());
 }
 
+//TEST_F(OptimizerTest, shouldCheckAndAddSemicolon)
+//{
+//    in << "VAR BEGIN SKIP END\n";
+//    auto out = optimizer->run(in);
+//    ASSERT_STREQ("VAR BEGIN SKIP; END\n", out.str().c_str());
+//}
+
 }

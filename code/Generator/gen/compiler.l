@@ -1,23 +1,12 @@
 %{
-/* C++ string header, for string ops below */
 #include <string>
-
-/* Implementation of yyFlexScanner */ 
 #include "GeneratorScanner.hpp"
 #undef  YY_DECL
-#define YY_DECL int jftt::Scanner::yylex( jftt::LexParser::semantic_type * const lval, jftt::LexParser::location_type *loc )
-
-/* typedef to make the returns for the tokens shorter */
-using token = jftt::LexParser::token;
-
-/* define yyterminate as this instead of NULL */
-//#define yyterminate() return( token::END )
-
-/* msvc2010 requires that we exclude this header file. */
+#define YY_DECL int jftt::Scanner::yylex(jftt::LexParser::semantic_type* const lval, \
+                                         jftt::LexParser::location_type* loc)
 #define YY_NO_UNISTD_H
-
-/* update location on matching */
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);
+using token = jftt::LexParser::token;
 
 namespace {
 bool enableDebug = false;
@@ -34,7 +23,7 @@ bool enableDebug = false;
 
 %%
 %{          /** Code executed at the beginning of yylex **/
-            yylval = lval;
+    yylval = lval;
 %}
 
 

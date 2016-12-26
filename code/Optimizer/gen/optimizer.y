@@ -26,13 +26,13 @@
 %parse-param { Optimizer  &driver  }
 
 %code{
-   #include <iostream>
-   #include <cstdlib>
-   #include <fstream>
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
 
-   /* include for all driver functions */
-   #include "Optimizer.hpp"
-   #include "OptimizerScanner.hpp"
+/* include for all driver functions */
+#include "Optimizer.hpp"
+#include "OptimizerScanner.hpp"
 
 #undef yylex
 #define yylex scanner.yylex

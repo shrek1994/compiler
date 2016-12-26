@@ -8,6 +8,9 @@ include_directories(code/Generator/inc)
 include_directories(code/Optimizer/inc)
 include_directories(code/Interpreter/inc)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/checker)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/optimizer)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/generator)
 
 
 ##### generated file ################
@@ -18,19 +21,16 @@ file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/checker)
 BISON_TARGET(BisonChecker code/Checker/gen/checker.y ${CMAKE_CURRENT_BINARY_DIR}/checker/checker.tab.y.cpp)
 FLEX_TARGET(FlexChecker code/Checker/gen/checker.l  ${CMAKE_CURRENT_BINARY_DIR}/checker/checker.l.cpp)
 ADD_FLEX_BISON_DEPENDENCY(FlexChecker BisonChecker)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/checker)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/optimizer)
 BISON_TARGET(BisonOptimizer code/Optimizer/gen/optimizer.y ${CMAKE_CURRENT_BINARY_DIR}/optimizer/optimizer.tab.y.cpp)
 FLEX_TARGET(FlexOptimizer code/Optimizer/gen/optimizer.l  ${CMAKE_CURRENT_BINARY_DIR}/optimizer/optimizer.l.cpp)
 ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/optimizer)
 
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/generator)
 BISON_TARGET(BisonGenerator code/Generator/gen/compiler.y ${CMAKE_CURRENT_BINARY_DIR}/generator/compiler.tab.y.cpp)
 FLEX_TARGET(FlexGenerator code/Generator/gen/compiler.l  ${CMAKE_CURRENT_BINARY_DIR}/generator/compiler.l.cpp)
 ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/generator)
 
 set(SOURCE_FILES
         code/debug.hpp
@@ -80,8 +80,8 @@ set(TEST_FILES
 # Setup testing
 enable_testing()
 #find_package(GTest REQUIRED)
-include_directories(/home/maciek/inc)
-link_directories(/home/maciek/inc)
+include_directories(~/inc)
+link_directories(~/inc)
 # Add test cpp file
 add_executable(runUnitTests
         mainTest.cpp
@@ -90,7 +90,7 @@ add_executable(runUnitTests
         )
 
 # Link test executable against gtest & gtest_main
-target_link_libraries(runUnitTests gtest l pthread)
+target_link_libraries(runUnitTests gtest pthread)
 
 add_test(
     NAME runUnitTests
