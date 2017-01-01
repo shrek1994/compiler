@@ -28,6 +28,16 @@ std::string Optimizer::ifCommand(jftt::Condition condition,
                                                 condition.leftValue,
                                                 ifCommands,
                                                 elseCommands));
+        case jftt::compare::lowerOrEqThan:
+            return std::move(generateBiggerThan(condition.leftValue,
+                                                condition.rightValue,
+                                                elseCommands,
+                                                ifCommands));
+        case jftt::compare::biggerOrEqThan:
+            return std::move(generateBiggerThan(condition.rightValue,
+                                                condition.leftValue,
+                                                elseCommands,
+                                                ifCommands));
         default:
             break;
     }

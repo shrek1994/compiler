@@ -128,8 +128,12 @@ condition   : value equal value
              | value biggerThan value       { $$ = jftt::Condition{$1,
                                                                    jftt::compare::biggerThan,
                                                                    $3}; }
-             | value lowerOrEqThan value
-             | value biggerOrEqThan value
+             | value lowerOrEqThan value    { $$ = jftt::Condition{$1,
+                                                                   jftt::compare::lowerOrEqThan,
+                                                                   $3}; }
+             | value biggerOrEqThan value   { $$ = jftt::Condition{$1,
+                                                                   jftt::compare::biggerOrEqThan,
+                                                                   $3}; }
 
 
 value       : num                                                   { $$ = $1; }
