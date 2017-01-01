@@ -34,25 +34,4 @@ std::ostream &Optimizer::getOut() const {
     return out;
 }
 
-void Optimizer::createVariable(const jftt::Variable &variable)
-{
-    DEBUG << "push_back(" << variable << ");\n";
-
-    if (! variable.isTab)
-    {
-        variables.push_back(variable.name);
-    }
-    else
-    {
-        for (auto i = variable.size; i > 0; --i)
-        {
-            variables.push_back(variable.name);
-        }
-    }
-}
-
-const std::vector<std::string>& Optimizer::getVariables() const {
-    return variables;
-}
-
 } // namespace optimizer

@@ -2,13 +2,6 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#define ASSERT_VECTOR(expected, actual) \
-    ASSERT_EQ(expected.size(), actual.size()); \
-    for (int i=0; i < expected.size(); ++i) \
-        EXPECT_EQ(expected[i], actual[i]) << "i = " << i <<", \'" \
-            << expected[i] << "\' != \'" << actual[i] << "\'"
-
-
 namespace optimizer {
 
 
@@ -41,12 +34,10 @@ TEST_F(OptimizerTest, DISABLED_shouldCheckEmptyCodeCorrectly)
 
 TEST_F(OptimizerTest, DISABLED_shouldCorrectReadVars)
 {
-    std::vector<std::string> vars = { "a", "b", "c", "test", "test" };
     in << "VAR a          b\nc test[2]\tdBEGIN SKIP; END\n";
     expected << "BEGIN SKIP; END\n";
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
-    ASSERT_VECTOR(vars, optimizer->getVariables());
 }
 
 TEST_F(OptimizerTest, DISABLED_shouldChangeIf)

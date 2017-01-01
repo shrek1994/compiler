@@ -3,20 +3,28 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
+#include <vector>
+#include <inc/Variable.hpp>
 
 namespace checker {
 
 class Checker {
 public:
-    Checker() = default;
+    Checker(std::ostream& out,
+            std::ostream& info = std::cout,
+            std::ostream& error = std::cerr)
+        : out(out), info(info), error(error)
+    {}
 
-    Checker(std::ostream &info, std::ostream &error);
+    void run(std::istream& in);
+    void createVariable(const jftt::Variable &variable);
 
-    std::stringstream run(std::istream& in);
-
+    const std::vector<std::string>& getVariables() const;
 private:
-    std::ostream& info = std::cout;
-    std::ostream& error = std::cerr;
+    std::ostream& out;
+    std::ostream& info;
+    std::ostream& error;
+    std::vector<std::string> variables;
 };
 
 } // namespace checker
