@@ -18,7 +18,10 @@ public:
     std::string ifCommand(jftt::Condition condition,
                           const std::string& ifCommands,
                           const std::string& elseCommands);
-
+    std::string generateBiggerThan(const std::string& leftValue,
+                                   const std::string& rightValue,
+                                   const std::string& ifCommands,
+                                   const std::string& elseCommands);
 
     std::ostream& getOut() const;
 private:

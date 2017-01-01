@@ -42,7 +42,7 @@ TEST_F(OptimizerTest, assign)
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, shouldChangeIf)
+TEST_F(OptimizerTest, shouldChangeIfBiggerThan)
 {
     in <<
         "BEGIN "
@@ -69,5 +69,34 @@ TEST_F(OptimizerTest, shouldChangeIf)
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
+
+TEST_F(OptimizerTest, shouldChangeIfLowerThan)
+{
+    in <<
+       "BEGIN "
+               "a := 1; "
+               "b := 2; "
+               "IF a < b THEN "
+               "WRITE a; "
+               "ELSE "
+               "WRITE b; "
+               "ENDIF "
+               "WRITE 5;"
+               "END\n";
+    expected <<
+             "BEGIN\n"
+                     "a := 1;\n"
+                     "b := 2;\n"
+                     "$reg1 := b - a;\n"
+                     "JZERO 1 %ELSE0%;\n"
+                     "WRITE a;\n"
+                     "JUMP %ENDIF0%;\n"
+                     "%ELSE0%:WRITE b;\n"
+                     "%ENDIF0%:WRITE 5;\n"
+                     "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
+
 
 }

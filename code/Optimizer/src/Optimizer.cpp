@@ -17,17 +17,20 @@ void Optimizer::run(std::istream& in) {
 std::string Optimizer::ifCommand(jftt::Condition condition,
                           const std::string &ifCommands,
                           const std::string &elseCommands) {
-    std::string command;
-    std::string registerValue = "$reg1";
-    command += registerValue + " := " + condition.leftValue + " - " + condition.rightValue + ";\n";
-    command += std::string("JZERO 1 %ELSE") + std::to_string(numOfIf) + "%;\n";
-    command += ifCommands;
-    command += std::string("JUMP %ENDIF") + std::to_string(numOfIf) + "%;\n";
-    command += std::string("%ELSE") + std::to_string(numOfIf) + "%:";
-    command += elseCommands;
-    command += std::string("%ENDIF") + std::to_string(numOfIf) + "%:";
-    ++numOfIf;
-    return command;
+    switch (condition.sign) {
+        case jftt::compare::biggerThan:
+            return std::move(generateBiggerThan(condition.leftValue,
+                                                condition.rightValue,
+                                                ifCommands,
+                                                elseCommands));
+        case jftt::compare::lowerThan:
+            return std::move(generateBiggerThan(condition.rightValue,
+                                                condition.leftValue,
+                                                ifCommands,
+                                                elseCommands));
+        default:
+            break;
+    }
 }
 
 Optimizer::Optimizer(std::ostream &out) : out(out) {}
@@ -35,5 +38,23 @@ Optimizer::Optimizer(std::ostream &out) : out(out) {}
 std::ostream &Optimizer::getOut() const {
     return out;
 }
+
+std::string Optimizer::generateBiggerThan(const std::string &leftValue,
+                                          const std::string &rightValue,
+                                          const std::string &ifCommands,
+                                          const std::string &elseCommands) {
+    std::string command;
+    std::string registerValue = "$reg1";
+    command += registerValue + " := " + leftValue + " - " + rightValue + ";\n";
+    command += std::string("JZERO 1 %ELSE") + std::to_string(numOfIf) + "%;\n";
+    command += ifCommands;
+    command += std::string("JUMP %ENDIF") + std::to_string(numOfIf) + "%;\n";
+    command += std::string("%ELSE") + std::to_string(numOfIf) + "%:";
+    command += elseCommands;
+    command += std::string("%ENDIF") + std::to_string(numOfIf) + "%:";
+    ++numOfIf;
+    return std::move(command);
+}
+
 
 } // namespace optimizer

@@ -122,10 +122,12 @@ expression  : value                         { $$ = $1; }
 
 condition   : value equal value
              | value notEqual value
-             | value lowerThan value
-             | value biggerThan value                               { $$ = jftt::Condition{$1,
-                                                                                           jftt::compare::biggerThan,
-                                                                                           $3}; }
+             | value lowerThan value        { $$ = jftt::Condition{$1,
+                                                                   jftt::compare::lowerThan,
+                                                                   $3}; }
+             | value biggerThan value       { $$ = jftt::Condition{$1,
+                                                                   jftt::compare::biggerThan,
+                                                                   $3}; }
              | value lowerOrEqThan value
              | value biggerOrEqThan value
 
