@@ -56,7 +56,7 @@ set(SOURCE_FILES
         ${FLEX_FlexOptimizer_OUTPUTS}
         ${BISON_BisonGenerator_OUTPUTS}
         ${FLEX_FlexGenerator_OUTPUTS}
-        code/inc/Condition.hpp code/inc/Scanner.hpp)
+        code/inc/Condition.hpp code/inc/Scanner.hpp code/compiler.cpp code/compiler.hpp)
 
 add_executable(compiler
         main.cpp

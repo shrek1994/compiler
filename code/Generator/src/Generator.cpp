@@ -3,14 +3,14 @@
 
 
 Generator::Generator(std::ostream &out)
-//    : out(out)
+    : out(out)
 {
 
 }
 
-int Generator::run(std::istream &inFile, std::ostream &outFile)
+int Generator::run(std::istream &inFile)
 {
-    jftt::Driver driver(outFile);
+    jftt::Driver driver(out);
     driver.parse(inFile);
     return 0;
 }

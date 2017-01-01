@@ -7,7 +7,7 @@ class Generator
 public:
     Generator(std::ostream& out = std::cout);
 
-    int run(std::istream& inFile, std::ostream& outFile);
+    int run(std::istream& inFile);
 private:
-//    std::ostream& out;
+    std::ostream& out;
 };
