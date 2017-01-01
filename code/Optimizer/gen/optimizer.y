@@ -89,6 +89,7 @@ namespace optimizer {
 
 %locations
 
+%type<std::string> expression
 %type<std::string> command
 %type<std::string> commands
 %type<std::string> value
@@ -97,27 +98,27 @@ namespace optimizer {
 
 %%
 
-program       : Begin commands End                { }
+program       : Begin commands End                { driver.getOut() << "BEGIN\n" << $2 << "END\n"; }
 
-commands    : commands command          { $$ = $1 + $2; }
+commands    : commands command          { $$ = $1 +$2; }
              | command                  { $$ = $1; }
 
 
-command     : identifier assign expression semicolon
-             | IF condition THEN commands ELSE commands ENDIF       { driver.ifCommand($2, $4, $6); }
+command     : identifier assign expression semicolon                { $$ = $1 + " := " + $3 + ";\n"; }
+             | IF condition THEN commands ELSE commands ENDIF       { $$ = driver.ifCommand($2, $4, $6); }
              | WHILE condition DO commands ENDWHILE
              | FOR pidentifier FROM value TO value DO commands ENDFOR
              | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
              | READ identifier semicolon
-             | WRITE value semicolon                        { $$ = std::string("WRITE ") + $2 + ";"; }
-             | SKIP semicolon
+             | WRITE value semicolon                        { $$ = std::string("WRITE ") + $2 + ";\n"; }
+             | SKIP semicolon                               { $$ = "SKIP;\n"; }
 
-expression  : value
-             | value plus value
-             | value minus value
-             | value mul value
-             | value div value
-             | value mod value
+expression  : value                         { $$ = $1; }
+             | value plus value             { $$ = $1 + " + " + $3; }
+             | value minus value            { $$ = $1 + " - " + $3; }
+             | value mul value              { $$ = $1 + " * " + $3; }
+             | value div value              { $$ = $1 + " / " + $3; }
+             | value mod value              { $$ = $1 + " % " + $3; }
 
 condition   : value equal value
              | value notEqual value

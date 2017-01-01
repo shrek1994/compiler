@@ -28,22 +28,23 @@ public:
 
 TEST_F(OptimizerTest, shouldOptimizeEmptyCode)
 {
-    expected << "BEGIN SKIP; END\n";
+    in << "BEGIN SKIP; END\n";
+    expected << "BEGIN\nSKIP;\nEND\n";
     optimizer->run(expected);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, DISABLED_shouldCorrectReadVars)
+TEST_F(OptimizerTest, assign)
 {
-    in << "VAR a          b\nc test[2]\tdBEGIN SKIP; END\n";
-    expected << "BEGIN SKIP; END\n";
-    optimizer->run(in);
+    in << "BEGIN a := 5; b := 2; END\n";
+    expected << "BEGIN\na := 5;\nb := 2;\nEND\n";
+    optimizer->run(expected);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, DISABLED_shouldChangeIf)
+TEST_F(OptimizerTest, shouldChangeIf)
 {
-    in << "VAR a b "
+    in <<
         "BEGIN "
             "a := 1; "
             "b := 2; "
@@ -55,18 +56,15 @@ TEST_F(OptimizerTest, DISABLED_shouldChangeIf)
             "WRITE 5;"
         "END\n";
     expected <<
-             "VAR "
-                "a b "
-             "BEGIN "
-                 "a := 1; "
-                 "b := 2; "
-                 "$reg1 := a - b; "
-                 "JZERO 1 %ELSE0%; "
-                 "%IF0%: WRITE a; "
-                 "JUMP %ENDIF0%; "
-                 "%ELSE%: WRITE b; "
-                 "%ENDIF0%: "
-                 "WRITE 5;"
+             "BEGIN\n"
+                 "a := 1;\n"
+                 "b := 2;\n"
+                 "$reg1 := a - b;\n"
+                 "JZERO 1 %ELSE0%;\n"
+                 "WRITE a;\n"
+                 "JUMP %ENDIF0%;\n"
+                 "%ELSE0%:WRITE b;\n"
+                 "%ENDIF0%:WRITE 5;\n"
              "END\n";
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());

@@ -14,18 +14,20 @@ void Optimizer::run(std::istream& in) {
 }
 
 
-void Optimizer::ifCommand(jftt::Condition condition,
+std::string Optimizer::ifCommand(jftt::Condition condition,
                           const std::string &ifCommands,
                           const std::string &elseCommands) {
-    constexpr auto registerValue = "$reg1";
-    out << registerValue << " = " << condition.leftValue << " - " << condition.rightValue << "\n";
-    out << "JZERO 1 %ELSE" << numOfIf << "%\n";
-    out << ifCommands << "\n";
-    out << "JUMP %ENDIF" << numOfIf << "%\n";
-    out << "%ELSE" << numOfIf << "%: ";
-    out << elseCommands << "\n";
-    out << "%ENDIF" << numOfIf << "%: ";
+    std::string command;
+    std::string registerValue = "$reg1";
+    command += registerValue + " := " + condition.leftValue + " - " + condition.rightValue + ";\n";
+    command += std::string("JZERO 1 %ELSE") + std::to_string(numOfIf) + "%;\n";
+    command += ifCommands;
+    command += std::string("JUMP %ENDIF") + std::to_string(numOfIf) + "%;\n";
+    command += std::string("%ELSE") + std::to_string(numOfIf) + "%:";
+    command += elseCommands;
+    command += std::string("%ENDIF") + std::to_string(numOfIf) + "%:";
     ++numOfIf;
+    return command;
 }
 
 Optimizer::Optimizer(std::ostream &out) : out(out) {}

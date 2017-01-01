@@ -15,12 +15,12 @@ public:
 
     void run(std::istream& in);
 
-    void ifCommand(jftt::Condition condition,
-                   const std::string& ifCommands,
-                   const std::string& elseCommands);
+    std::string ifCommand(jftt::Condition condition,
+                          const std::string& ifCommands,
+                          const std::string& elseCommands);
 
 
-    std::ostream &getOut() const;
+    std::ostream& getOut() const;
 private:
     std::ostream& out = std::cout;
     std::ostream& error = std::cerr;
