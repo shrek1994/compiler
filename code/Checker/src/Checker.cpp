@@ -5,7 +5,7 @@
 namespace checker {
 
 void Checker::run(std::istream& in) {
-    auto scanner = std::make_shared<Scanner>(in, out);
+    auto scanner = std::make_shared<Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
     DEBUG << "starting checking\n";
     if (parser->parse())

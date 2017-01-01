@@ -1,4 +1,5 @@
 #include <Optimizer.hpp>
+#include <debug.hpp>
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
@@ -13,6 +14,7 @@ public:
 
     void SetUp() override
     {
+        Logger::enableDebug = false;
         in.str("");
         out.str("");
         info.str("");
@@ -24,11 +26,10 @@ public:
 };
 
 
-TEST_F(OptimizerTest, DISABLED_shouldCheckEmptyCodeCorrectly)
+TEST_F(OptimizerTest, shouldOptimizeEmptyCode)
 {
-    in << "VAR BEGIN SKIP; END\n";
     expected << "BEGIN SKIP; END\n";
-    optimizer->run(in);
+    optimizer->run(expected);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 

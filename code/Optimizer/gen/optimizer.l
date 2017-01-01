@@ -1,6 +1,7 @@
 %{
 #include <string>
 #include "OptimizerScanner.hpp"
+#include "debug.hpp"
 #undef  YY_DECL
 #define YY_DECL int optimizer::Scanner::yylex(optimizer::LexParser::semantic_type* const lval, \
                                               optimizer::LexParser::location_type *loc)
@@ -8,10 +9,6 @@
 #define YY_USER_ACTION loc->step(); loc->columns(yyleng);
 using token = optimizer::LexParser::token;
 
-namespace {
-bool enableDebug = false;
-//bool enableDebug = true;
-}
 %}
 
 %option debug
@@ -26,49 +23,49 @@ bool enableDebug = false;
 %}
 
 
-VAR             { if (enableDebug) ECHO; return token::VAR; }
-BEGIN           { if (enableDebug) ECHO; out << yytext; return token::Begin; }
-END             { if (enableDebug) ECHO; out << yytext; return token::End; }
+VAR             { if (Logger::enableDebug) ECHO; return token::VAR; }
+BEGIN           { if (Logger::enableDebug) ECHO; out << yytext; return token::Begin; }
+END             { if (Logger::enableDebug) ECHO; out << yytext; return token::End; }
 
-IF              { if (enableDebug) ECHO; return token::IF; }
-THEN            { if (enableDebug) ECHO; return token::THEN; }
-ELSE            { if (enableDebug) ECHO; return token::ELSE; }
-ENDIF           { if (enableDebug) ECHO; return token::ENDIF; }
+IF              { if (Logger::enableDebug) ECHO; return token::IF; }
+THEN            { if (Logger::enableDebug) ECHO; return token::THEN; }
+ELSE            { if (Logger::enableDebug) ECHO; return token::ELSE; }
+ENDIF           { if (Logger::enableDebug) ECHO; return token::ENDIF; }
 
-WHILE           { if (enableDebug) ECHO; return token::WHILE; }
-ENDWHILE        { if (enableDebug) ECHO; return token::ENDWHILE; }
+WHILE           { if (Logger::enableDebug) ECHO; return token::WHILE; }
+ENDWHILE        { if (Logger::enableDebug) ECHO; return token::ENDWHILE; }
 
-FOR             { if (enableDebug) ECHO; return token::FOR; }
-FROM            { if (enableDebug) ECHO; return token::FROM; }
-TO              { if (enableDebug) ECHO; return token::TO; }
-DOWNTO          { if (enableDebug) ECHO; return token::DOWNTO; }
-DO              { if (enableDebug) ECHO; return token::DO; }
-ENDFOR          { if (enableDebug) ECHO; return token::ENDFOR; }
+FOR             { if (Logger::enableDebug) ECHO; return token::FOR; }
+FROM            { if (Logger::enableDebug) ECHO; return token::FROM; }
+TO              { if (Logger::enableDebug) ECHO; return token::TO; }
+DOWNTO          { if (Logger::enableDebug) ECHO; return token::DOWNTO; }
+DO              { if (Logger::enableDebug) ECHO; return token::DO; }
+ENDFOR          { if (Logger::enableDebug) ECHO; return token::ENDFOR; }
 
-READ            { if (enableDebug) ECHO; return token::READ; }
-WRITE           { if (enableDebug) ECHO; return token::WRITE; }
-SKIP            { if (enableDebug) ECHO; out << yytext; return token::SKIP; }
+READ            { if (Logger::enableDebug) ECHO; return token::READ; }
+WRITE           { if (Logger::enableDebug) ECHO; return token::WRITE; }
+SKIP            { if (Logger::enableDebug) ECHO; out << yytext; return token::SKIP; }
 
-[0-9]+          { if (enableDebug) ECHO; yylval->build<std::string>(yytext); txt = yytext; return token::num; }
-[_a-z]+         { if (enableDebug) ECHO; yylval->build<std::string>(yytext); return token::pidentifier; }
+[0-9]+          { if (Logger::enableDebug) ECHO; yylval->build<std::string>(yytext); txt = yytext; return token::num; }
+[_a-z]+         { if (Logger::enableDebug) ECHO; yylval->build<std::string>(yytext); return token::pidentifier; }
 
-;               { if (enableDebug) ECHO; out << yytext; return token::semicolon; }
-\[              { if (enableDebug) ECHO; return token::leftBracket; }
-\]              { if (enableDebug) ECHO; return token::rightBracket; }
-:=              { if (enableDebug) ECHO; return token::assign; }
-\+              { if (enableDebug) ECHO; return token::plus; }
--               { if (enableDebug) ECHO; return token::minus; }
-\*              { if (enableDebug) ECHO; return token::mul; }
-\/              { if (enableDebug) ECHO; return token::div; }
-\%              { if (enableDebug) ECHO; return token::mod; }
+;               { if (Logger::enableDebug) ECHO; out << yytext; return token::semicolon; }
+\[              { if (Logger::enableDebug) ECHO; return token::leftBracket; }
+\]              { if (Logger::enableDebug) ECHO; return token::rightBracket; }
+:=              { if (Logger::enableDebug) ECHO; return token::assign; }
+\+              { if (Logger::enableDebug) ECHO; return token::plus; }
+-               { if (Logger::enableDebug) ECHO; return token::minus; }
+\*              { if (Logger::enableDebug) ECHO; return token::mul; }
+\/              { if (Logger::enableDebug) ECHO; return token::div; }
+\%              { if (Logger::enableDebug) ECHO; return token::mod; }
 
 
-\=              { if (enableDebug) ECHO; return token::equal; }
-\<\>            { if (enableDebug) ECHO; return token::notEqual; }
-\<              { if (enableDebug) ECHO; return token::lowerThan; }
-\>              { if (enableDebug) ECHO; return token::biggerThan; }
-\<\=            { if (enableDebug) ECHO; return token::lowerOrEqThan; }
-\>\=            { if (enableDebug) ECHO; return token::biggerOrEqThan; }
+\=              { if (Logger::enableDebug) ECHO; return token::equal; }
+\<\>            { if (Logger::enableDebug) ECHO; return token::notEqual; }
+\<              { if (Logger::enableDebug) ECHO; return token::lowerThan; }
+\>              { if (Logger::enableDebug) ECHO; return token::biggerThan; }
+\<\=            { if (Logger::enableDebug) ECHO; return token::lowerOrEqThan; }
+\>\=            { if (Logger::enableDebug) ECHO; return token::biggerOrEqThan; }
 
-[[:space:]]+    { if (enableDebug) ECHO; out << yytext; loc->lines(); }
+[[:space:]]+    { if (Logger::enableDebug) ECHO; out << yytext; loc->lines(); }
 %%

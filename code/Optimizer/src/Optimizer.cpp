@@ -5,7 +5,7 @@
 namespace optimizer {
 
 void Optimizer::run(std::istream& in) {
-    auto scanner = std::make_shared<Scanner>(in, Logger::out, out);
+    auto scanner = std::make_shared<Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
     DEBUG << "starting optimizing\n";
     if (parser->parse())

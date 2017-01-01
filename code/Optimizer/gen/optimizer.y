@@ -93,19 +93,11 @@ namespace optimizer {
 %type<std::string> commands
 %type<std::string> value
 %type<std::string> identifier
-%type<std::string> vdeclarations
 %type<jftt::Condition> condition
 
 %%
 
-program       : VAR declarations Begin commands End                { }
-
-declarations : vdeclarations                                          { driver.getOut() << $1; }
-
-vdeclarations : vdeclarations pidentifier                               { $$ += $2 + " "; }
-               | vdeclarations pidentifier leftBracket num rightBracket {  }
-               |                                                        {  }
-
+program       : Begin commands End                { }
 
 commands    : commands command          { $$ = $1 + $2; }
              | command                  { $$ = $1; }

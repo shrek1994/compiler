@@ -1,6 +1,5 @@
 #include <cctype>
 #include <fstream>
-#include <cassert>
 #include <bitset>
 
 #include "debug.hpp"
@@ -94,7 +93,7 @@ void Driver::findAndSetAction(const std::string& action, const Variable& variabl
 
 int Driver::getPosition(const std::string &variable)
 {
-    int position = std::find(variables.begin(), variables.end(), variable) - variables.begin();
+    auto position = std::find(variables.begin(), variables.end(), variable) - variables.begin();
     DEBUG << "getPosition('" << variable << "\') = " << position << "\n";
     if ( ! (position < variables.size())) throw std::out_of_range("ERROR: variable not declared: " + variable);
     return position;
