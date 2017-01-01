@@ -100,5 +100,15 @@ Optimizer::generateEq(const std::string &leftValue,
     return std::move(command);
 }
 
+std::string Optimizer::whileCommand(jftt::Condition condition, std::string commandsInside) {
+    std::string command;
+    command += std::string("%WHILE") + std::to_string(numOfWhile) + "%: ";
+    command += ifCommand(condition,
+                         commandsInside + "JUMP %WHILE" + std::to_string(numOfWhile) + "%;\n",
+                         "SKIP;\n");
+    ++numOfWhile;
+    return std::move(command);
+}
+
 
 } // namespace optimizer

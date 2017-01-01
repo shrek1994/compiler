@@ -216,5 +216,38 @@ TEST_F(OptimizerTest, shouldChangeIf_NotEq)
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
+TEST_F(OptimizerTest, shouldChangeWhile_LowerThan)
+{
+    in <<
+       "BEGIN "
+               "a := 1; "
+               "b := 5; "
+               "WHILE a < b DO "
+               "a := a + 1; "
+               "WRITE a; "
+               "ENDWHILE "
+               "WRITE 5;"
+       "END\n";
+    expected <<
+             "BEGIN\n"
+                 "a := 1;\n"
+                 "b := 5;\n"
+                 "%WHILE0%: "
+                     "$reg1 := b - a;\n"
+                 "JZERO 1 %ELSE0%;\n"
+                 "a := a + 1;\n"
+                 "WRITE a;\n"
+                 "JUMP %WHILE0%;\n"
+                 "JUMP %ENDIF0%;\n"
+                 "%ELSE0%: "
+                    "SKIP;\n"
+                 "%ENDIF0%: "
+                     "WRITE 5;\n"
+             "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
+
+
 
 }

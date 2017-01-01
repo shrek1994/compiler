@@ -106,7 +106,7 @@ commands    : commands command          { $$ = $1 +$2; }
 
 command     : identifier assign expression semicolon                { $$ = $1 + " := " + $3 + ";\n"; }
              | IF condition THEN commands ELSE commands ENDIF       { $$ = driver.ifCommand($2, $4, $6); }
-             | WHILE condition DO commands ENDWHILE
+             | WHILE condition DO commands ENDWHILE                 { $$ = driver.whileCommand($2, $4); }
              | FOR pidentifier FROM value TO value DO commands ENDFOR
              | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
              | READ identifier semicolon
