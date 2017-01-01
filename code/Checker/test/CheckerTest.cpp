@@ -1,6 +1,7 @@
 #include <Checker.hpp>
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "debug.hpp"
 
 #define ASSERT_VECTOR(expected, actual) \
     ASSERT_EQ(expected.size(), actual.size()); \
@@ -18,6 +19,7 @@ public:
 
     void SetUp() override
     {
+        Logger::enableDebug = false;
         in.str("");
         out.str("");
         info.str("");
@@ -30,13 +32,23 @@ public:
 
 TEST_F(CheckerTest, shouldCheckEmptyCodeCorrectly)
 {
-    std::vector<std::string> vars = {};
     in << "VAR BEGIN SKIP; END\n";
     expected << "BEGIN SKIP; END\n";
 
     checker->run(in);
 
-    EXPECT_STREQ(in.str().c_str(), out.str().c_str());
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+}
+
+TEST_F(CheckerTest, DISABLED_shouldCorrectReadVariable)
+{
+    std::vector<std::string> vars = { "a", "b" };
+    in << "VAR\ta\nb BEGIN SKIP; END\n";
+    expected << "BEGIN SKIP; END\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
     ASSERT_VECTOR(vars, checker->getVariables());
 }
 

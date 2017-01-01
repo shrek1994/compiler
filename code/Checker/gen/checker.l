@@ -9,8 +9,7 @@
 using token = checker::LexParser::token;
 
 namespace {
-//bool enableDebug = false;
-bool enableDebug = true;
+bool endOfVariable = false;
 }
 %}
 
@@ -27,49 +26,49 @@ bool enableDebug = true;
 %}
 
 
-VAR             { if (enableDebug) ECHO; return token::VAR; }
-BEGIN           { if (enableDebug) ECHO; return token::Begin; }
-END             { if (enableDebug) ECHO; return token::End; }
+VAR             { return token::VAR; }
+BEGIN           { ECHO; endOfVariable = true; return token::Begin; }
+END             { ECHO; return token::End; }
 
-IF              { if (enableDebug) ECHO; return token::IF; }
-THEN            { if (enableDebug) ECHO; return token::THEN; }
-ELSE            { if (enableDebug) ECHO; return token::ELSE; }
-ENDIF           { if (enableDebug) ECHO; return token::ENDIF; }
+IF              { ECHO; return token::IF; }
+THEN            { ECHO; return token::THEN; }
+ELSE            { ECHO; return token::ELSE; }
+ENDIF           { ECHO; return token::ENDIF; }
 
-WHILE           { if (enableDebug) ECHO; return token::WHILE; }
-ENDWHILE        { if (enableDebug) ECHO; return token::ENDWHILE; }
+WHILE           { ECHO; return token::WHILE; }
+ENDWHILE        { ECHO; return token::ENDWHILE; }
 
-FOR             { if (enableDebug) ECHO; return token::FOR; }
-FROM            { if (enableDebug) ECHO; return token::FROM; }
-TO              { if (enableDebug) ECHO; return token::TO; }
-DOWNTO          { if (enableDebug) ECHO; return token::DOWNTO; }
-DO              { if (enableDebug) ECHO; return token::DO; }
-ENDFOR          { if (enableDebug) ECHO; return token::ENDFOR; }
+FOR             { ECHO; return token::FOR; }
+FROM            { ECHO; return token::FROM; }
+TO              { ECHO; return token::TO; }
+DOWNTO          { ECHO; return token::DOWNTO; }
+DO              { ECHO; return token::DO; }
+ENDFOR          { ECHO; return token::ENDFOR; }
 
-READ            { if (enableDebug) ECHO; return token::READ; }
-WRITE           { if (enableDebug) ECHO; return token::WRITE; }
-SKIP            { if (enableDebug) ECHO; return token::SKIP; }
+READ            { ECHO; return token::READ; }
+WRITE           { ECHO; return token::WRITE; }
+SKIP            { ECHO; return token::SKIP; }
 
-[0-9]+          { if (enableDebug) ECHO; yylval->build<std::string>(yytext); txt = yytext; return token::num; }
-[_a-z]+         { if (enableDebug) ECHO; yylval->build<std::string>(yytext); return token::pidentifier; }
+[0-9]+          { if (endOfVariable) ECHO; yylval->build<std::string>(yytext); txt = yytext; return token::num; }
+[_a-z]+         { if (endOfVariable) ECHO; yylval->build<std::string>(yytext); return token::pidentifier; }
 
-;               { if (enableDebug) ECHO; return token::semicolon; }
-\[               { if (enableDebug) ECHO; return token::leftBracket; }
-\]               { if (enableDebug) ECHO; return token::rightBracket; }
-:=              { if (enableDebug) ECHO; return token::assign; }
-\+              { if (enableDebug) ECHO; return token::plus; }
--               { if (enableDebug) ECHO; return token::minus; }
-\*              { if (enableDebug) ECHO; return token::mul; }
-\/              { if (enableDebug) ECHO; return token::div; }
-\%              { if (enableDebug) ECHO; return token::mod; }
+;               { ECHO; return token::semicolon; }
+\[               { if (endOfVariable) ECHO; return token::leftBracket; }
+\]               { if (endOfVariable) ECHO; return token::rightBracket; }
+:=              { ECHO; return token::assign; }
+\+              { ECHO; return token::plus; }
+-               { ECHO; return token::minus; }
+\*              { ECHO; return token::mul; }
+\/              { ECHO; return token::div; }
+\%              { ECHO; return token::mod; }
 
 
-\=              { if (enableDebug) ECHO; return token::equal; }
-\<\>              { if (enableDebug) ECHO; return token::notEqual; }
-\<              { if (enableDebug) ECHO; return token::lowerThan; }
-\>              { if (enableDebug) ECHO; return token::biggerThan; }
-\<\=              { if (enableDebug) ECHO; return token::lowerOrEqThan; }
-\>\=              { if (enableDebug) ECHO; return token::biggerOrEqThan; }
+\=              { ECHO; return token::equal; }
+\<\>            { ECHO; return token::notEqual; }
+\<              { ECHO; return token::lowerThan; }
+\>              { ECHO; return token::biggerThan; }
+\<\=            { ECHO; return token::lowerOrEqThan; }
+\>\=            { ECHO; return token::biggerOrEqThan; }
 
-[[:space:]]+     { if (enableDebug) ECHO;  loc->lines();}
+[[:space:]]+    { if (endOfVariable) ECHO;  loc->lines();}
 %%
