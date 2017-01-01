@@ -42,7 +42,7 @@ TEST_F(OptimizerTest, assign)
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, shouldChangeIfBiggerThan)
+TEST_F(OptimizerTest, shouldChangeIf_BiggerThan)
 {
     in <<
         "BEGIN "
@@ -63,14 +63,14 @@ TEST_F(OptimizerTest, shouldChangeIfBiggerThan)
                  "JZERO 1 %ELSE0%;\n"
                  "WRITE a;\n"
                  "JUMP %ENDIF0%;\n"
-                 "%ELSE0%:WRITE b;\n"
-                 "%ENDIF0%:WRITE 5;\n"
+                 "%ELSE0%: WRITE b;\n"
+                 "%ENDIF0%: WRITE 5;\n"
              "END\n";
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, shouldChangeIfLowerThan)
+TEST_F(OptimizerTest, shouldChangeIf_LowerThan)
 {
     in <<
        "BEGIN "
@@ -91,14 +91,14 @@ TEST_F(OptimizerTest, shouldChangeIfLowerThan)
                      "JZERO 1 %ELSE0%;\n"
                      "WRITE a;\n"
                      "JUMP %ENDIF0%;\n"
-                     "%ELSE0%:WRITE b;\n"
-                     "%ENDIF0%:WRITE 5;\n"
+                     "%ELSE0%: WRITE b;\n"
+                     "%ENDIF0%: WRITE 5;\n"
                      "END\n";
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, shouldChangeIfLowerOrEqThan)
+TEST_F(OptimizerTest, shouldChangeIf_LowerOrEqThan)
 {
     in <<
        "BEGIN "
@@ -119,14 +119,14 @@ TEST_F(OptimizerTest, shouldChangeIfLowerOrEqThan)
                  "JZERO 1 %ELSE0%;\n"
                  "WRITE b;\n"
                  "JUMP %ENDIF0%;\n"
-                 "%ELSE0%:WRITE a;\n"
-                 "%ENDIF0%:WRITE 5;\n"
+                 "%ELSE0%: WRITE a;\n"
+                 "%ENDIF0%: WRITE 5;\n"
              "END\n";
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(OptimizerTest, shouldChangeIfBiggerOrEqThan)
+TEST_F(OptimizerTest, shouldChangeIf_BiggerOrEqThan)
 {
     in <<
        "BEGIN "
@@ -147,11 +147,74 @@ TEST_F(OptimizerTest, shouldChangeIfBiggerOrEqThan)
                  "JZERO 1 %ELSE0%;\n"
                  "WRITE b;\n"
                  "JUMP %ENDIF0%;\n"
-                 "%ELSE0%:WRITE a;\n"
-                 "%ENDIF0%:WRITE 5;\n"
+                 "%ELSE0%: WRITE a;\n"
+                 "%ENDIF0%: WRITE 5;\n"
              "END\n";
     optimizer->run(in);
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
+
+TEST_F(OptimizerTest, shouldChangeIf_Eq)
+{
+    in <<
+       "BEGIN "
+               "a := 1; "
+               "b := 2; "
+               "IF a = b THEN "
+               "WRITE a; "
+               "ELSE "
+               "WRITE b; "
+               "ENDIF "
+               "WRITE 5;"
+       "END\n";
+    expected <<
+             "BEGIN\n"
+                 "a := 1;\n"
+                 "b := 2;\n"
+                 "$reg1 := a - b;\n"
+                 "$reg2 := b - a;\n"
+                 "JZERO 1 %NEXT0%;\n"
+                 "JUMP %ELSE0%;\n"
+                 "%NEXT0%: JZERO 2 %IF0%;\n"
+                 "%ELSE0%: WRITE b;\n"
+                 "JUMP %ENDIF0%;\n"
+                 "%IF0%: WRITE a;\n"
+                 "%ENDIF0%: WRITE 5;\n"
+             "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
+
+TEST_F(OptimizerTest, shouldChangeIf_NotEq)
+{
+    in <<
+       "BEGIN "
+               "a := 1; "
+               "b := 2; "
+               "IF a <> b THEN "
+               "WRITE a; "
+               "ELSE "
+               "WRITE b; "
+               "ENDIF "
+               "WRITE 5;"
+               "END\n";
+    expected <<
+             "BEGIN\n"
+                     "a := 1;\n"
+                     "b := 2;\n"
+                     "$reg1 := a - b;\n"
+                     "$reg2 := b - a;\n"
+                     "JZERO 1 %NEXT0%;\n"
+                     "JUMP %ELSE0%;\n"
+                     "%NEXT0%: JZERO 2 %IF0%;\n"
+                     "%ELSE0%: WRITE a;\n"
+                     "JUMP %ENDIF0%;\n"
+                     "%IF0%: WRITE b;\n"
+                     "%ENDIF0%: WRITE 5;\n"
+                     "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
+
 
 }

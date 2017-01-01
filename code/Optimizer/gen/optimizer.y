@@ -120,8 +120,12 @@ expression  : value                         { $$ = $1; }
              | value div value              { $$ = $1 + " / " + $3; }
              | value mod value              { $$ = $1 + " % " + $3; }
 
-condition   : value equal value
-             | value notEqual value
+condition   : value equal value             { $$ = jftt::Condition{$1,
+                                                                   jftt::compare::eq,
+                                                                   $3}; }
+             | value notEqual value         { $$ = jftt::Condition{$1,
+                                                                   jftt::compare::notEq,
+                                                                   $3}; }
              | value lowerThan value        { $$ = jftt::Condition{$1,
                                                                    jftt::compare::lowerThan,
                                                                    $3}; }

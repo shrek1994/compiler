@@ -18,6 +18,16 @@ std::string Optimizer::ifCommand(jftt::Condition condition,
                           const std::string &ifCommands,
                           const std::string &elseCommands) {
     switch (condition.sign) {
+        case jftt::compare::eq:
+            return std::move(generateEq(condition.leftValue,
+                                        condition.rightValue,
+                                        ifCommands,
+                                        elseCommands));
+        case jftt::compare::notEq:
+            return std::move(generateEq(condition.leftValue,
+                                        condition.rightValue,
+                                        elseCommands,
+                                        ifCommands));
         case jftt::compare::biggerThan:
             return std::move(generateBiggerThan(condition.leftValue,
                                                 condition.rightValue,
@@ -59,9 +69,33 @@ std::string Optimizer::generateBiggerThan(const std::string &leftValue,
     command += std::string("JZERO 1 %ELSE") + std::to_string(numOfIf) + "%;\n";
     command += ifCommands;
     command += std::string("JUMP %ENDIF") + std::to_string(numOfIf) + "%;\n";
-    command += std::string("%ELSE") + std::to_string(numOfIf) + "%:";
+    command += std::string("%ELSE") + std::to_string(numOfIf) + "%: ";
     command += elseCommands;
-    command += std::string("%ENDIF") + std::to_string(numOfIf) + "%:";
+    command += std::string("%ENDIF") + std::to_string(numOfIf) + "%: ";
+    ++numOfIf;
+    return std::move(command);
+}
+
+std::string
+Optimizer::generateEq(const std::string &leftValue,
+                      const std::string &rightValue,
+                      const std::string &ifCommands,
+                      const std::string &elseCommands) {
+    std::string command;
+    std::string registerValue1 = "$reg1";
+    std::string registerValue2 = "$reg2";
+    command += registerValue1 + " := " + leftValue + " - " + rightValue + ";\n";
+    command += registerValue2 + " := " + rightValue + " - " + leftValue + ";\n";
+    command += std::string("JZERO 1 %NEXT") + std::to_string(numOfIf) + "%;\n";
+    command += std::string("JUMP %ELSE") + std::to_string(numOfIf) + "%;\n";
+    command += std::string("%NEXT") + std::to_string(numOfIf) + "%: ";
+    command += std::string("JZERO 2 %IF") + std::to_string(numOfIf) + "%;\n";
+    command += std::string("%ELSE") + std::to_string(numOfIf) + "%: ";
+    command += elseCommands;
+    command += std::string("JUMP %ENDIF") + std::to_string(numOfIf) + "%;\n";
+    command += std::string("%IF") + std::to_string(numOfIf) + "%: ";
+    command += ifCommands;
+    command += std::string("%ENDIF") + std::to_string(numOfIf) + "%: ";
     ++numOfIf;
     return std::move(command);
 }
