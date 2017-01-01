@@ -40,10 +40,22 @@ TEST_F(CheckerTest, shouldCheckEmptyCodeCorrectly)
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
-TEST_F(CheckerTest, DISABLED_shouldCorrectReadVariable)
+TEST_F(CheckerTest, shouldCorrectReadVariable)
 {
     std::vector<std::string> vars = { "a", "b" };
     in << "VAR\ta\nb BEGIN SKIP; END\n";
+    expected << "BEGIN SKIP; END\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
+
+TEST_F(CheckerTest, DISABLED_shouldCorrectReadTabs)
+{
+    std::vector<std::string> vars = { "a", "b", "abc", "abc", "abc", "abc"};
+    in << "VAR\ta\nb abc[4] BEGIN SKIP; END\n";
     expected << "BEGIN SKIP; END\n";
 
     checker->run(in);

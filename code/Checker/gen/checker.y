@@ -7,10 +7,11 @@
 %define api.prefix {checker}
 
 %code requires{
-   namespace checker {
-      class Checker;
-      class Scanner;
-   }
+#include "Variable.hpp"
+namespace checker {
+  class Checker;
+  class Scanner;
+}
 
 // The following definitions is missing when %locations isn't used
 # ifndef YY_NULLPTR
@@ -93,8 +94,13 @@
 
 program       : VAR vdeclarations Begin commands End
 
-vdeclarations : vdeclarations pidentifier
-               | vdeclarations pidentifier leftBracket num rightBracket
+vdeclarations : vdeclarations pidentifier       { driver.createVariable(jftt::VariableBuilder()
+                                                                         .withName($2)
+                                                                         .build()); }
+               | vdeclarations pidentifier leftBracket num rightBracket{ driver.createVariable(jftt::VariableBuilder()
+                                                                                                .withName($2)
+                                                                                                .withNumberOfElements($4)
+                                                                                                .build()); }
                |
 
 

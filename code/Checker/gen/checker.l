@@ -27,7 +27,7 @@ bool endOfVariable = false;
 %}
 
 
-VAR             { if (Logger::enableDebug) ECHO; return token::VAR; }
+VAR             { if (Logger::enableDebug) ECHO; endOfVariable = false; return token::VAR; }
 BEGIN           { if (Logger::enableDebug) ECHO;
                   endOfVariable = true;
                   out << yytext;
