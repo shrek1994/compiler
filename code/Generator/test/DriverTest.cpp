@@ -1,11 +1,8 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include <vector>
-#include <climits>
 #include "Driver.hpp"
 #include "Interpreter.hpp"
 #include "debug.hpp"
-#include "Variable.hpp"
 
 namespace {
 typedef unsigned value;

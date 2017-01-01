@@ -9,8 +9,8 @@
 using token = optimizer::LexParser::token;
 
 namespace {
-//bool enableDebug = false;
-bool enableDebug = true;
+bool enableDebug = false;
+//bool enableDebug = true;
 }
 %}
 
@@ -27,8 +27,8 @@ bool enableDebug = true;
 
 
 VAR             { if (enableDebug) ECHO; return token::VAR; }
-BEGIN           { if (enableDebug) ECHO; return token::Begin; }
-END             { if (enableDebug) ECHO; return token::End; }
+BEGIN           { if (enableDebug) ECHO; out << yytext; return token::Begin; }
+END             { if (enableDebug) ECHO; out << yytext; return token::End; }
 
 IF              { if (enableDebug) ECHO; return token::IF; }
 THEN            { if (enableDebug) ECHO; return token::THEN; }
@@ -47,14 +47,14 @@ ENDFOR          { if (enableDebug) ECHO; return token::ENDFOR; }
 
 READ            { if (enableDebug) ECHO; return token::READ; }
 WRITE           { if (enableDebug) ECHO; return token::WRITE; }
-SKIP            { if (enableDebug) ECHO; return token::SKIP; }
+SKIP            { if (enableDebug) ECHO; out << yytext; return token::SKIP; }
 
 [0-9]+          { if (enableDebug) ECHO; yylval->build<std::string>(yytext); txt = yytext; return token::num; }
 [_a-z]+         { if (enableDebug) ECHO; yylval->build<std::string>(yytext); return token::pidentifier; }
 
-;               { if (enableDebug) ECHO; return token::semicolon; }
-\[               { if (enableDebug) ECHO; return token::leftBracket; }
-\]               { if (enableDebug) ECHO; return token::rightBracket; }
+;               { if (enableDebug) ECHO; out << yytext; return token::semicolon; }
+\[              { if (enableDebug) ECHO; return token::leftBracket; }
+\]              { if (enableDebug) ECHO; return token::rightBracket; }
 :=              { if (enableDebug) ECHO; return token::assign; }
 \+              { if (enableDebug) ECHO; return token::plus; }
 -               { if (enableDebug) ECHO; return token::minus; }
@@ -64,11 +64,14 @@ SKIP            { if (enableDebug) ECHO; return token::SKIP; }
 
 
 \=              { if (enableDebug) ECHO; return token::equal; }
-\<\>              { if (enableDebug) ECHO; return token::notEqual; }
+\<\>            { if (enableDebug) ECHO; return token::notEqual; }
 \<              { if (enableDebug) ECHO; return token::lowerThan; }
 \>              { if (enableDebug) ECHO; return token::biggerThan; }
-\<\=              { if (enableDebug) ECHO; return token::lowerOrEqThan; }
-\>\=              { if (enableDebug) ECHO; return token::biggerOrEqThan; }
+\<\=            { if (enableDebug) ECHO; return token::lowerOrEqThan; }
+\>\=            { if (enableDebug) ECHO; return token::biggerOrEqThan; }
 
-[[:space:]]+     { if (enableDebug) ECHO;  loc->lines();}
+[[:space:]]+    { if (enableDebug) ECHO; out << yytext; loc->lines(); }
 %%
+//[ \t\r]+        { if (enableDebug) ECHO; out << " "; }
+//\\\n            { if (enableDebug) ECHO; out << " "; loc->lines(); }
+//\n            { if (enableDebug) ECHO;   out << " "; loc->lines(); }

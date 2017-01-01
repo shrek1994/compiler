@@ -3,6 +3,7 @@ project(compiler)
 
 set(CMAKE_CXX_STANDARD 14)
 include_directories(code)
+include_directories(code/inc)
 include_directories(code/Checker/inc)
 include_directories(code/Generator/inc)
 include_directories(code/Optimizer/inc)
@@ -48,14 +49,14 @@ set(SOURCE_FILES
         code/Generator/inc/Compiler.hpp
         code/Generator/inc/Driver.hpp
         code/Generator/inc/GeneratorScanner.hpp
-        code/Generator/inc/Variable.hpp
+        code/inc/Variable.hpp
         ${BISON_BisonChecker_OUTPUTS}
         ${FLEX_FlexChecker_OUTPUTS}
         ${BISON_BisonOptimizer_OUTPUTS}
         ${FLEX_FlexOptimizer_OUTPUTS}
         ${BISON_BisonGenerator_OUTPUTS}
         ${FLEX_FlexGenerator_OUTPUTS}
-        )
+        code/inc/Condition.hpp)
 
 add_executable(compiler
         main.cpp

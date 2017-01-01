@@ -6,10 +6,12 @@
 %define parser_class_name {LexParser}
 
 %code requires{
-   namespace optimizer {
-      class Optimizer;
-      class Scanner;
-   }
+#include "Condition.hpp"
+
+namespace optimizer {
+    class Optimizer;
+    class Scanner;
+}
 
 // The following definitions is missing when %locations isn't used
 # ifndef YY_NULLPTR
@@ -87,27 +89,35 @@
 
 %locations
 
+%type<std::string> command
+%type<std::string> commands
+%type<std::string> value
+%type<std::string> identifier
+%type<std::string> vdeclarations
+%type<jftt::Condition> condition
 
 %%
 
-program       : VAR vdeclarations Begin commands End
+program       : VAR declarations Begin commands End                { }
 
-vdeclarations : vdeclarations pidentifier
-               | vdeclarations pidentifier leftBracket num rightBracket
-               |
+declarations : vdeclarations                                          { driver.getOut() << $1; }
+
+vdeclarations : vdeclarations pidentifier                               { $$ += $2 + " "; }
+               | vdeclarations pidentifier leftBracket num rightBracket {  }
+               |                                                        {  }
 
 
-commands    : commands command
-             | command
+commands    : commands command          { $$ = $1 + $2; }
+             | command                  { $$ = $1; }
 
 
 command     : identifier assign expression semicolon
-             | IF condition THEN commands ELSE commands ENDIF
+             | IF condition THEN commands ELSE commands ENDIF       { driver.ifCommand($2, $4, $6); }
              | WHILE condition DO commands ENDWHILE
              | FOR pidentifier FROM value TO value DO commands ENDFOR
              | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
              | READ identifier semicolon
-             | WRITE value semicolon
+             | WRITE value semicolon                        { $$ = std::string("WRITE ") + $2 + ";"; }
              | SKIP semicolon
 
 expression  : value
@@ -120,18 +130,20 @@ expression  : value
 condition   : value equal value
              | value notEqual value
              | value lowerThan value
-             | value biggerThan value
+             | value biggerThan value                               { $$ = jftt::Condition{$1,
+                                                                                           jftt::compare::biggerThan,
+                                                                                           $3}; }
              | value lowerOrEqThan value
              | value biggerOrEqThan value
 
 
-value       : num
-            | identifier
+value       : num                                                   { $$ = $1; }
+            | identifier                                            { $$ = $1; }
 
 
-identifier  : pidentifier
-             | pidentifier leftBracket pidentifier rightBracket
-             | pidentifier leftBracket num rightBracket
+identifier  : pidentifier                                           { $$ = $1; }
+             | pidentifier leftBracket pidentifier rightBracket     { $$ = $1 + "[" + $3 + "]"; }
+             | pidentifier leftBracket num rightBracket             { $$ = $1 + "[" + $3 + "]"; }
 
 %%
 
