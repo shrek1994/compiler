@@ -72,6 +72,3 @@ SKIP            { if (enableDebug) ECHO; out << yytext; return token::SKIP; }
 
 [[:space:]]+    { if (enableDebug) ECHO; out << yytext; loc->lines(); }
 %%
-//[ \t\r]+        { if (enableDebug) ECHO; out << " "; }
-//\\\n            { if (enableDebug) ECHO; out << " "; loc->lines(); }
-//\n            { if (enableDebug) ECHO;   out << " "; loc->lines(); }
