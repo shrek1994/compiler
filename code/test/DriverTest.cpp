@@ -10,7 +10,7 @@ typedef unsigned value;
 class DriverTest : public ::testing::Test {
 public:
     DriverTest()
-        : driver(generatedCode)
+        : driver(generatedCode, {})
     {
         Logger::enableDebug = false;
     }

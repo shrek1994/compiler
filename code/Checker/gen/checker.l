@@ -34,23 +34,23 @@ BEGIN           { if (Logger::enableDebug) ECHO;
                   return token::Begin; }
 END             { if (Logger::enableDebug) ECHO; out << yytext; return token::End; }
 
-IF              { if (Logger::enableDebug) ECHO; return token::IF; }
-THEN            { if (Logger::enableDebug) ECHO; return token::THEN; }
-ELSE            { if (Logger::enableDebug) ECHO; return token::ELSE; }
-ENDIF           { if (Logger::enableDebug) ECHO; return token::ENDIF; }
+IF              { if (Logger::enableDebug) ECHO; out << yytext; return token::IF; }
+THEN            { if (Logger::enableDebug) ECHO; out << yytext; return token::THEN; }
+ELSE            { if (Logger::enableDebug) ECHO; out << yytext; return token::ELSE; }
+ENDIF           { if (Logger::enableDebug) ECHO; out << yytext; return token::ENDIF; }
 
-WHILE           { if (Logger::enableDebug) ECHO; return token::WHILE; }
-ENDWHILE        { if (Logger::enableDebug) ECHO; return token::ENDWHILE; }
+WHILE           { if (Logger::enableDebug) ECHO; out << yytext; return token::WHILE; }
+ENDWHILE        { if (Logger::enableDebug) ECHO; out << yytext; return token::ENDWHILE; }
 
-FOR             { if (Logger::enableDebug) ECHO; return token::FOR; }
-FROM            { if (Logger::enableDebug) ECHO; return token::FROM; }
-TO              { if (Logger::enableDebug) ECHO; return token::TO; }
-DOWNTO          { if (Logger::enableDebug) ECHO; return token::DOWNTO; }
-DO              { if (Logger::enableDebug) ECHO; return token::DO; }
-ENDFOR          { if (Logger::enableDebug) ECHO; return token::ENDFOR; }
+FOR             { if (Logger::enableDebug) ECHO; out << yytext; return token::FOR; }
+FROM            { if (Logger::enableDebug) ECHO; out << yytext; return token::FROM; }
+TO              { if (Logger::enableDebug) ECHO; out << yytext; return token::TO; }
+DOWNTO          { if (Logger::enableDebug) ECHO; out << yytext; return token::DOWNTO; }
+DO              { if (Logger::enableDebug) ECHO; out << yytext; return token::DO; }
+ENDFOR          { if (Logger::enableDebug) ECHO; out << yytext; return token::ENDFOR; }
 
-READ            { if (Logger::enableDebug) ECHO; return token::READ; }
-WRITE           { if (Logger::enableDebug) ECHO; return token::WRITE; }
+READ            { if (Logger::enableDebug) ECHO; out << yytext; return token::READ; }
+WRITE           { if (Logger::enableDebug) ECHO; out << yytext; return token::WRITE; }
 SKIP            { if (Logger::enableDebug) ECHO; out << yytext; return token::SKIP; }
 
 [0-9]+          { if (Logger::enableDebug) ECHO;
@@ -64,22 +64,22 @@ SKIP            { if (Logger::enableDebug) ECHO; out << yytext; return token::SK
                   return token::pidentifier; }
 
 ;               { if (Logger::enableDebug) ECHO; out << yytext; return token::semicolon; }
-\[              { if (Logger::enableDebug) ECHO; return token::leftBracket; }
-\]              { if (Logger::enableDebug) ECHO; return token::rightBracket; }
-:=              { if (Logger::enableDebug) ECHO; return token::assign; }
-\+              { if (Logger::enableDebug) ECHO; return token::plus; }
--               { if (Logger::enableDebug) ECHO; return token::minus; }
-\*              { if (Logger::enableDebug) ECHO; return token::mul; }
-\/              { if (Logger::enableDebug) ECHO; return token::div; }
-\%              { if (Logger::enableDebug) ECHO; return token::mod; }
+\[              { if (Logger::enableDebug) ECHO; if (endOfVariable) out << yytext; return token::leftBracket; }
+\]              { if (Logger::enableDebug) ECHO; if (endOfVariable) out << yytext; return token::rightBracket; }
+:=              { if (Logger::enableDebug) ECHO; out << yytext; return token::assign; }
+\+              { if (Logger::enableDebug) ECHO; out << yytext; return token::plus; }
+-               { if (Logger::enableDebug) ECHO; out << yytext; return token::minus; }
+\*              { if (Logger::enableDebug) ECHO; out << yytext; return token::mul; }
+\/              { if (Logger::enableDebug) ECHO; out << yytext; return token::div; }
+\%              { if (Logger::enableDebug) ECHO; out << yytext; return token::mod; }
 
 
-\=              { if (Logger::enableDebug) ECHO; return token::equal; }
-\<\>            { if (Logger::enableDebug) ECHO; return token::notEqual; }
-\<              { if (Logger::enableDebug) ECHO; return token::lowerThan; }
-\>              { if (Logger::enableDebug) ECHO; return token::biggerThan; }
-\<\=            { if (Logger::enableDebug) ECHO; return token::lowerOrEqThan; }
-\>\=            { if (Logger::enableDebug) ECHO; return token::biggerOrEqThan; }
+\=              { if (Logger::enableDebug) ECHO; out << yytext; return token::equal; }
+\<\>            { if (Logger::enableDebug) ECHO; out << yytext; return token::notEqual; }
+\<              { if (Logger::enableDebug) ECHO; out << yytext; return token::lowerThan; }
+\>              { if (Logger::enableDebug) ECHO; out << yytext; return token::biggerThan; }
+\<\=            { if (Logger::enableDebug) ECHO; out << yytext; return token::lowerOrEqThan; }
+\>\=            { if (Logger::enableDebug) ECHO; out << yytext; return token::biggerOrEqThan; }
 
 [ \t\r]+        { if (Logger::enableDebug) ECHO; if (endOfVariable) out << " "; }
 \\\n            { if (Logger::enableDebug) ECHO; if (endOfVariable) out << " "; loc->lines(); }

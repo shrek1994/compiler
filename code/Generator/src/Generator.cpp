@@ -8,9 +8,9 @@ Generator::Generator(std::ostream &out)
 
 }
 
-int Generator::run(std::istream &inFile)
+int Generator::run(std::istream &inFile, const std::vector<std::string>& variables)
 {
-    jftt::Driver driver(out);
+    jftt::Driver driver(out, variables);
     driver.parse(inFile);
     return 0;
 }

@@ -16,7 +16,7 @@ void compiler::run(std::istream& languageCode, std::ostream& compiledCode) {
     optim.run(outChceker);
 
     Generator gen(compiledCode);
-    gen.run(outOprimizer);
+    gen.run(outOprimizer, check.getVariables());
 }
 
 } // namespace jftt

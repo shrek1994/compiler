@@ -15,11 +15,10 @@ namespace jftt{
 
 class Driver{
 public:
-   Driver() = default;
-   Driver(std::ostream& out)
-       : out(out)
+   Driver(std::ostream& out, const std::vector<std::string>& variables)
+       : out(out), variables(variables)
    {
-       createVariable(varTemp);
+//       createVariable(varTemp);
    }
 
    virtual ~Driver() = default;
@@ -27,7 +26,7 @@ public:
    void parse( std::istream &iss );
 
    void halt();
-   void createVariable(const Variable& variable);
+//   void createVariable(const Variable& variable);
    void write(const Variable& variableName);
    void read(const Variable& variableName);
 
@@ -51,7 +50,7 @@ private:
    std::shared_ptr<Scanner> scanner = nullptr;
    std::ostream& out = std::cout;
    Variable varTemp = VariableBuilder().withName("TEMP123").build();
-   std::vector<std::string> variables = {};
+   const std::vector<std::string>& variables;
 };
 
 } // namespace jftt

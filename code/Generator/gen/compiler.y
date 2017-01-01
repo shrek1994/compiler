@@ -93,16 +93,7 @@
 
 %%
 
-program       : VAR vdeclarations Begin commands End { driver.halt();}
-
-vdeclarations : vdeclarations pidentifier                   { driver.createVariable(VariableBuilder()
-                                                                                    .withName($2)
-                                                                                    .build()); }
-               | vdeclarations pidentifier leftBracket num rightBracket { driver.createVariable(VariableBuilder()
-                                                                                                .withName($2)
-                                                                                                .withNumberOfElements($4)
-                                                                                                .build()); }
-               |
+program       : Begin commands End { driver.halt();}
 
 
 commands    : commands command

@@ -76,7 +76,7 @@ set(TEST_FILES
         code/test/DriverTest.cpp
         code/test/IfElseTest.cpp
         code/test/ReadWriteTest.cpp
-        )
+        code/Checker/test/CorrectCodeTest.cpp)
 
 # Setup testing
 enable_testing()

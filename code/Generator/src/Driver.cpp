@@ -33,22 +33,22 @@ void Driver::halt()
     out << "HALT\n";
 }
 
-void Driver::createVariable(const Variable &variable)
-{
-    DEBUG << "push_back(" << variable << ");\n";
-
-    if (! variable.isTab)
-    {
-        variables.push_back(variable.name);
-    }
-    else
-    {
-        for (auto i = variable.size; i > 0; --i)
-        {
-            variables.push_back(variable.name);
-        }
-    }
-}
+//void Driver::createVariable(const Variable &variable)
+//{
+//    DEBUG << "push_back(" << variable << ");\n";
+//
+//    if (! variable.isTab)
+//    {
+//        variables.push_back(variable.name);
+//    }
+//    else
+//    {
+//        for (auto i = variable.size; i > 0; --i)
+//        {
+//            variables.push_back(variable.name);
+//        }
+//    }
+//}
 
 std::string Driver::getBinaryString(long long value)
 {
