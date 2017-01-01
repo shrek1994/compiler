@@ -2,7 +2,7 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
-#include "Compiler.hpp"
+#include "Generator.hpp"
 #include "Interpreter.hpp"
 #include "debug.hpp"
 #include <sstream>
@@ -54,7 +54,7 @@ public:
         info.str("");
     }
 
-    Compiler compiler;
+    Generator compiler;
     Interpreter interpreter;
 
     std::stringstream language, generatedCode, in, out, info;

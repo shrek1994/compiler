@@ -2,10 +2,10 @@
 
 #include <iostream>
 
-class Compiler
+class Generator
 {
 public:
-    Compiler(std::ostream& out = std::cout);
+    Generator(std::ostream& out = std::cout);
 
     int run(std::istream& inFile, std::ostream& outFile);
 private:

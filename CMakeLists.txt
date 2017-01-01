@@ -44,9 +44,9 @@ set(SOURCE_FILES
         code/Optimizer/inc/Optimizer.hpp
         code/Interpreter/inc/Interpreter.hpp
         code/Interpreter/src/Interpreter.cpp
-        code/Generator/src/Compiler.cpp
+        code/Generator/src/Generator.cpp
         code/Generator/src/Driver.cpp
-        code/Generator/inc/Compiler.hpp
+        code/Generator/inc/Generator.hpp
         code/Generator/inc/Driver.hpp
         code/Generator/inc/GeneratorScanner.hpp
         code/inc/Variable.hpp
@@ -69,13 +69,13 @@ add_executable(compiler
 set(TEST_FILES
         code/Checker/test/CheckerTest.cpp
         code/Optimizer/test/OptimizerTest.cpp
-        code/Generator/test/AssignTest.cpp
-        code/Generator/test/BasicTest.cpp
-        code/Generator/test/CompilerTest.cpp
-        code/Generator/test/CompilerTest.hpp
-        code/Generator/test/DriverTest.cpp
-        code/Generator/test/IfElseTest.cpp
-        code/Generator/test/ReadWriteTest.cpp
+        code/test/AssignTest.cpp
+        code/test/BasicTest.cpp
+        code/test/CompilerTest.cpp
+        code/test/CompilerTest.hpp
+        code/test/DriverTest.cpp
+        code/test/IfElseTest.cpp
+        code/test/ReadWriteTest.cpp
         )
 
 # Setup testing
