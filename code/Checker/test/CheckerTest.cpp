@@ -52,7 +52,7 @@ TEST_F(CheckerTest, shouldCorrectReadVariable)
     ASSERT_VECTOR(vars, checker->getVariables());
 }
 
-TEST_F(CheckerTest, DISABLED_shouldCorrectReadTabs)
+TEST_F(CheckerTest, shouldCorrectReadTabs)
 {
     std::vector<std::string> vars = { "a", "b", "abc", "abc", "abc", "abc"};
     in << "VAR\ta\nb abc[4] BEGIN SKIP; END\n";

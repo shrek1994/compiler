@@ -11,7 +11,7 @@ const std::vector<Param> params = {
                       "WRITE 2; "
                       "ENDIF "
                       "END\n",
-              emptyIn, "> 1", "shouldCompileEmptyCodeCorrectly"},
+              emptyIn, "> 1\n", "shouldCompileEmptyCodeCorrectly"},
 };
 
 
@@ -19,11 +19,11 @@ class IfElseTest : public CompilerParamTest {
 public:
     IfElseTest()
     {
-        Logger::enableDebug = true;
+        Logger::enableDebug = false;
     }
 };
 
-TEST_P(IfElseTest, DISABLED_shouldCorrectCompile)
+TEST_P(IfElseTest, shouldCorrectCompile)
 {
     run_test();
 }
