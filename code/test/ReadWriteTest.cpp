@@ -2,7 +2,6 @@
 #include "debug.hpp"
 
 namespace {
-std::stringstream devNull;
 
 const std::vector<Param> params = {
     Param{"VAR BEGIN WRITE 123; END\n",
@@ -34,12 +33,10 @@ class ReadWriteTest : public CompilerParamTest
 public:
     ReadWriteTest()
     {
-        Logger::enableDebug = true;
     }
 };
 
-//TODO
-TEST_P(ReadWriteTest, DISABLED_shouldCorrectCompile)
+TEST_P(ReadWriteTest, shouldCorrectCompile)
 {
     run_test();
 }

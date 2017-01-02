@@ -109,7 +109,7 @@ command     : identifier assign expression semicolon                { $$ = $1 + 
              | WHILE condition DO commands ENDWHILE                 { $$ = driver.whileCommand($2, $4); }
              | FOR pidentifier FROM value TO value DO commands ENDFOR
              | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
-             | READ identifier semicolon
+             | READ identifier semicolon                    { $$ = std::string("READ ") + $2 + ";\n"; }
              | WRITE value semicolon                        { $$ = std::string("WRITE ") + $2 + ";\n"; }
              | SKIP semicolon                               { $$ = "SKIP;\n"; }
 
