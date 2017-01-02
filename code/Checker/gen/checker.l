@@ -83,4 +83,13 @@ SKIP            { if (Logger::enableDebug) ECHO; out << yytext; return token::SK
 [ \t\r]+        { if (Logger::enableDebug) ECHO; if (endOfVariable) out << " "; }
 \\\n            { if (Logger::enableDebug) ECHO; if (endOfVariable) out << " "; loc->lines(); }
 \n              { if (Logger::enableDebug) ECHO; if (endOfVariable) out << "\n"; loc->lines(); }
+
+\{              { int c;
+                  while((c = yyinput()) != 0) {
+                      if(c == '\n')
+                          loc->lines();
+                      else if(c == '}')
+                          break;
+                  }
+                }
 %%

@@ -64,4 +64,17 @@ TEST_F(CheckerTest, shouldCorrectReadTabs)
     ASSERT_VECTOR(vars, checker->getVariables());
 }
 
+TEST_F(CheckerTest, shouldCorrectRemoveComments)
+{
+    std::vector<std::string> vars = { "a", "b", "abc", "abc", "abc", "abc"};
+    in << "{sat}VAR {sad}\t{saet} a {stas\nate}\nb {ast} {BEGIN WRITE 5; END} abc[4] "
+            "BEGIN {WRITE 4;}SKIP; END{WRITE 5;}\n";
+    expected << "BEGIN SKIP; END\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
+
 }
