@@ -4,8 +4,11 @@
 
 namespace checker {
 
+const std::string Checker::warning = "Warning - line: ";
+const std::string Checker::missingSemicolon = " - Missing Semicolon";
+
 void Checker::run(std::istream& in) {
-    auto scanner = std::make_shared<Scanner>(in, out, Logger::out);
+    scanner = std::make_shared<Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
     DEBUG << "starting checking\n";
     if (parser->parse())
@@ -32,6 +35,17 @@ void Checker::createVariable(const jftt::Variable &variable)
 
 const std::vector<std::string>& Checker::getVariables() const {
     return variables;
+}
+
+void Checker::warningSemicolon() {
+    info << warning << scanner->getNumOfLine() << missingSemicolon << "\n";
+}
+
+void Checker::repairSemicolon() {
+    out << ";";
+    std::stringstream& txt = static_cast<std::stringstream&>(out);
+    auto txtStr = txt.str();
+    DEBUG << "repairSemicolon()\n" << txtStr << "\n";
 }
 
 } // namespace checker

@@ -17,39 +17,39 @@ struct Param
 const std::string emptyIn = "";
 const std::string expectEmptyOut = "";
 const std::vector<Param> params = {
-        Param{"VAR BEGIN SKIP; END\n",       emptyIn, expectEmptyOut, "shouldCompileEmptyCodeCorrectly"},
-        Param{"VAR a BEGIN SKIP; END\n",     emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithOnlyOneDeclaration"},
-        Param{"VAR a b c BEGIN SKIP; END\n", emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithManyDeclaration"},
-        Param{"VAR a[10] BEGIN SKIP; END\n", emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithOnlyOneTabDeclaration"},
-        Param{"VAR a[10] b[5] c[1] BEGIN SKIP; END\n", emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithManyTabDeclaration"},
-        Param{"VAR a b BEGIN \n"
-                      "a := b ;\n"
-                      "a := a + b ;\n"
-                      "a := a - b ;\n"
-                      "a := a * b ;\n"
-                      "a := a / b ;\n"
-                      "a := a % b ;\n"
+        Param{"VAR BEGIN\nSKIP;\nEND\n",       emptyIn, expectEmptyOut, "shouldCompileEmptyCodeCorrectly"},
+        Param{"VAR a BEGIN\nSKIP;\nEND\n",     emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithOnlyOneDeclaration"},
+        Param{"VAR a b c BEGIN\nSKIP;\nEND\n", emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithManyDeclaration"},
+        Param{"VAR a[10] BEGIN\nSKIP;\nEND\n", emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithOnlyOneTabDeclaration"},
+        Param{"VAR a[10] b[5] c[1] BEGIN\nSKIP;\nEND\n", emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithManyTabDeclaration"},
+        Param{"VAR a b BEGIN\n"
+                      "a := b;\n"
+                      "a := a + b;\n"
+                      "a := a - b;\n"
+                      "a := a * b;\n"
+                      "a := a / b;\n"
+                      "a := a % b;\n"
                       "END\n",
               emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithAllExpressions"},
-        Param{"VAR a b BEGIN "
-          "IF a = b THEN SKIP; ELSE SKIP; ENDIF "
-          "IF a <> b THEN SKIP; ELSE SKIP; ENDIF "
-          "IF a < b THEN SKIP; ELSE SKIP; ENDIF "
-           "IF a > b THEN SKIP; ELSE SKIP; ENDIF "
-           "IF a <= b THEN SKIP; ELSE SKIP; ENDIF "
-           "IF a >= b THEN SKIP; ELSE SKIP; ENDIF "
+        Param{"VAR a b BEGIN\n"
+          "IF a = b THEN\nSKIP;\nELSE\nSKIP;\nENDIF\n"
+          "IF a <> b THEN\nSKIP;\nELSE\nSKIP;\nENDIF\n"
+          "IF a < b THEN\nSKIP;\nELSE\nSKIP;\nENDIF\n"
+           "IF a > b THEN\nSKIP;\nELSE\nSKIP;\nENDIF\n"
+           "IF a <= b THEN\nSKIP;\nELSE\nSKIP;\nENDIF\n"
+           "IF a >= b THEN\nSKIP;\nELSE\nSKIP;\nENDIF\n"
            "END\n",
               emptyIn, expectEmptyOut, "shouldCompileCorrectlyCodeWithAllConditions"},
         Param{"VAR a b BEGIN\n"
-                      "WHILE a < b DO SKIP; ENDWHILE\n"
+                      "WHILE a < b DO\nSKIP;\nENDWHILE\n"
                       "END\n",
               emptyIn, expectEmptyOut, "shouldCompileWhileCorrectly"},
         Param{"VAR a b BEGIN\n"
-                      "FOR i FROM 1 TO 10 DO SKIP; ENDFOR\n"
+                      "FOR i FROM 1 TO 10 DO\nSKIP;\nENDFOR\n"
                       "END\n",
               emptyIn, expectEmptyOut, "shouldCompileForToCorrectly"},
         Param{"VAR a b BEGIN\n"
-                      "FOR i FROM 10 DOWNTO 1 DO SKIP; ENDFOR\n"
+                      "FOR i FROM 10 DOWNTO 1 DO\nSKIP;\nENDFOR\n"
                       "END\n",
               emptyIn, expectEmptyOut, "shouldCompileForDownToCorrectly"},
 };

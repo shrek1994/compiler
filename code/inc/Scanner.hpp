@@ -19,8 +19,13 @@ public:
                       LexParser::location_type * location);
     virtual std::ostream& getOut() { return out; }
 
+    auto getNumOfLine() const {
+        return numOfLine;
+    }
+
     std::string txt;
 private:
+    unsigned long numOfLine = 0;
     /* yyval ptr */
     LexParser::semantic_type *yylval = nullptr;
     /* location ptr */

@@ -89,10 +89,17 @@ namespace checker {
 
 %locations
 
+%type <std::string> commands
+%type <std::string> command
+%type <std::string> expression
+%type <std::string> condition
+%type <std::string> value
+%type <std::string> identifier
+
 
 %%
 
-program       : VAR vdeclarations Begin commands End
+program       : VAR vdeclarations Begin commands End { scanner.getOut() << "BEGIN\n" + $4 + "END\n"; }
 
 vdeclarations : vdeclarations pidentifier       { driver.createVariable(jftt::VariableBuilder()
                                                                          .withName($2)
@@ -104,41 +111,48 @@ vdeclarations : vdeclarations pidentifier       { driver.createVariable(jftt::Va
                |
 
 
-commands    : commands command
-             | command
+commands    : commands command          { $$ = $1 + $2; }
+             | command                  { $$ = $1; }
 
 
-command     : identifier assign expression semicolon
-             | IF condition THEN commands ELSE commands ENDIF
-             | WHILE condition DO commands ENDWHILE
-             | FOR pidentifier FROM value TO value DO commands ENDFOR
-             | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
-             | READ identifier semicolon
-             | WRITE value semicolon
-             | SKIP semicolon
+command     : identifier assign expression semicolon                { $$ = $1 + " := " + $3 + ";\n"; }
+             | identifier assign expression                         { driver.warningSemicolon(); $$ = $1 + " := " + $3 + ";\n"; }
+             | IF condition THEN commands ELSE commands ENDIF       { $$ = std::string("IF ") + $2 + " THEN\n"
+                                                                            + $4 + "ELSE\n" + $6 + "ENDIF\n"; }
+             | WHILE condition DO commands ENDWHILE                 { $$ = std::string("WHILE ") + $2 + " DO\n"
+                                                                            + $4 + "ENDWHILE\n"; }
+             | FOR pidentifier FROM value TO value DO commands ENDFOR { $$ = std::string("FOR ") + $2 +
+                                                                            " FROM " + $4 + " TO " + $6 + " DO\n" +
+                                                                             $8 + "ENDFOR\n"; }
+             | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR { $$ = std::string("FOR ") + $2 +
+                                                                            " FROM " + $4 + " DOWNTO " + $6 + " DO\n" +
+                                                                             $8 + "ENDFOR\n"; }
+             | READ identifier semicolon                        { $$ = "READ " + $2 + ";\n"; }
+             | WRITE value semicolon                            { $$ = "WRITE " + $2 + ";\n"; }
+             | SKIP semicolon                                   { $$ = "SKIP;\n"; }
 
-expression  : value
-             | value plus value
-             | value minus value
-             | value mul value
-             | value div value
-             | value mod value
+expression  : value                         { $$ = $1; }
+             | value plus value             { $$ = $1 + " + " + $3; }
+             | value minus value            { $$ = $1 + " - " + $3; }
+             | value mul value              { $$ = $1 + " * " + $3; }
+             | value div value              { $$ = $1 + " / " + $3; }
+             | value mod value              { $$ = $1 + " % " + $3; }
 
-condition   : value equal value
-             | value notEqual value
-             | value lowerThan value
-             | value biggerThan value
-             | value lowerOrEqThan value
-             | value biggerOrEqThan value
-
-
-value       : num
-            | identifier
+condition   : value equal value             { $$ = $1 + " = " + $3; }
+             | value notEqual value         { $$ = $1 + " <> " + $3; }
+             | value lowerThan value        { $$ = $1 + " < " + $3; }
+             | value biggerThan value       { $$ = $1 + " > " + $3; }
+             | value lowerOrEqThan value    { $$ = $1 + " <= " + $3; }
+             | value biggerOrEqThan value   { $$ = $1 + " >= " + $3; }
 
 
-identifier  : pidentifier
-             | pidentifier leftBracket pidentifier rightBracket
-             | pidentifier leftBracket num rightBracket
+value       : num                                                   { $$ = $1; }
+            | identifier                                            { $$ = $1; }
+
+
+identifier  : pidentifier                                           { $$ = $1; }
+             | pidentifier leftBracket pidentifier rightBracket     { $$ = $1 + "[" + $3 + "]"; }
+             | pidentifier leftBracket num rightBracket             { $$ = $1 + "[" + $3 + "]"; }
 
 %%
 
