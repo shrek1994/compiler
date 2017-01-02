@@ -143,9 +143,8 @@ void Driver::assignFromFirstRegisterTo(const Variable& variable)
     findAndSetAction(std::string("STORE ") + std::to_string(registerNumber), variable);
 }
 
-void Driver::saveValueToFirstRegister(const Variable& variable)
+void Driver::saveValueTo(const Variable &variable, unsigned registerNumber)
 {
-    constexpr unsigned registerNumber = 1;
     if (variable.isValue)
     {
         setRegister(std::atoll(variable.name.c_str()), registerNumber);
@@ -179,9 +178,8 @@ void Driver::setPositionInZeroRegister(const Variable &variable, unsigned regist
     }
 }
 
-void Driver::saveSumToFirstRegister(const Variable &leftVar, const Variable &rightVar)
+void Driver::saveSumTo(const Variable &leftVar, const Variable &rightVar, unsigned registerNumber)
 {
-    constexpr unsigned registerNumber = 1;
     if ( leftVar.isValue && rightVar.isValue)
     {
         setRegister(std::atoll(leftVar.name.c_str()) + std::atoll(rightVar.name.c_str()),
@@ -196,7 +194,7 @@ void Driver::saveSumToFirstRegister(const Variable &leftVar, const Variable &rig
     }
     else if (  (!leftVar.isValue) && rightVar.isValue)
     {
-        saveSumToFirstRegister(rightVar, leftVar);
+        saveSumTo(rightVar, leftVar);
     }
     else
     {
@@ -206,9 +204,8 @@ void Driver::saveSumToFirstRegister(const Variable &leftVar, const Variable &rig
     }
 }
 
-void Driver::saveSubToFirstRegister(const Variable &leftVar, const Variable &rightVar)
+void Driver::saveSubToFirstRegister(const Variable &leftVar, const Variable &rightVar, unsigned registerNumber)
 {
-    constexpr unsigned registerNumber = 1;
     if ( leftVar.isValue && rightVar.isValue)
     {
         setRegister(std::atoll(leftVar.name.c_str()) - std::atoll(rightVar.name.c_str()),
@@ -263,6 +260,23 @@ std::string Driver::releaseCode() {
     auto code = this->code.str();
     this->code.str("");
     return std::move(code);
+}
+
+void Driver::saveExpression(const jftt::Expression &expression, unsigned int registerNumber) {
+    switch (expression.operat)
+    {
+        case Operator::none:
+            saveValueTo(expression.leftValue);
+            break;
+        case Operator::plus:
+            saveSumTo(expression.leftValue, expression.rightValue, registerNumber);
+            break;
+        case Operator::minus:
+            saveSubToFirstRegister(expression.leftValue, expression.rightValue, registerNumber);
+            break;
+        default:
+            ;
+    }
 }
 
 } // namespace jftt

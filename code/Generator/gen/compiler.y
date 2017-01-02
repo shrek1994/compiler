@@ -22,18 +22,18 @@
 # endif
 
 #include "Variable.hpp"
+#include "Expression.hpp"
 }
 
 %parse-param { Scanner  &scanner  }
 %parse-param { Driver  &driver  }
 
 %code{
-   #include <iostream>
-   #include <cstdlib>
-   #include <fstream>
-   
-   /* include for all driver functions */
-   #include "Driver.hpp"
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+
+#include "Driver.hpp"
 
 #undef yylex
 #define yylex scanner.compilerlex
@@ -97,6 +97,7 @@
 %type<Variable> value
 %type<unsigned> reg
 %type<Variable> identifier
+%type<jftt::Expression> expression
 
 %%
 
@@ -107,8 +108,8 @@ commands    : commands command
              | command
 
 
-command     : identifier assign expression semicolon              { driver.assignFromFirstRegisterTo($1); }
-             | reg assign expression semicolon
+command     : identifier assign expression semicolon              { driver.saveExpression($3); driver.assignFromFirstRegisterTo($1); }
+             | reg assign expression semicolon                    { driver.saveExpression($3, $1); }
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
              | SKIP semicolon                                     { }
@@ -116,9 +117,9 @@ command     : identifier assign expression semicolon              { driver.assig
              | JZERO num place semicolon                          { driver.jzero($2, $3); }
              | beginPlace                                         { driver.beginPlace($1); }
 
-expression  : value                             { driver.saveValueToFirstRegister($1); }
-             | value plus value                 { driver.saveSumToFirstRegister($1, $3); }
-             | value minus value                { driver.saveSubToFirstRegister($1, $3); }
+expression  : value                             { $$ = jftt::Expression{$1, Operator::none}; }
+             | value plus value                 { $$ = jftt::Expression{$1, Operator::plus, $3}; }
+             | value minus value                { $$ = jftt::Expression{$1, Operator::minus, $3}; }
              | value mul value
              | value div value
              | value mod value

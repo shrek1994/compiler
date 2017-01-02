@@ -71,15 +71,15 @@ const std::vector<Param> params = {
                       "ENDIF "
                       "END\n",
               emptyIn, "> 2\n", "shouldCorrectPerformIfCondition_ElseLowerOrEq"},
-//TODO enable DISABLED_
-//        Param{"VAR a b BEGIN a := 2; b := 2; "
-//                      "IF a = b THEN "
-//                      "WRITE 1; "
-//                      "ELSE "
-//                      "WRITE 2; "
-//                      "ENDIF "
-//                      "END\n",
-//              emptyIn, "> 1\n", "shouldCorrectPerformIfCondition_IfEq"},
+
+        Param{"VAR a b BEGIN a := 2; b := 2; "
+                      "IF a = b THEN "
+                      "WRITE 1; "
+                      "ELSE "
+                      "WRITE 2; "
+                      "ENDIF "
+                      "END\n",
+              emptyIn, "> 1\n", "shouldCorrectPerformIfCondition_IfEq"},
         Param{"VAR a b BEGIN a := 3; b := 2; "
                       "IF a = b THEN "
                       "WRITE 1; "
@@ -97,15 +97,14 @@ const std::vector<Param> params = {
                       "ENDIF "
                       "END\n",
               emptyIn, "> 1\n", "shouldCorrectPerformIfCondition_IfNotEq"},
-//TODO enable DISABLED_
-//        Param{"VAR a b BEGIN a := 2; b := 2; "
-//                      "IF a <> b THEN "
-//                      "WRITE 1; "
-//                      "ELSE "
-//                      "WRITE 2; "
-//                      "ENDIF "
-//                      "END\n",
-//              emptyIn, "> 2\n", "shouldCorrectPerformIfCondition_ElseNotEq"},
+        Param{"VAR a b BEGIN a := 2; b := 2; "
+                      "IF a <> b THEN "
+                      "WRITE 1; "
+                      "ELSE "
+                      "WRITE 2; "
+                      "ENDIF "
+                      "END\n",
+              emptyIn, "> 2\n", "shouldCorrectPerformIfCondition_ElseNotEq"},
 };
 
 

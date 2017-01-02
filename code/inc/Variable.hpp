@@ -13,7 +13,7 @@ struct Variable {
     std::string varName = "";
 };
 
-inline std::ostream& operator << (std::ostream& out, Variable variable)
+inline std::ostream& operator << (std::ostream& out, const Variable& variable)
 {
     return out << variable.name
                << ( variable.isTab ? std::string("[") + std::to_string(variable.size) + "]" : "")

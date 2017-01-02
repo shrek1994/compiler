@@ -48,8 +48,6 @@ std::string Optimizer::ifCommand(jftt::Condition condition,
                                                 condition.leftValue,
                                                 elseCommands,
                                                 ifCommands));
-        default:
-            break;
     }
 }
 
@@ -76,8 +74,7 @@ std::string Optimizer::generateBiggerThan(const std::string &leftValue,
     return std::move(command);
 }
 
-std::string
-Optimizer::generateEq(const std::string &leftValue,
+std::string Optimizer::generateEq(const std::string &leftValue,
                       const std::string &rightValue,
                       const std::string &ifCommands,
                       const std::string &elseCommands) {

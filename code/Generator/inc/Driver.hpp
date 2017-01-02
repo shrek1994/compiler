@@ -7,6 +7,7 @@
 #include <vector>
 #include <exception>
 #include <sstream>
+#include <inc/Expression.hpp>
 
 #include "GeneratorScanner.hpp"
 #include "compiler.tab.y.hpp"
@@ -29,9 +30,9 @@ public:
     void read(const Variable& variableName);
 
     void assignFromFirstRegisterTo(const Variable& variable);
-    void saveValueToFirstRegister(const Variable& variable);
-    void saveSumToFirstRegister(const Variable& leftVar, const Variable& rightVar);
-    void saveSubToFirstRegister(const Variable& leftVar, const Variable& rightVar);
+    void saveValueTo(const Variable &variable, unsigned registerNumber = 1);
+    void saveSumTo(const Variable &leftVar, const Variable &rightVar, unsigned registerNumber = 1);
+    void saveSubToFirstRegister(const Variable& leftVar, const Variable& rightVar, unsigned registerNumber = 1);
 
     void jump(const std::string& place);
     void jzero(const std::string& reg, const std::string& place);
@@ -39,6 +40,7 @@ public:
     void beginPlace(const std::string& place) { code << place; }
 
     std::string releaseCode();
+    void saveExpression(const jftt::Expression& expression, unsigned registerNumber = 1);
 
 private:
     void setRegister(long long value, unsigned registerNumber);
