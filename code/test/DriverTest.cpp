@@ -25,7 +25,7 @@ public:
         expected << "> " << val << "\n";
 
         driver.write(jftt::VariableBuilder().withName(std::to_string(val)).isValue().build());
-        generatedCode << "HALT\n";
+        generatedCode << driver.releaseCode() << "HALT\n";
         interpreter.run(generatedCode, in, out, info);
 
 

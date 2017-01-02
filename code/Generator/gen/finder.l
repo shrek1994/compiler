@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 namespace {
-unsigned long numLine = 1;
+unsigned long numLine = 0;
 std::map<std::string, unsigned long> places;
 }
 %}
@@ -24,6 +24,7 @@ namespace flex {
 
 std::map<std::string, unsigned long>& find(std::istream& in, std::ostream& out)
 {
+    numLine = 0;
     auto lexer = std::make_shared<yyFlexLexer>(in, out);
     while(lexer->yylex() != 0);
     return places;

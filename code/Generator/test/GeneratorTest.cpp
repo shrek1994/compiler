@@ -13,7 +13,7 @@ public:
     virtual ~GeneratorTest() = default;
 
     void SetUp() override {
-        Logger::enableDebug = true;
+        Logger::enableDebug = false;
         code.str("");
         generatedCode.str("");
         in.str("");
@@ -28,7 +28,7 @@ public:
     std::shared_ptr<Interpreter> inter = std::make_shared<Interpreter>();
 };
 
-TEST_F(GeneratorTest, DISABLED_shouldCorrectCompileIf)
+TEST_F(GeneratorTest, shouldCorrectCompileIf)
 {
     expected << "> 1\n> 100\n";
     code << "BEGIN\n"

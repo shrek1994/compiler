@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 #include <Finder.hpp>
-#include <map>
 
 namespace {
 
@@ -13,9 +12,9 @@ public:
 TEST_F(FinderTest, shouldCorrectFindPosition)
 {
     std::map<std::string, unsigned long> expectedPosition = {
-            {"%LAST0%", 2},
-            {"%LAST1%", 5},
-            {"%END1%", 6}
+            {"%LAST0%", 1},
+            {"%LAST1%", 4},
+            {"%END1%", 5}
     };
     in << "JUMP %LAST1%\n"
           "%LAST0%: JZERO 2 %END1%\n"

@@ -2,11 +2,13 @@
 #include <fstream>
 #include <bitset>
 #include <Generator/inc/Finder.hpp>
+#include <Generator/inc/Replacer.hpp>
 
 #include "debug.hpp"
 #include "Driver.hpp"
 
 namespace jftt {
+
 
 void Driver::parse( std::istream &stream )
 {
@@ -21,20 +23,33 @@ void Driver::parse( std::istream &stream )
 
 void Driver::parse_helper(std::istream &stream)
 {
-    scanner = std::make_shared<Scanner>(stream, std::cout);
+    scanner = std::make_shared<Scanner>(stream, Logger::out);
     parser = std::make_shared<LexParser>(*scanner, *this);
     auto finder = std::make_shared<Finder>();
+    auto replacer = std::make_shared<Replacer>();
+
     if (parser->parse())
     {
-      std::cerr << "Parse failed!!\n";
+        std::cerr << "Parse failed!!\n";
+        return;
     }
 
-//    auto& places = finder->run();
+    DEBUG << "code: \n" << code.str() << "\n";
+    std::stringstream codeStream;
+    auto& position = finder->run(code, codeStream);
+
+    DEBUG << "position.size() = " << position.size() << "\n";
+    for (auto elem : position)
+    {
+        DEBUG << "{ " << elem.first << ", " << elem.second << " }\n";
+    }
+
+    replacer->run(codeStream, out, position);
 }
 
 void Driver::halt()
 {
-    out << "HALT\n";
+    code << "HALT\n";
 }
 
 std::string Driver::getBinaryString(long long value)
@@ -48,33 +63,33 @@ void Driver::setRegister(long long value, unsigned registerNumber)
 {
     DEBUG << "setRegister(value=" << value << ", register=" << registerNumber << ")\n";
     ASSERT(registerNumber < 5);
-    out << "ZERO " << registerNumber << "\n";
+    code << "ZERO " << registerNumber << "\n";
     if (value == 0)
         return;
     auto binary  = getBinaryString(value);
     for (int i = 0; i < binary.size() - 1; ++i)
     {
         if (binary[i] == '1')
-            out << "INC " << registerNumber << "\n";
-        out << "SHL " << registerNumber << "\n";
+            code << "INC " << registerNumber << "\n";
+        code << "SHL " << registerNumber << "\n";
     }
     if ( binary[binary.size() - 1] == '1')
     {
-        out << "INC " << registerNumber << "\n";
+        code << "INC " << registerNumber << "\n";
     }
 }
 
 void Driver::writeNumber(long long value, unsigned registerNumber)
 {
     setRegister(value, registerNumber);
-    out << "PUT " << registerNumber << "\n";
+    code << "PUT " << registerNumber << "\n";
 }
 
 void Driver::findAndSetAction(const std::string& action, const Variable& variable)
 {
     constexpr unsigned registerNumber = 2;
     setPositionInZeroRegister(variable, registerNumber);
-    out << action << "\n";
+    code << action << "\n";
 
 }
 
@@ -106,7 +121,7 @@ void Driver::write(const Variable &variable)
     else
     {
         loadVariable(variable, registerNumber);
-        out << "PUT " << registerNumber << "\n";
+        code << "PUT " << registerNumber << "\n";
     }
 }
 
@@ -114,7 +129,7 @@ void Driver::read(const Variable &variable)
 {
     constexpr unsigned registerNumber = 3;
     DEBUG << "read(" << variable << ")\n";
-    out << "GET " << registerNumber << "\n";
+    code << "GET " << registerNumber << "\n";
     findAndSetAction(std::string("STORE ") + std::to_string(registerNumber), variable);
 }
 
@@ -149,8 +164,8 @@ void Driver::setPositionInZeroRegister(const Variable &variable, unsigned regist
         auto positionOfVarInsideTab = getPosition(variable.varName);
         setRegister(positionOfVarInsideTab, 0);
         setRegister(position, registerNumber);
-        out << "ADD " << registerNumber << "\n";
-        out << "COPY " << registerNumber << "\n";
+        code << "ADD " << registerNumber << "\n";
+        code << "COPY " << registerNumber << "\n";
     }
     else
     if ( variable.isTab )
@@ -176,7 +191,7 @@ void Driver::saveSumToFirstRegister(const Variable &leftVar, const Variable &rig
     {
         setPositionInZeroRegister(rightVar, registerNumber);
         setRegister(std::atoll(leftVar.name.c_str()), registerNumber);
-        out << "ADD " << registerNumber << "\n";
+        code << "ADD " << registerNumber << "\n";
 
     }
     else if (  (!leftVar.isValue) && rightVar.isValue)
@@ -187,7 +202,7 @@ void Driver::saveSumToFirstRegister(const Variable &leftVar, const Variable &rig
     {
         loadVariable(leftVar, registerNumber);
         setPositionInZeroRegister(rightVar, registerNumber + 1);
-        out << "ADD " << registerNumber << "\n";
+        code << "ADD " << registerNumber << "\n";
     }
 }
 
@@ -203,7 +218,7 @@ void Driver::saveSubToFirstRegister(const Variable &leftVar, const Variable &rig
     {
         setPositionInZeroRegister(rightVar, registerNumber);
         setRegister(std::atoll(leftVar.name.c_str()), registerNumber);
-        out << "SUB " << registerNumber << "\n";
+        code << "SUB " << registerNumber << "\n";
 
     }
     else if (  (!leftVar.isValue) && rightVar.isValue)
@@ -230,18 +245,24 @@ void Driver::saveSubToFirstRegister(const Variable &leftVar, const Variable &rig
     {
         loadVariable(leftVar, registerNumber);
         setPositionInZeroRegister(rightVar, registerNumber + 1);
-        out << "SUB " << registerNumber << "\n";
+        code << "SUB " << registerNumber << "\n";
     }
 }
 
 void Driver::jump(const std::string &place) {
     DEBUG << "JUMP " << place << "\n";
-    out << "JUMP " << place << "\n";
+    code << "JUMP " << place << "\n";
 }
 
 void Driver::jzero(const std::string& reg, const std::string &place) {
     DEBUG << "JZERO " << reg << " " << place << "\n";
-    out << "JZERO " << reg << " " << place << "\n";
+    code << "JZERO " << reg << " " << place << "\n";
+}
+
+std::string Driver::releaseCode() {
+    auto code = this->code.str();
+    this->code.str("");
+    return std::move(code);
 }
 
 } // namespace jftt

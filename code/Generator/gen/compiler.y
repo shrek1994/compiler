@@ -87,7 +87,7 @@
 %token biggerOrEqThan
 
 %token reg
-%token beginPlace
+%token <std::string> beginPlace
 %token JUMP
 %token JZERO
 %token <std::string> place
@@ -107,14 +107,14 @@ commands    : commands command
              | command
 
 
-command     : identifier assign expression semicolon            { driver.assignFromFirstRegisterTo($1); }
+command     : identifier assign expression semicolon              { driver.assignFromFirstRegisterTo($1); }
              | reg assign expression semicolon
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
              | SKIP semicolon                                     {}
              | JUMP place semicolon                               { driver.jump($2); }
              | JZERO num place semicolon                          { driver.jzero($2, $3); }
-             | beginPlace
+             | beginPlace                                         { driver.beginPlace($1); }
 
 expression  : value                             { driver.saveValueToFirstRegister($1); }
              | value plus value                 { driver.saveSumToFirstRegister($1, $3); }

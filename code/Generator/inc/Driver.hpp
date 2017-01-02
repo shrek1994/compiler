@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 #include <exception>
+#include <sstream>
 
 #include "GeneratorScanner.hpp"
 #include "compiler.tab.y.hpp"
@@ -35,6 +36,10 @@ public:
     void jump(const std::string& place);
     void jzero(const std::string& reg, const std::string& place);
 
+    void beginPlace(const std::string& place) { code << place; }
+
+    std::string releaseCode();
+
 private:
     void setRegister(long long value, unsigned registerNumber);
     std::string getBinaryString(long long value);
@@ -49,6 +54,7 @@ private:
     std::shared_ptr<LexParser> parser  = nullptr;
     std::shared_ptr<Scanner> scanner = nullptr;
     std::ostream& out = std::cout;
+    std::stringstream code;
     Variable varTemp = VariableBuilder().withName("TEMP123").build();
     const std::vector<std::string>& variables;
 };

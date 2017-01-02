@@ -70,7 +70,7 @@ SKIP            { if (Logger::enableDebug) ECHO; return token::SKIP; }
 
 $reg[0-4]           { if (Logger::enableDebug) ECHO; yylval->build<unsigned>(yytext[4] - 48); return token::reg; }
 \%[A-Z0-9]+\%       { if (Logger::enableDebug) ECHO; yylval->build<std::string>(yytext); return token::place; }
-\%[A-Z0-9]+\%:      { if (Logger::enableDebug) ECHO; }
+\%[A-Z0-9]+\%:      { if (Logger::enableDebug) ECHO; yylval->build<std::string>(yytext); return token::beginPlace;}
 
 JUMP                { if (Logger::enableDebug) ECHO; return token::JUMP; }
 JZERO               { if (Logger::enableDebug) ECHO; return token::JZERO; }
