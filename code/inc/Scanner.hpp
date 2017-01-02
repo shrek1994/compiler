@@ -19,11 +19,11 @@ public:
                       LexParser::location_type * location);
     virtual std::ostream& getOut() { return out; }
 
+    std::string txt;
 private:
     /* yyval ptr */
     LexParser::semantic_type *yylval = nullptr;
     /* location ptr */
     LexParser::location_type *loc    = nullptr;
-    std::string txt;
     std::ostream& out = std::cout;
 };

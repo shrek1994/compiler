@@ -33,6 +33,9 @@ BISON_TARGET(BisonGenerator code/Generator/gen/compiler.y ${CMAKE_CURRENT_BINARY
 FLEX_TARGET(FlexGenerator code/Generator/gen/compiler.l  ${CMAKE_CURRENT_BINARY_DIR}/generator/compiler.l.cpp)
 ADD_FLEX_BISON_DEPENDENCY(FlexOptimizer BisonOptimizer)
 
+FLEX_TARGET(FlexFinder code/Generator/gen/finder.l  ${CMAKE_CURRENT_BINARY_DIR}/generator/finder.l.cpp)
+FLEX_TARGET(FlexReplacer code/Generator/gen/replacer.l  ${CMAKE_CURRENT_BINARY_DIR}/generator/replacer.l.cpp)
+
 set(SOURCE_FILES
         code/debug.hpp
         code/debug.cpp
@@ -56,7 +59,14 @@ set(SOURCE_FILES
         ${FLEX_FlexOptimizer_OUTPUTS}
         ${BISON_BisonGenerator_OUTPUTS}
         ${FLEX_FlexGenerator_OUTPUTS}
-        code/inc/Condition.hpp code/inc/Scanner.hpp code/compiler.cpp code/compiler.hpp)
+        ${FLEX_FlexFinder_OUTPUTS}
+        ${FLEX_FlexReplacer_OUTPUTS}
+        code/inc/Condition.hpp
+        code/inc/Scanner.hpp
+        code/compiler.cpp
+        code/compiler.hpp
+        code/Generator/src/Finder.cpp
+        code/Generator/inc/Finder.hpp code/Generator/src/Replacer.cpp code/Generator/inc/Replacer.hpp)
 
 add_executable(compiler
         main.cpp
@@ -76,7 +86,9 @@ set(TEST_FILES
         code/test/DriverTest.cpp
         code/test/IfElseTest.cpp
         code/test/ReadWriteTest.cpp
-        code/Checker/test/CorrectCodeTest.cpp)
+        code/Checker/test/CorrectCodeTest.cpp
+        code/Generator/test/GeneratorTest.cpp
+        code/Generator/test/FinderTest.cpp code/Generator/test/ReplacerTest.cpp)
 
 # Setup testing
 enable_testing()

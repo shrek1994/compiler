@@ -56,7 +56,6 @@ SKIP            { if (Logger::enableDebug) ECHO; out << yytext; return token::SK
 [0-9]+          { if (Logger::enableDebug) ECHO;
                   if (endOfVariable) out << yytext;
                   yylval->build<std::string>(yytext);
-                  txt = yytext;
                   return token::num; }
 [_a-z]+         { if (Logger::enableDebug) ECHO;
                   if (endOfVariable) out << yytext;

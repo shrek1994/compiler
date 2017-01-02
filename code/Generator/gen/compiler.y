@@ -86,9 +86,16 @@
 %token lowerOrEqThan
 %token biggerOrEqThan
 
+%token reg
+%token beginPlace
+%token JUMP
+%token JZERO
+%token <std::string> place
+
 %locations
 
 %type<Variable> value
+%type<unsigned> reg
 %type<Variable> identifier
 
 %%
@@ -101,13 +108,13 @@ commands    : commands command
 
 
 command     : identifier assign expression semicolon            { driver.assignFromFirstRegisterTo($1); }
-             | IF condition THEN commands ELSE commands ENDIF
-             | WHILE condition DO commands ENDWHILE
-             | FOR pidentifier FROM value TO value DO commands ENDFOR
-             | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+             | reg assign expression semicolon
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
-             | SKIP semicolon
+             | SKIP semicolon                                     {}
+             | JUMP place semicolon                               { driver.jump($2); }
+             | JZERO num place semicolon                          { driver.jzero($2, $3); }
+             | beginPlace
 
 expression  : value                             { driver.saveValueToFirstRegister($1); }
              | value plus value                 { driver.saveSumToFirstRegister($1, $3); }
@@ -148,5 +155,5 @@ identifier  : pidentifier                                   { $$ = VariableBuild
 
 void jftt::LexParser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << "\n";
+   std::cerr << "Error: " << err_message << " at " << l << ", when parse " << scanner.txt <<"\n";
 }

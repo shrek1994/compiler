@@ -3,6 +3,7 @@
 #include <map>
 #include <tuple>
 #include <string>
+#include "debug.hpp"
 
 #include<cstdlib> 	// rand()
 #include<ctime>
@@ -63,6 +64,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         k++;
     }
 
+    DEBUG << "Skończono czytanie pliku (" << program.size() << " linii)." << endl;
     info << "Skończono czytanie pliku (" << program.size() << " linii)." << endl;
 
     info << "Uruchamianie programu." << endl;

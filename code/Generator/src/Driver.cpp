@@ -1,6 +1,7 @@
 #include <cctype>
 #include <fstream>
 #include <bitset>
+#include <Generator/inc/Finder.hpp>
 
 #include "debug.hpp"
 #include "Driver.hpp"
@@ -20,35 +21,21 @@ void Driver::parse( std::istream &stream )
 
 void Driver::parse_helper(std::istream &stream)
 {
-   scanner = std::make_shared<Scanner>(stream, std::cout);
-   parser = std::make_shared<LexParser>(*scanner, *this);
-   if (parser->parse())
-   {
+    scanner = std::make_shared<Scanner>(stream, std::cout);
+    parser = std::make_shared<LexParser>(*scanner, *this);
+    auto finder = std::make_shared<Finder>();
+    if (parser->parse())
+    {
       std::cerr << "Parse failed!!\n";
-   }
+    }
+
+//    auto& places = finder->run();
 }
 
 void Driver::halt()
 {
     out << "HALT\n";
 }
-
-//void Driver::createVariable(const Variable &variable)
-//{
-//    DEBUG << "push_back(" << variable << ");\n";
-//
-//    if (! variable.isTab)
-//    {
-//        variables.push_back(variable.name);
-//    }
-//    else
-//    {
-//        for (auto i = variable.size; i > 0; --i)
-//        {
-//            variables.push_back(variable.name);
-//        }
-//    }
-//}
 
 std::string Driver::getBinaryString(long long value)
 {
@@ -245,6 +232,16 @@ void Driver::saveSubToFirstRegister(const Variable &leftVar, const Variable &rig
         setPositionInZeroRegister(rightVar, registerNumber + 1);
         out << "SUB " << registerNumber << "\n";
     }
+}
+
+void Driver::jump(const std::string &place) {
+    DEBUG << "JUMP " << place << "\n";
+    out << "JUMP " << place << "\n";
+}
+
+void Driver::jzero(const std::string& reg, const std::string &place) {
+    DEBUG << "JZERO " << reg << " " << place << "\n";
+    out << "JZERO " << reg << " " << place << "\n";
 }
 
 } // namespace jftt

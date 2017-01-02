@@ -1,6 +1,4 @@
-#ifndef __jfttSCANNER_HPP__
-#define __jfttSCANNER_HPP__ 1
-
+#pragma once
 #if ! defined(yyFlexLexerOnce)
 #include <FlexLexer.h>
 #endif
@@ -14,4 +12,3 @@ namespace jftt{
 
 } /* end namespace jftt */
 
-#endif /* END __jfttSCANNER_HPP__ */
