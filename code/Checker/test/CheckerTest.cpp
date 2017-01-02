@@ -96,4 +96,59 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInAssign)
     ASSERT_VECTOR(vars, checker->getVariables());
 }
 
+TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInRead)
+{
+    auto warning = Checker::warning + "6" + Checker::missingSemicolon + "\n";
+    std::vector<std::string> vars = { "a", "b" };
+    in << "VAR\\\n"
+            "a b\n"
+            "BEGIN\n\n\n"
+            "READ a\n"
+            "END\n";
+    expected << "BEGIN\nREAD a;\nEND\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    EXPECT_STREQ(warning.c_str(), info.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
+
+
+TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInWrite)
+{
+    auto warning = Checker::warning + "5" + Checker::missingSemicolon + "\n";
+    std::vector<std::string> vars = { "a", "b" };
+    in << "VAR\\\n"
+            "a b\n"
+            "BEGIN\n\n"
+            "WRITE a\n"
+            "END\n";
+    expected << "BEGIN\nWRITE a;\nEND\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    EXPECT_STREQ(warning.c_str(), info.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
+
+TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInSkip)
+{
+    auto warning = Checker::warning + "3" + Checker::missingSemicolon + "\n";
+    std::vector<std::string> vars = { "a", "b" };
+    in << "VAR\\\n"
+            "a b\n"
+            "BEGIN SKIP\n"
+            "END\n";
+    expected << "BEGIN\nSKIP;\nEND\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    EXPECT_STREQ(warning.c_str(), info.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
+
+
 }

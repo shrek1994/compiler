@@ -116,7 +116,7 @@ commands    : commands command          { $$ = $1 + $2; }
 
 
 command     : identifier assign expression semicolon                { $$ = $1 + " := " + $3 + ";\n"; }
-             | identifier assign expression                         { driver.warningSemicolon(); $$ = $1 + " := " + $3 + ";\n"; }
+             | identifier assign expression                         { $$ = $1 + " := " + $3 + ";\n"; driver.warningSemicolon(); }
              | IF condition THEN commands ELSE commands ENDIF       { $$ = std::string("IF ") + $2 + " THEN\n"
                                                                             + $4 + "ELSE\n" + $6 + "ENDIF\n"; }
              | WHILE condition DO commands ENDWHILE                 { $$ = std::string("WHILE ") + $2 + " DO\n"
@@ -128,8 +128,11 @@ command     : identifier assign expression semicolon                { $$ = $1 + 
                                                                             " FROM " + $4 + " DOWNTO " + $6 + " DO\n" +
                                                                              $8 + "ENDFOR\n"; }
              | READ identifier semicolon                        { $$ = "READ " + $2 + ";\n"; }
+             | READ identifier                                  { $$ = "READ " + $2 + ";\n"; driver.warningSemicolon(); }
              | WRITE value semicolon                            { $$ = "WRITE " + $2 + ";\n"; }
+             | WRITE value                                      { $$ = "WRITE " + $2 + ";\n"; driver.warningSemicolon(); }
              | SKIP semicolon                                   { $$ = "SKIP;\n"; }
+             | SKIP                                             { $$ = "SKIP;\n"; driver.warningSemicolon(); }
 
 expression  : value                         { $$ = $1; }
              | value plus value             { $$ = $1 + " + " + $3; }
