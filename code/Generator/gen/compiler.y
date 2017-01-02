@@ -111,7 +111,7 @@ command     : identifier assign expression semicolon              { driver.assig
              | reg assign expression semicolon
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
-             | SKIP semicolon                                     {}
+             | SKIP semicolon                                     { }
              | JUMP place semicolon                               { driver.jump($2); }
              | JZERO num place semicolon                          { driver.jzero($2, $3); }
              | beginPlace                                         { driver.beginPlace($1); }
