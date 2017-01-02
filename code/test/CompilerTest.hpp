@@ -7,10 +7,11 @@
 #include "debug.hpp"
 #include <sstream>
 
-#define run_test() 
-#define DISABLED_run_test() \
+//#define run_test()
+#define run_test() \
     language << GetParam().code; \
     in << GetParam().in; \
+    DEBUG << GetParam().testName << "\n"; \
      \
     compiler.run(language, generatedCode); \
     interpreter.run(generatedCode, in, out, info); \

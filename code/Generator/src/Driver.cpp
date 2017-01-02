@@ -93,9 +93,11 @@ void Driver::findAndSetAction(const std::string& action, const Variable& variabl
 
 int Driver::getPosition(const std::string &variable)
 {
+    if (variable == varTemp.name)
+        return variables.size();
     auto position = std::find(variables.begin(), variables.end(), variable) - variables.begin();
     DEBUG << "getPosition('" << variable << "\') = " << position << "\n";
-    if ( ! (position < variables.size())) throw std::out_of_range("ERROR: variable not declared: " + variable);
+    if (position >= variables.size()) throw std::out_of_range("ERROR: variable not declared: " + variable);
     return position;
 }
 

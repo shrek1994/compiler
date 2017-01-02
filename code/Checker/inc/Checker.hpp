@@ -4,7 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-#include <inc/Variable.hpp>
+#include <Variable.hpp>
 
 namespace checker {
 
