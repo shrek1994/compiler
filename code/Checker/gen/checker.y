@@ -123,10 +123,16 @@ command     : identifier assign expression semicolon                { $$ = $1 + 
                                                                             + $4 + "ENDWHILE\n"; }
              | FOR pidentifier FROM value TO value DO commands ENDFOR { $$ = std::string("FOR ") + $2 +
                                                                             " FROM " + $4 + " TO " + $6 + " DO\n" +
-                                                                             $8 + "ENDFOR\n"; }
+                                                                             $8 + "ENDFOR\n";
+                                                                        driver.createVariable(jftt::VariableBuilder()
+                                                                                              .withName($2)
+                                                                                              .build()); }
              | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR { $$ = std::string("FOR ") + $2 +
                                                                             " FROM " + $4 + " DOWNTO " + $6 + " DO\n" +
-                                                                             $8 + "ENDFOR\n"; }
+                                                                             $8 + "ENDFOR\n";
+                                                                            driver.createVariable(jftt::VariableBuilder()
+                                                                                                  .withName($2)
+                                                                                                  .build()); }
              | READ identifier semicolon                        { $$ = "READ " + $2 + ";\n"; }
              | READ identifier                                  { $$ = "READ " + $2 + ";\n"; driver.warningSemicolon(); }
              | WRITE value semicolon                            { $$ = "WRITE " + $2 + ";\n"; }
@@ -162,5 +168,6 @@ identifier  : pidentifier                                           { $$ = $1; }
 
 void checker::LexParser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << "\n";
+   std::cerr << "Error: " << err_message << " at " << l << "\n"
+             << "Unexpected chars: " << scanner.txt <<"\n";
 }

@@ -150,5 +150,48 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInSkip)
     ASSERT_VECTOR(vars, checker->getVariables());
 }
 
+TEST_F(CheckerTest, shouldCorrectAddVariableFromForTo)
+{
+    std::vector<std::string> vars = { "a", "b", "i" };
+    in << "VAR\n"
+            "a b\n"
+            "BEGIN\n"
+            "FOR i FROM 1 TO 10 DO\n"
+            "SKIP;\n"
+            "ENDFOR\n"
+            "END\n";
+    expected << "BEGIN\n"
+            "FOR i FROM 1 TO 10 DO\n"
+            "SKIP;\n"
+            "ENDFOR\n"
+            "END\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
+
+TEST_F(CheckerTest, shouldCorrectAddVariableFromForDownTo)
+{
+    std::vector<std::string> vars = { "a", "b", "i" };
+    in << "VAR\n"
+            "a b\n"
+            "BEGIN\n"
+            "FOR i FROM 10 DOWNTO 1 DO\n"
+            "SKIP;\n"
+            "ENDFOR\n"
+            "END\n";
+    expected << "BEGIN\n"
+            "FOR i FROM 10 DOWNTO 1 DO\n"
+            "SKIP;\n"
+            "ENDFOR\n"
+            "END\n";
+
+    checker->run(in);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str());
+    ASSERT_VECTOR(vars, checker->getVariables());
+}
 
 }

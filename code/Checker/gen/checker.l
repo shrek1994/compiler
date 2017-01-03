@@ -6,7 +6,7 @@
 #define YY_DECL int checker::Scanner::yylex(checker::LexParser::semantic_type* const lval, \
                                             checker::LexParser::location_type* loc)
 #define YY_NO_UNISTD_H
-#define YY_USER_ACTION loc->step(); loc->columns(yyleng); if (Logger::enableDebug) ECHO;
+#define YY_USER_ACTION loc->step(); loc->columns(yyleng); if (Logger::enableDebug) ECHO; txt = yytext;
 using token = checker::LexParser::token;
 
 namespace {
@@ -29,57 +29,54 @@ bool endOfVariable = false;
 
 VAR             { endOfVariable = false; return token::VAR; }
 BEGIN           { endOfVariable = true;
-                  /*out << yytext;*/
                   return token::Begin; }
-END             { /*out << yytext;*/ return token::End; }
+END             { return token::End; }
 
-IF              { /*out << yytext;*/ return token::IF; }
-THEN            { /*out << yytext;*/ return token::THEN; }
-ELSE            { /*out << yytext;*/ return token::ELSE; }
-ENDIF           { /*out << yytext;*/ return token::ENDIF; }
+IF              { return token::IF; }
+THEN            { return token::THEN; }
+ELSE            { return token::ELSE; }
+ENDIF           { return token::ENDIF; }
 
-WHILE           { /*out << yytext;*/ return token::WHILE; }
-ENDWHILE        { /*out << yytext;*/ return token::ENDWHILE; }
+WHILE           { return token::WHILE; }
+ENDWHILE        { return token::ENDWHILE; }
 
-FOR             { /*out << yytext;*/ return token::FOR; }
-FROM            { /*out << yytext;*/ return token::FROM; }
-TO              { /*out << yytext;*/ return token::TO; }
-DOWNTO          { /*out << yytext;*/ return token::DOWNTO; }
-DO              { /*out << yytext;*/ return token::DO; }
-ENDFOR          { /*out << yytext;*/ return token::ENDFOR; }
+FOR             { return token::FOR; }
+FROM            { return token::FROM; }
+TO              { return token::TO; }
+DOWNTO          { return token::DOWNTO; }
+DO              { return token::DO; }
+ENDFOR          { return token::ENDFOR; }
 
-READ            { /*out << yytext;*/ return token::READ; }
-WRITE           { /*out << yytext;*/ return token::WRITE; }
-SKIP            { /*out << yytext;*/ return token::SKIP; }
+READ            { return token::READ; }
+WRITE           { return token::WRITE; }
+SKIP            { return token::SKIP; }
 
-[0-9]+          { /*out << yytext;*/
-                  yylval->build<std::string>(yytext);
+[0-9]+          { yylval->build<std::string>(yytext);
                   return token::num; }
-[_a-z]+         { /*out << yytext;*/
-                  yylval->build<std::string>(yytext);
+[_a-z]+         { yylval->build<std::string>(yytext);
                   return token::pidentifier; }
 
-;               { /*out << yytext;*/ return token::semicolon; }
-\[              { /*out << yytext;*/ return token::leftBracket; }
-\]              { /*out << yytext;*/ return token::rightBracket; }
-:=              { /*out << yytext;*/ return token::assign; }
-\+              { /*out << yytext;*/ return token::plus; }
--               { /*out << yytext;*/ return token::minus; }
-\*              { /*out << yytext;*/ return token::mul; }
-\/              { /*out << yytext;*/ return token::div; }
-\%              { /*out << yytext;*/ return token::mod; }
+;               { return token::semicolon; }
+\[              { return token::leftBracket; }
+\]              { return token::rightBracket; }
+:=              { return token::assign; }
+\+              { return token::plus; }
+-               { return token::minus; }
+\*              { return token::mul; }
+\/              { return token::div; }
+\%              { return token::mod; }
 
 
-\=              { /*out << yytext;*/ return token::equal; }
-\<\>            { /*out << yytext;*/ return token::notEqual; }
-\<              { /*out << yytext;*/ return token::lowerThan; }
-\>              { /*out << yytext;*/ return token::biggerThan; }
-\<\=            { /*out << yytext;*/ return token::lowerOrEqThan; }
-\>\=            { /*out << yytext;*/ return token::biggerOrEqThan; }
+\=              { return token::equal; }
+\<\>            { return token::notEqual; }
+\<              { return token::lowerThan; }
+\>              { return token::biggerThan; }
+\<\=            { return token::lowerOrEqThan; }
+\>\=            { return token::biggerOrEqThan; }
 
-[ \t\r]+        { /*if (endOfVariable) out << " ";*/ }
-\\\n            { /*if (endOfVariable) out << " ";*/ numOfLine++; loc->lines(); }
-\n              { /*if (endOfVariable) out << "\n";*/ numOfLine++; loc->lines(); }
+[ \t\r]+        { }
+\\\n            { numOfLine++; loc->lines(); }
+\n              { numOfLine++; loc->lines(); }
 
 \{              { int c;
                   while((c = yyinput()) != 0) {
