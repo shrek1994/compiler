@@ -19,7 +19,10 @@ public:
                           const std::string& ifCommands,
                           const std::string& elseCommands);
     std::string whileCommand(jftt::Condition condition,
-                             std::string commandsInside);
+                             const std::string& commandsInside);
+    std::string ifTo(const std::string& var, const std::string& from,
+                     const std::string& to, const std::string& commandsInside);
+
     std::ostream& getOut() const;
 private:
     std::string generateBiggerThan(const std::string& leftValue,
@@ -33,8 +36,9 @@ private:
 
     std::ostream& out = std::cout;
     std::ostream& error = std::cerr;
-    unsigned numOfIf = 0;
-    unsigned numOfWhile = 0;
+    unsigned long numOfIf = 0;
+    unsigned long numOfWhile = 0;
+    unsigned long numOfFor = 0;
 };
 
 } // namespace optimizer

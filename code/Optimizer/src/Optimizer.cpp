@@ -97,13 +97,27 @@ std::string Optimizer::generateEq(const std::string &leftValue,
     return std::move(command);
 }
 
-std::string Optimizer::whileCommand(jftt::Condition condition, std::string commandsInside) {
+std::string Optimizer::whileCommand(jftt::Condition condition, const std::string& commandsInside) {
     std::string command;
     command += std::string("%WHILE") + std::to_string(numOfWhile) + "%: ";
     command += ifCommand(condition,
                          commandsInside + "JUMP %WHILE" + std::to_string(numOfWhile) + "%;\n",
                          "SKIP;\n");
     ++numOfWhile;
+    return std::move(command);
+}
+
+std::string Optimizer::ifTo(const std::string &var, const std::string &from,
+                            const std::string &to, const std::string &commandsInside) {
+    std::string command;
+    std::string incrementVar = var + " := " + var + " + 1;\n";
+    std::string repeat = "JUMP %FOR" + std::to_string(numOfFor) + "%;\n";
+    command += var + " := " + from + ";\n";
+    command += "%FOR" + std::to_string(numOfFor) + "%: "; //"$reg1 := " + var + " - " + to + ";\n";
+    command += ifCommand(jftt::Condition{var, jftt::compare::lowerOrEqThan, to},
+                         commandsInside + incrementVar + repeat,
+                         "SKIP;\n");
+    ++numOfFor;
     return std::move(command);
 }
 
