@@ -59,6 +59,51 @@ const std::vector<Param> params = {
               emptyIn,
               "> 5\n",
               "shouldCorrectPerformWhile_NotEq"},
+        Param{"VAR a b BEGIN a := 1; b := 1; "
+              "WHILE a < 3 DO "
+                  "b := 1; "
+                  "WHILE b < 3 DO"
+                      "WRITE a; "
+                      "WRITE b; "
+                      "b := b + 1; "
+                  "ENDWHILE "
+                  "a := a + 1; "
+              "ENDWHILE"
+              " END\n",
+              emptyIn,
+              "> 1\n> 1\n"
+              "> 1\n> 2\n"
+              "> 2\n> 1\n"
+              "> 2\n> 2\n",
+              "shouldCorrectPerformWhile_twoWhile"},
+
+        Param{"VAR a b c BEGIN SKIP; "
+              "a := 1;"
+              "WHILE a < 3 DO "
+                  "b := 1; "
+                  "WHILE b < 3 DO "
+                      "c := 1; "
+                      "WHILE c < 3 DO "
+                          "WRITE a; "
+                          "WRITE b; "
+                          "WRITE c; "
+                          "c := c + 1; "
+                      "ENDWHILE "
+                      "b := b + 1; "
+                  "ENDWHILE "
+                  "a := a + 1; "
+              "ENDWHILE "
+              " END\n",
+              emptyIn,
+              "> 1\n> 1\n> 1\n"
+              "> 1\n> 1\n> 2\n"
+              "> 1\n> 2\n> 1\n"
+              "> 1\n> 2\n> 2\n"
+              "> 2\n> 1\n> 1\n"
+              "> 2\n> 1\n> 2\n"
+              "> 2\n> 2\n> 1\n"
+              "> 2\n> 2\n> 2\n",
+              "shouldCorrectPerformWhile_threeWhiles"},
 };
 
 } // namespace

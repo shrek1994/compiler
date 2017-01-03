@@ -7,7 +7,6 @@
 #include "debug.hpp"
 #include <sstream>
 
-//#define run_test()
 #define run_test() \
     language << GetParam().code; \
     in << GetParam().in; \
