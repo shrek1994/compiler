@@ -88,7 +88,7 @@ set(TEST_FILES
         code/test/ReadWriteTest.cpp
         code/Checker/test/CorrectCodeTest.cpp
         code/Generator/test/GeneratorTest.cpp
-        code/Generator/test/FinderTest.cpp code/Generator/test/ReplacerTest.cpp code/test/WhileTest.cpp)
+        code/Generator/test/FinderTest.cpp code/Generator/test/ReplacerTest.cpp code/test/WhileTest.cpp code/test/ForTest.cpp)
 
 # Setup testing
 enable_testing()
