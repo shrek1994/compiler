@@ -121,5 +121,19 @@ std::string Optimizer::ifTo(const std::string &var, const std::string &from,
     return std::move(command);
 }
 
+std::string Optimizer::ifDownTo(const std::string &var, const std::string &from, const std::string &to,
+                                const std::string &commandsInside) {
+    std::string command;
+    std::string decrementVar = var + " := " + var + " - 1;\n";
+    std::string repeat = "JUMP %FOR" + std::to_string(numOfFor) + "%;\n";
+    command += var + " := " + from + ";\n";
+    command += "%FOR" + std::to_string(numOfFor) + "%: "; //"$reg1 := " + var + " - " + to + ";\n";
+    command += ifCommand(jftt::Condition{var, jftt::compare::biggerOrEqThan, to},
+                         commandsInside + decrementVar + repeat,
+                         "SKIP;\n");
+    ++numOfFor;
+    return std::move(command);
+}
+
 
 } // namespace optimizer

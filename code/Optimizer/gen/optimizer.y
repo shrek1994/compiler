@@ -107,8 +107,8 @@ commands    : commands command          { $$ = $1 +$2; }
 command     : identifier assign expression semicolon                { $$ = $1 + " := " + $3 + ";\n"; }
              | IF condition THEN commands ELSE commands ENDIF       { $$ = driver.ifCommand($2, $4, $6); }
              | WHILE condition DO commands ENDWHILE                 { $$ = driver.whileCommand($2, $4); }
-             | FOR pidentifier FROM value TO value DO commands ENDFOR   { $$ = driver.ifTo($2, $4, $6, $8); }
-             | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR
+             | FOR pidentifier FROM value TO value DO commands ENDFOR     { $$ = driver.ifTo($2, $4, $6, $8); }
+             | FOR pidentifier FROM value DOWNTO value DO commands ENDFOR { $$ = driver.ifDownTo($2, $4, $6, $8); }
              | READ identifier semicolon                    { $$ = std::string("READ ") + $2 + ";\n"; }
              | WRITE value semicolon                        { $$ = std::string("WRITE ") + $2 + ";\n"; }
              | SKIP semicolon                               { $$ = "SKIP;\n"; }

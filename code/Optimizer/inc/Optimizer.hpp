@@ -22,6 +22,8 @@ public:
                              const std::string& commandsInside);
     std::string ifTo(const std::string& var, const std::string& from,
                      const std::string& to, const std::string& commandsInside);
+    std::string ifDownTo(const std::string& var, const std::string& from,
+                         const std::string& to, const std::string& commandsInside);
 
     std::ostream& getOut() const;
 private:

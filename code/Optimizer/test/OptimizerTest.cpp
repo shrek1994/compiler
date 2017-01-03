@@ -272,6 +272,29 @@ TEST_F(OptimizerTest, shouldChangeFor_upTo)
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
+TEST_F(OptimizerTest, shouldChangeFor_upDownto)
+{
+    in <<
+        "BEGIN "
+           "FOR i FROM a DOWNTO b DO\n"
+           "WRITE i;\n"
+           "ENDFOR\n"
+        "END\n";
+    expected <<
+        "BEGIN\n"
+             "i := a;\n"
+             "%FOR0%: $reg1 := b - i;\n"
+             "JZERO 1 %ELSE0%;\n"
+             "SKIP;\n"
+             "JUMP %ENDIF0%;\n"
+             "%ELSE0%: WRITE i;\n"
+             "i := i - 1;\n"
+             "JUMP %FOR0%;\n"
+             "%ENDIF0%: "
+        "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
 
 
 }
