@@ -12,7 +12,7 @@ const std::vector<Param> params = {
                       "ENDIF "
                       "END\n",
               emptyIn, "> 1\n", "shouldCorrectPerformIfCondition_IfLower"},
-        Param{"VAR a b BEGIN a := 2; b := 2; "
+        Param{"VAR a b BEGIN a := 5; b := 5; "
                       "IF a < b THEN "
                       "WRITE 1; "
                       "ELSE "
@@ -105,6 +105,15 @@ const std::vector<Param> params = {
                       "ENDIF "
                       "END\n",
               emptyIn, "> 2\n", "shouldCorrectPerformIfCondition_ElseNotEq"},
+        Param{"VAR a b BEGIN a := 4; b := 5; "
+                      "a := a + 1;"
+                      "IF a < b THEN "
+                      "WRITE 1; "
+                      "ELSE "
+                      "WRITE 2; "
+                      "ENDIF "
+                      "END\n",
+              emptyIn, "> 2\n", "shouldCorrectPerformIfCondition_"},
 };
 
 

@@ -53,4 +53,33 @@ TEST_F(GeneratorTest, shouldCorrectCompileIf)
         << generatedCode.str();
 }
 
+TEST_F(GeneratorTest, shouldCorrectCompileWhile)
+{
+    expected << "> 1\n> 2\n> 3\n> 4\n";
+    code << "BEGIN\n"
+            "a := 1;\n"
+            "b := 5;\n"
+            "%WHILE0%: "
+            "$reg1 := b - a;\n"
+            "JZERO 1 %ELSE0%;\n"
+            "WRITE a;\n"
+            "a := a + 1;\n"
+            "JUMP %WHILE0%;\n"
+            "JUMP %ENDIF0%;\n"
+            "%ELSE0%: "
+            "SKIP;\n"
+            "%ENDIF0%: "
+            "END\n";
+
+    gen->run(code, {"a", "b"});
+    inter->run(generatedCode, in, out, info);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str())
+                        << "code:\n"
+                        << code.str()
+                        << "\n"
+                        << "generated code:\n"
+                        << generatedCode.str();
+}
+
 }

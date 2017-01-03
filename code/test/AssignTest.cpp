@@ -91,7 +91,11 @@ const std::vector<Param> params = {
     Param{"VAR a b c BEGIN b := 43; c := 21; a := b - c; WRITE a; END\n",
           emptyIn,
           "> 22\n",
-          "shouldAssignSubOfVarssToVar"},
+          "shouldAssignSubOfVarsToVar"},
+    Param{"VAR a b c BEGIN a := 5; b := 5; c := b - a; WRITE c; END\n",
+          emptyIn,
+          "> 0\n",
+          "shouldAssignSubOfVarsToVar2"},
 
     //===========================SUB=TABS[number]=========================
 
