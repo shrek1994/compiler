@@ -146,7 +146,7 @@ public:
 
 TEST_P(IfElseTest, shouldCorrectCompile)
 {
-    run_test();
+    runTest(GetParam());;
 }
 
 INSTANTIATE_TEST_CASE_P(, IfElseTest, ::testing::ValuesIn(params));

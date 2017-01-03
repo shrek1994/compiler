@@ -119,7 +119,7 @@ public:
 
 TEST_P(WhileTest, shouldCorrectCompile)
 {
-    run_test();
+    runTest(GetParam());
 }
 
 INSTANTIATE_TEST_CASE_P(, WhileTest, ::testing::ValuesIn(params));

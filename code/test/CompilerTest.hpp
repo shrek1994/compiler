@@ -6,25 +6,7 @@
 #include "Interpreter.hpp"
 #include "debug.hpp"
 #include <sstream>
-
-#define run_test() \
-    language << GetParam().code; \
-    in << GetParam().in; \
-    DEBUG << GetParam().testName << "\n"; \
-     \
-    compiler.run(language, generatedCode); \
-    interpreter.run(generatedCode, in, out, info); \
-     \
-    EXPECT_STREQ(GetParam().expected.c_str(), out.str().c_str()) \
-            << GetParam().testName << "\n" \
-            << "\n" \
-            << "code:\n" \
-            << GetParam().code \
-            << "\n" \
-            << "generated code:\n" \
-            << generatedCode.str()
-//            << info.str()
-
+#include <future>
 
 struct Param
 {
@@ -53,12 +35,37 @@ public:
         in.str("");
         out.str("");
         info.str("");
+        error.str("");
     }
 
-    jftt::compiler compiler;
+    void runTest(const Param& param)
+    {
+        language << param.code;
+        in << param.in;
+        DEBUG << param.testName << "\n";
+
+        auto executionTest = std::async(std::launch::async, [&](){
+            compiler.run(language, generatedCode);
+            interpreter.run(generatedCode, in, out, info);
+        });
+
+        ASSERT_TRUE(executionTest.wait_for(executionTime) != std::future_status::timeout);
+        EXPECT_STREQ(param.expected.c_str(), out.str().c_str())
+                << param.testName << "\n"
+                << info.str()
+                << error.str()
+                << "code:\n"
+                << param.code
+                << "\n"
+                << "generated code:\n"
+                << generatedCode.str();
+    }
+    std::stringstream language, generatedCode, in, out, info, error;
+
+    jftt::compiler compiler{info, error};
     Interpreter interpreter;
 
-    std::stringstream language, generatedCode, in, out, info;
+    std::chrono::seconds executionTime = std::chrono::seconds(5);
 };
 
 class CompilerParamTest : public CompilerTest,

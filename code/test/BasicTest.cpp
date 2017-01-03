@@ -48,7 +48,7 @@ class BasicTest : public CompilerParamTest {};
 
 TEST_P(BasicTest, shouldCorrectCompile)
 {
-    run_test();
+    runTest(GetParam());
 }
 
 INSTANTIATE_TEST_CASE_P(, BasicTest, ::testing::ValuesIn(params));

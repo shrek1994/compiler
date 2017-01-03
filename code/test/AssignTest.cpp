@@ -162,7 +162,7 @@ class AssignTest : public CompilerParamTest {};
 
 TEST_P(AssignTest, shouldCorrectAssign)
 {
-    run_test();
+    runTest(GetParam());;
 }
 
 INSTANTIATE_TEST_CASE_P(, AssignTest, ::testing::ValuesIn(params));

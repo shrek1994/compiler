@@ -38,7 +38,7 @@ public:
 
 TEST_P(ReadWriteTest, shouldCorrectCompile)
 {
-    run_test();
+    runTest(GetParam());
 }
 
 INSTANTIATE_TEST_CASE_P(, ReadWriteTest, ::testing::ValuesIn(params));

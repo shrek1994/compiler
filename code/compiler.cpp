@@ -10,7 +10,7 @@ namespace jftt {
 void compiler::run(std::istream& languageCode, std::ostream& compiledCode) {
     std::stringstream outChceker, outOprimizer;
 
-    checker::Checker check(outChceker);
+    checker::Checker check(outChceker, info, error);
     check.run(languageCode);
 
     DEBUG << "code:\n" << outChceker.str() << "\n";
@@ -23,5 +23,9 @@ void compiler::run(std::istream& languageCode, std::ostream& compiledCode) {
     Generator gen(compiledCode);
     gen.run(outOprimizer, check.getVariables());
 }
+
+compiler::compiler(std::ostream &info, std::ostream &error)
+        : info(info),
+          error(error) {}
 
 } // namespace jftt
