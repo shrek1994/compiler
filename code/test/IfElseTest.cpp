@@ -114,6 +114,25 @@ const std::vector<Param> params = {
                       "ENDIF "
                       "END\n",
               emptyIn, "> 2\n", "shouldCorrectPerformIfCondition_"},
+        Param{"VAR a b BEGIN a := 4; b := 5; "
+              "IF a < b THEN "
+                  "WRITE 1; "
+                  "a := a + 1; "
+                  "IF a > b THEN "
+                      "WRITE 11; "
+                  "ELSE "
+                      "WRITE 2; "
+                      "IF a = b THEN "
+                          "WRITE 3; "
+                      "ELSE "
+                          "WRITE 12; "
+                      "ENDIF "
+                  "ENDIF "
+              "ELSE "
+                  "WRITE 10; "
+              "ENDIF "
+              "END\n",
+              emptyIn, "> 1\n> 2\n> 3\n", "shouldCorrectPerformIfCondition_manyIfs"},
 };
 
 
