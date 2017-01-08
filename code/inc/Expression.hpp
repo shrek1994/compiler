@@ -14,10 +14,12 @@ enum class Operator {
     modulo
 };
 
+std::string operator+(const std::string& txt, Operator oper);
+
 struct Expression {
     Variable leftValue;
     Operator operat;
-    Variable rightValue;
+    Variable rightValue = {};
 };
 
 } // namespace jftt

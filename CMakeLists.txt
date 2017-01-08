@@ -66,7 +66,7 @@ set(SOURCE_FILES
         code/compiler.cpp
         code/compiler.hpp
         code/Generator/src/Finder.cpp
-        code/Generator/inc/Finder.hpp code/Generator/src/Replacer.cpp code/Generator/inc/Replacer.hpp code/inc/Expression.hpp)
+        code/Generator/inc/Finder.hpp code/Generator/src/Replacer.cpp code/Generator/inc/Replacer.hpp code/inc/Expression.hpp code/src/Expression.cpp)
 
 add_executable(compiler
         main.cpp

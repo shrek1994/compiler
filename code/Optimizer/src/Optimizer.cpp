@@ -1,3 +1,5 @@
+//#include <Driver.hpp>
+#include <inc/Expression.hpp>
 #include "Optimizer.hpp"
 #include "OptimizerScanner.hpp"
 #include "debug.hpp"
@@ -5,7 +7,7 @@
 namespace optimizer {
 
 void Optimizer::run(std::istream& in) {
-    auto scanner = std::make_shared<Scanner>(in, out, Logger::out);
+    auto scanner = std::make_shared<optimizer::Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
     DEBUG << "starting optimizing\n";
     if (parser->parse())
@@ -133,6 +135,38 @@ std::string Optimizer::ifDownTo(const std::string &var, const std::string &from,
                          "SKIP;\n");
     ++numOfFor;
     return std::move(command);
+}
+
+std::string Optimizer::mul(const std::string &leftVar, const std::string &rightVar) {
+    std::string command;
+    command += "ZERO 1;\n";
+    command += "$reg2 := " + leftVar + ";\n";
+    command += "$reg3 := " + rightVar + ";\n";
+    command += "%MUL" + std::to_string(numOfMul) + "%: JZERO 3 %ENDMUL" + std::to_string(numOfMul) + "%;\n";
+    command += "JODD 3 %ADD" + std::to_string(numOfMul) + "%;\n";
+    command += "JUMP %MULSKIP" + std::to_string(numOfMul) + "%;\n";
+    command += "%ADD" + std::to_string(numOfMul) + "%: " + jftt::varTemp.name + " := $reg2;\n";
+    command += "ADD 1;\n";
+    command += "%MULSKIP" + std::to_string(numOfMul) + "%: SHL 2;\n";
+    command += "SHR 3;\n";
+    command += "JUMP %MUL" + std::to_string(numOfMul) + "%;\n";
+    command += std::string("%ENDMUL") + std::to_string(numOfMul) + "%: ";
+    ++numOfMul;
+    return std::move(command);
+}
+
+std::string Optimizer::expression(const std::string &var, const jftt::Expression &exp) {
+    switch (exp.operat){
+        case jftt::Operator::none:
+        case jftt::Operator::plus:
+        case jftt::Operator::minus:
+        case jftt::Operator::div:
+        case jftt::Operator::modulo:
+            return var + " := " + exp.leftValue.name + exp.operat + exp.rightValue.name + ";\n";
+        case jftt::Operator::mul:
+            return mul(exp.leftValue.name, exp.rightValue.name) + var + " := $reg1;\n";
+    }
+
 }
 
 

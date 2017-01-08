@@ -7,6 +7,7 @@
 
 %code requires{
 #include "Condition.hpp"
+#include "Expression.hpp"
 
 namespace optimizer {
     class Optimizer;
@@ -89,7 +90,7 @@ namespace optimizer {
 
 %locations
 
-%type<std::string> expression
+%type<jftt::Expression> expression
 %type<std::string> command
 %type<std::string> commands
 %type<std::string> value
@@ -104,7 +105,7 @@ commands    : commands command          { $$ = $1 +$2; }
              | command                  { $$ = $1; }
 
 
-command     : identifier assign expression semicolon                { $$ = $1 + " := " + $3 + ";\n"; }
+command     : identifier assign expression semicolon                { $$ = driver.expression($1, $3); }
              | IF condition THEN commands ELSE commands ENDIF       { $$ = driver.ifCommand($2, $4, $6); }
              | WHILE condition DO commands ENDWHILE                 { $$ = driver.whileCommand($2, $4); }
              | FOR pidentifier FROM value TO value DO commands ENDFOR     { $$ = driver.ifTo($2, $4, $6, $8); }
@@ -113,12 +114,12 @@ command     : identifier assign expression semicolon                { $$ = $1 + 
              | WRITE value semicolon                        { $$ = std::string("WRITE ") + $2 + ";\n"; }
              | SKIP semicolon                               { $$ = "SKIP;\n"; }
 
-expression  : value                         { $$ = $1; }
-             | value plus value             { $$ = $1 + " + " + $3; }
-             | value minus value            { $$ = $1 + " - " + $3; }
-             | value mul value              { $$ = $1 + " * " + $3; }
-             | value div value              { $$ = $1 + " / " + $3; }
-             | value mod value              { $$ = $1 + " % " + $3; }
+expression  : value                         { $$ = {{false, $1}, jftt::Operator::none}; }
+             | value plus value             { $$ = {{false, $1}, jftt::Operator::plus, {false, $3} }; }
+             | value minus value            { $$ = {{false, $1}, jftt::Operator::minus, {false, $3}}; }
+             | value mul value              { $$ = {{false, $1}, jftt::Operator::mul, {false, $3}}; }
+             | value div value              { $$ = {{false, $1}, jftt::Operator::div, {false, $3}}; }
+             | value mod value              { $$ = {{false, $1}, jftt::Operator::modulo, {false, $3}}; }
 
 condition   : value equal value             { $$ = jftt::Condition{$1,
                                                                    jftt::compare::eq,

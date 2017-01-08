@@ -57,7 +57,6 @@ private:
     std::shared_ptr<Scanner> scanner = nullptr;
     std::ostream& out = std::cout;
     std::stringstream code;
-    Variable varTemp = VariableBuilder().withName("TEMP123").build();
     const std::vector<std::string>& variables;
 };
 

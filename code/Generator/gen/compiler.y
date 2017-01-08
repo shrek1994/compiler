@@ -110,6 +110,7 @@ commands    : commands command
 
 command     : identifier assign expression semicolon              { driver.saveExpression($3); driver.assignFromFirstRegisterTo($1); }
              | reg assign expression semicolon                    { driver.saveExpression($3, $1); }
+             | identifier assign reg semicolon                    //TODO
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
              | SKIP semicolon                                     { }
@@ -123,14 +124,6 @@ expression  : value                             { $$ = jftt::Expression{$1, Oper
              | value mul value
              | value div value
              | value mod value
-
-condition   : value equal value
-             | value notEqual value
-             | value lowerThan value
-             | value biggerThan value
-             | value lowerOrEqThan value
-             | value biggerOrEqThan value
-
 
 value       : num               { $$ = VariableBuilder()
                                         .withName($1)

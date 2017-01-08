@@ -1,5 +1,6 @@
 #include <Optimizer.hpp>
 #include <debug.hpp>
+#include <Generator/inc/Driver.hpp>
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 
@@ -296,5 +297,35 @@ TEST_F(OptimizerTest, shouldChangeFor_upDownto)
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
+TEST_F(OptimizerTest, shouldConvertMul)
+{
+    in <<
+       "BEGIN "
+       "a := 1;\n"
+       "b := 2;\n"
+       "c := a * b;\n"
+       "WRITE c;\n"
+       "END\n";
+    expected <<
+        "BEGIN\n"
+            "a := 1;\n"
+            "b := 2;\n"
+            "ZERO 1;\n"
+            "$reg2 := a;\n"
+            "$reg3 := b;\n"
+            "%MUL0%: JZERO 3 %ENDMUL0%;\n"
+            "JODD 3 %ADD0%;\n"
+            "JUMP %MULSKIP0%;\n"
+            "%ADD0%: " + jftt::varTemp.name + " := $reg2;\n" // <- TODO zaimplenetowac w generatorze
+            "ADD 1;\n"
+            "%MULSKIP0%: SHL 2;\n"
+            "SHR 3;\n"
+            "JUMP %MUL0%;\n"
+            "%ENDMUL0%: c := $reg1;\n" // <- TODO zaimplenetowac w generatorze
+            "WRITE c;\n"
+        "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
 
 }

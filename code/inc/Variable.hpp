@@ -57,5 +57,6 @@ private:
     Variable var;
 };
 
+const Variable varTemp = VariableBuilder().withName("TEMP123").build();
 
 } //namespace jftt
