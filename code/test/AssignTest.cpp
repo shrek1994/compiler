@@ -138,22 +138,22 @@ const std::vector<Param> params = {
     //======================================================================
     //============================MUL=======================================
 
-//    Param{"VAR a BEGIN a := 43 * 21; WRITE a; END\n",
-//          emptyIn,
-//          "> 903\n",
-//          "shouldAssignSubOfNumbersToVar"},
-//    Param{"VAR a b BEGIN b := 21; a := 43 * b; WRITE a; END\n",
-//          emptyIn,
-//          "> 903\n",
-//          "shouldAssignSubOfNumberAndVarToVar"},
-//    Param{"VAR a b BEGIN b := 43; a := b * 21; WRITE a; END\n",
-//          emptyIn,
-//          "> 903\n",
-//          "shouldAssignSubOfVarAndNumberToVar"},
-//    Param{"VAR a b c BEGIN b := 43; c := 21; a := b * c; WRITE a; END\n",
-//          emptyIn,
-//          "> 903\n",
-//          "shouldAssignSubOfVarssToVar"},
+    Param{"VAR a BEGIN a := 43 * 21; WRITE a; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignSubOfNumbersToVar"},
+    Param{"VAR a b BEGIN b := 21; a := 43 * b; WRITE a; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignSubOfNumberAndVarToVar"},
+    Param{"VAR a b BEGIN b := 43; a := b * 21; WRITE a; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignSubOfVarAndNumberToVar"},
+    Param{"VAR a b c BEGIN b := 43; c := 21; a := b * c; WRITE a; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignSubOfVarsToVar"},
 
 };
 } // namespace

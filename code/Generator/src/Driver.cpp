@@ -1,8 +1,8 @@
 #include <cctype>
 #include <fstream>
 #include <bitset>
-#include <Generator/inc/Finder.hpp>
-#include <Generator/inc/Replacer.hpp>
+#include <Finder.hpp>
+#include <Replacer.hpp>
 
 #include "debug.hpp"
 #include "Driver.hpp"
@@ -89,6 +89,7 @@ void Driver::findAndSetAction(const std::string& action, const Variable& variabl
 {
     constexpr unsigned registerNumber = 2;
     setPositionInZeroRegister(variable, registerNumber);
+    DEBUG << action << "\n";
     code << action << "\n";
 
 }
@@ -96,7 +97,7 @@ void Driver::findAndSetAction(const std::string& action, const Variable& variabl
 int Driver::getPosition(const std::string &variable)
 {
     if (variable == varTemp.name)
-        return variables.size();
+        return (int)variables.size();
     auto position = std::find(variables.begin(), variables.end(), variable) - variables.begin();
     DEBUG << "getPosition('" << variable << "\') = " << position << "\n";
     if (position >= variables.size()) throw std::out_of_range("ERROR: variable not declared: " + variable);
@@ -166,8 +167,7 @@ void Driver::setPositionInZeroRegister(const Variable &variable, unsigned regist
         code << "ADD " << registerNumber << "\n";
         code << "COPY " << registerNumber << "\n";
     }
-    else
-    if ( variable.isTab )
+    else if ( variable.isTab )
     {
         position += variable.size;
         setRegister(position, 0);
@@ -263,10 +263,9 @@ std::string Driver::releaseCode() {
 }
 
 void Driver::saveExpression(const jftt::Expression &expression, unsigned int registerNumber) {
-    switch (expression.operat)
-    {
+    switch (expression.operat) {
         case Operator::none:
-            saveValueTo(expression.leftValue);
+            saveValueTo(expression.leftValue, registerNumber);
             break;
         case Operator::plus:
             saveSumTo(expression.leftValue, expression.rightValue, registerNumber);
@@ -277,6 +276,35 @@ void Driver::saveExpression(const jftt::Expression &expression, unsigned int reg
         default:
             ;
     }
+}
+
+void Driver::zero(const std::string &reg) {
+    DEBUG << "ZERO " << reg << "\n";
+    code << "ZERO " << reg << "\n";
+}
+
+void Driver::jodd(const std::string &reg, const std::string &place) {
+    DEBUG << "JODD " << reg << " " << place << "\n";
+    code << "JODD " << reg << " " << place << "\n";
+}
+
+void Driver::add(const std::string &reg) {
+    DEBUG << "ADD " << reg << "\n";
+    code << "ADD " << reg << "\n";
+}
+
+void Driver::shl(const std::string &reg) {
+    DEBUG << "SHL " << reg << "\n";
+    code << "SHL " << reg << "\n";
+}
+
+void Driver::shr(const std::string &reg) {
+    DEBUG << "SHR " << reg << "\n";
+    code << "SHR " << reg << "\n";
+}
+
+void Driver::saveRegisterToVar(const Variable &var, unsigned registerNumber) {
+    findAndSetAction(std::string("STORE ") + std::to_string(registerNumber), var);
 }
 
 } // namespace jftt

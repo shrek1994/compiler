@@ -3,6 +3,7 @@
 #include <Generator.hpp>
 #include <memory>
 #include <Interpreter.hpp>
+#include <inc/Variable.hpp>
 
 namespace {
 
@@ -53,8 +54,7 @@ TEST_F(GeneratorTest, shouldCorrectCompileIf)
         << generatedCode.str();
 }
 
-TEST_F(GeneratorTest, shouldCorrectCompileWhile)
-{
+TEST_F(GeneratorTest, shouldCorrectCompileWhile) {
     expected << "> 1\n> 2\n> 3\n> 4\n";
     code << "BEGIN\n"
             "a := 1;\n"
@@ -72,6 +72,39 @@ TEST_F(GeneratorTest, shouldCorrectCompileWhile)
             "END\n";
 
     gen->run(code, {"a", "b"});
+    inter->run(generatedCode, in, out, info);
+
+    EXPECT_STREQ(expected.str().c_str(), out.str().c_str())
+                        << "code:\n"
+                        << code.str()
+                        << "\n"
+                        << "generated code:\n"
+                        << generatedCode.str();
+}
+
+TEST_F(GeneratorTest, shouldCorrectMul)
+{
+    expected << "> 35\n";
+    code <<
+         "BEGIN\n"
+             "a := 5;\n"
+             "b := 7;\n"
+             "ZERO 1;\n"
+             "$reg2 := a;\n"
+             "$reg3 := b;\n"
+             "%MUL0%: JZERO 3 %ENDMUL0%;\n"
+             "JODD 3 %ADD0%;\n"
+             "JUMP %MULSKIP0%;\n"
+             "%ADD0%: " + jftt::varTemp.name + " := $reg2;\n"
+             "ADD 1;\n"
+             "%MULSKIP0%: SHL 2;\n"
+             "SHR 3;\n"
+             "JUMP %MUL0%;\n"
+             "%ENDMUL0%: c := $reg1;\n"
+             "WRITE c;\n"
+         "END\n";
+
+    gen->run(code, {"a", "b", "c"});
     inter->run(generatedCode, in, out, info);
 
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str())

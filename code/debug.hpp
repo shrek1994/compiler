@@ -16,6 +16,7 @@
     }
 
 namespace Logger {
+void enable();
 extern bool enableDebug;
 extern std::ostream& out;
 }

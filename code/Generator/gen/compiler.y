@@ -90,6 +90,11 @@
 %token <std::string> beginPlace
 %token JUMP
 %token JZERO
+%token ZERO
+%token JODD
+%token ADD
+%token SHR
+%token SHL
 %token <std::string> place
 
 %locations
@@ -110,11 +115,16 @@ commands    : commands command
 
 command     : identifier assign expression semicolon              { driver.saveExpression($3); driver.assignFromFirstRegisterTo($1); }
              | reg assign expression semicolon                    { driver.saveExpression($3, $1); }
-             | identifier assign reg semicolon                    //TODO
+             | identifier assign reg semicolon                    { driver.saveRegisterToVar($1, $3); }
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
              | SKIP semicolon                                     { }
+             | ZERO num semicolon                                 { driver.zero($2); }
+             | SHL num semicolon                                  { driver.shl($2); }
+             | SHR num semicolon                                  { driver.shr($2); }
+             | ADD num semicolon                                  { driver.add($2); }
              | JUMP place semicolon                               { driver.jump($2); }
+             | JODD num place semicolon                           { driver.jodd($2, $3); }
              | JZERO num place semicolon                          { driver.jzero($2, $3); }
              | beginPlace                                         { driver.beginPlace($1); }
 

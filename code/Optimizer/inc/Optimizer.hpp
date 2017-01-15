@@ -44,7 +44,7 @@ private:
     unsigned long numOfIf = 0;
     unsigned long numOfWhile = 0;
     unsigned long numOfFor = 0;
-    unsigned long numOfMul;
+    unsigned long numOfMul = 0;
 };
 
 } // namespace optimizer

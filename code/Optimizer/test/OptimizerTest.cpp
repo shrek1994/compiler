@@ -316,12 +316,12 @@ TEST_F(OptimizerTest, shouldConvertMul)
             "%MUL0%: JZERO 3 %ENDMUL0%;\n"
             "JODD 3 %ADD0%;\n"
             "JUMP %MULSKIP0%;\n"
-            "%ADD0%: " + jftt::varTemp.name + " := $reg2;\n" // <- TODO zaimplenetowac w generatorze
+            "%ADD0%: " + jftt::varTemp.name + " := $reg2;\n"
             "ADD 1;\n"
             "%MULSKIP0%: SHL 2;\n"
             "SHR 3;\n"
             "JUMP %MUL0%;\n"
-            "%ENDMUL0%: c := $reg1;\n" // <- TODO zaimplenetowac w generatorze
+            "%ENDMUL0%: c := $reg1;\n"
             "WRITE c;\n"
         "END\n";
     optimizer->run(in);
