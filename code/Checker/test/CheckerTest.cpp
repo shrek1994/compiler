@@ -80,7 +80,7 @@ TEST_F(CheckerTest, shouldCorrectRemoveComments)
 
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInAssign)
 {
-    auto warning = Checker::warning + "4" + Checker::missingSemicolon + "\n";
+    auto warning = Checker::warning + Checker::line + "4" + Checker::missingSemicolon + "\n";
     std::vector<std::string> vars = { "a", "b" };
     in << "VAR\\\n"
             "a b\n"
@@ -98,7 +98,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInAssign)
 
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInRead)
 {
-    auto warning = Checker::warning + "6" + Checker::missingSemicolon + "\n";
+    auto warning = Checker::warning + Checker::line + "6" + Checker::missingSemicolon + "\n";
     std::vector<std::string> vars = { "a", "b" };
     in << "VAR\\\n"
             "a b\n"
@@ -117,7 +117,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInRead)
 
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInWrite)
 {
-    auto warning = Checker::warning + "5" + Checker::missingSemicolon + "\n";
+    auto warning = Checker::warning + Checker::line + "5" + Checker::missingSemicolon + "\n";
     std::vector<std::string> vars = { "a", "b" };
     in << "VAR\\\n"
             "a b\n"
@@ -135,7 +135,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInWrite)
 
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInSkip)
 {
-    auto warning = Checker::warning + "3" + Checker::missingSemicolon + "\n";
+    auto warning = Checker::warning + Checker::line + "3" + Checker::missingSemicolon + "\n";
     std::vector<std::string> vars = { "a", "b" };
     in << "VAR\\\n"
             "a b\n"

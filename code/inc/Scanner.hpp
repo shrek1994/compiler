@@ -1,4 +1,3 @@
-#pragma once
 
 class Scanner : public yyFlexLexer{
 public:

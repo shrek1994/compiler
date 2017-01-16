@@ -11,10 +11,12 @@ namespace checker {
 
 class Checker {
 public:
+    static const std::string line;
     static const std::string warning;
     static const std::string missingSemicolon;
     static const std::string error;
     static const std::string duplicateDeclaration;
+    static const std::string undeclaredVariable;
 
     Checker(std::ostream& out,
             std::ostream& info = std::cout,

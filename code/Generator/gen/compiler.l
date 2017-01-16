@@ -86,5 +86,5 @@ INC                { return token::INC; }
 SUB                { return token::SUB; }
 
 [ \t\r]+        { }
-\n              { loc->lines(); }
+\n              { numOfLine++; loc->lines(); }
 %%

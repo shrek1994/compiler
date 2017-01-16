@@ -4,10 +4,12 @@
 
 namespace checker {
 
-const std::string Checker::warning = "Warning - line: ";
-const std::string Checker::error = "Error - line: ";
-const std::string Checker::missingSemicolon = " - Missing Semicolon";
-const std::string Checker::duplicateDeclaration = " - Duplicate Declaration";
+const std::string Checker::line = " - line: ";
+const std::string Checker::warning = "Warning";
+const std::string Checker::error = "Error";
+const std::string Checker::missingSemicolon = " - Missing smicolon";
+const std::string Checker::duplicateDeclaration = " - Duplicate declaration";
+const std::string Checker::undeclaredVariable = " - Using undeclared variable";
 
 bool Checker::run(std::istream& in) {
     scanner = std::make_shared<Scanner>(in, out, Logger::out);
@@ -44,7 +46,7 @@ const std::vector<std::string>& Checker::getVariables() const {
 }
 
 void Checker::warningSemicolon() {
-    info << warning << scanner->getNumOfLine() << missingSemicolon << "\n";
+    info << warning << line << scanner->getNumOfLine() << missingSemicolon << "\n";
 }
 
 void Checker::repairSemicolon() {
@@ -59,7 +61,7 @@ void Checker::checkIfVaribleDontExist(const jftt::Variable &variable) {
     {
         if (var == variable.name)
         {
-            err << error << scanner->getNumOfLine() << duplicateDeclaration << ": '" << variable.name << "'\n";
+            err << error << line << scanner->getNumOfLine() << duplicateDeclaration << ": '" << variable.name << "'\n";
             isCodeCorrect = false;
             return;
         }

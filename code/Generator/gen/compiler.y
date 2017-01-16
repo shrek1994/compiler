@@ -139,9 +139,6 @@ command     : identifier assign expression semicolon              { driver.saveE
 expression  : value                             { $$ = jftt::Expression{$1, Operator::none}; }
              | value plus value                 { $$ = jftt::Expression{$1, Operator::plus, $3}; }
              | value minus value                { $$ = jftt::Expression{$1, Operator::minus, $3}; }
-             | value mul value
-             | value div value
-             | value mod value
 
 value       : num               { $$ = VariableBuilder()
                                         .withName($1)
