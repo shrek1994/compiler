@@ -28,13 +28,9 @@ namespace checker {
 %parse-param { Checker  &driver  }
 
 %code{
-   #include <iostream>
-   #include <cstdlib>
-   #include <fstream>
-
-   /* include for all driver functions */
-   #include "Checker.hpp"
-   #include "CheckerScanner.hpp"
+#include "Checker.hpp"
+#include "CheckerScanner.hpp"
+#include "debug.hpp"
 
 #undef yylex
 #define yylex scanner.checkerlex
@@ -168,6 +164,6 @@ identifier  : pidentifier                                           { $$ = $1; }
 
 void checker::LexParser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << "\n"
-             << "Unexpected chars: " << scanner.txt <<"\n";
+   DEBUG << "Error: " << err_message << " at " << l << ", when parse " << scanner.txt <<"\n";
+   //std::cerr << "Error: " << err_message << " at " << l << ", when parse " << scanner.txt <<"\n";
 }

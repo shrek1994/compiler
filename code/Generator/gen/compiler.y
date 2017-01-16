@@ -23,6 +23,7 @@
 
 #include "Variable.hpp"
 #include "Expression.hpp"
+#include "debug.hpp"
 }
 
 %parse-param { Scanner  &scanner  }
@@ -164,5 +165,6 @@ identifier  : pidentifier                                   { $$ = VariableBuild
 
 void jftt::LexParser::error( const location_type &l, const std::string &err_message )
 {
-   std::cerr << "Error: " << err_message << " at " << l << ", when parse " << scanner.txt <<"\n";
+   DEBUG << "Error: " << err_message << " at " << l << ", when parse " << scanner.txt <<"\n";
+   //std::cerr << "Error: " << err_message << " at " << l << ", when parse " << scanner.txt <<"\n";
 }

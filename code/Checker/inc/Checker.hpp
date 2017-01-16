@@ -17,6 +17,7 @@ public:
     static const std::string error;
     static const std::string duplicateDeclaration;
     static const std::string undeclaredVariable;
+    static const std::string unrecognizedText;
 
     Checker(std::ostream& out,
             std::ostream& info = std::cout,

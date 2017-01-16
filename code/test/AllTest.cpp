@@ -52,5 +52,23 @@ TEST_F(AllTest, usingUndeclaredVariable)
     EXPECT_STREQ(emptyGeneratedCode.c_str(), this->generatedCode.str().c_str());
 }
 
+TEST_F(AllTest, wrongVariableName)
+{
+    auto error = Checker::error + Checker::line + "3" + Checker::unrecognizedText;
+    language <<
+             "{ Błąd w linii 3: nierozpoznany napis a1 }\n"
+                     "VAR\n"
+                     "  a1 b\n"
+                     "BEGIN\n"
+                     "  READ a1;\n"
+                     "  b := a1;\n"
+                     "END";
+
+    compiler.run(language, generatedCode);
+
+    EXPECT_STREQ(error.c_str(), this->error.str().c_str());
+    EXPECT_STREQ(emptyGeneratedCode.c_str(), this->generatedCode.str().c_str());
+}
+
 
 } // namespace

@@ -10,13 +10,14 @@ const std::string Checker::error = "Error";
 const std::string Checker::missingSemicolon = " - Missing smicolon";
 const std::string Checker::duplicateDeclaration = " - Duplicate declaration";
 const std::string Checker::undeclaredVariable = " - Using undeclared variable";
+const std::string Checker::unrecognizedText = " - Unrecognized text";
 
 bool Checker::run(std::istream& in) {
     scanner = std::make_shared<Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
     DEBUG << "starting checking\n";
     if (parser->parse()) {
-        err << "Parse failed!!\n";
+        err << error + line + std::to_string(scanner->getNumOfLine() + 1) + unrecognizedText;
         return false;
     }
     DEBUG << "ended checking\n";
