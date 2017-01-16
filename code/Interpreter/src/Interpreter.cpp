@@ -35,8 +35,8 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         if( com=="GET" ) { i1 = GET; plik >> i2; }
         if( com=="PUT" ) { i1 = PUT; plik >> i2; }
 
-        if( com=="LOAD"  ) { i1 = LOAD; plik >> i2; DEBUG << "LOAD " << i2 << "\n"; }
-        if( com=="STORE" ) { i1 = STORE; plik >> i2; DEBUG << "STORE " << i2 << "\n"; }
+        if( com=="LOAD"  ) { i1 = LOAD; plik >> i2; }
+        if( com=="STORE" ) { i1 = STORE; plik >> i2; }
 
         if( com=="COPY" ) { i1 = COPY; plik >> i2; }
         if( com=="ADD"  ) { i1 = ADD; plik >> i2; }
@@ -74,18 +74,18 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
     i = 0;
     while( get<0>(program[lr])!=HALT )	// HALT
     {
+        auto instruction = get<0>(program[lr]);
+        auto regNumber = get<1>(program[lr]);
+        DEBUG << (unsigned)instruction << " " << regNumber << "\n";
         switch( get<0>(program[lr]) )
         {
         case GET:	cout << "? "; cin >> r[get<1>(program[lr])]; i+=100; lr++; break;
         case PUT:	cout << "> " << r[get<1>(program[lr])] << endl; i+=100; lr++; break;
 
-        case LOAD:	r[get<1>(program[lr])] = pam[r[0]]; i+=10; lr++;
-                DEBUG << "LOAD " << get<1>(program[lr]) << "\n"; break;
-        case STORE:	pam[r[0]] = r[get<1>(program[lr])]; i+=10; lr++;
-                DEBUG << "STORE " << get<1>(program[lr]) << "\n"; break;
+        case LOAD:	r[get<1>(program[lr])] = pam[r[0]]; i+=10; lr++; break;
+        case STORE:	pam[r[0]] = r[get<1>(program[lr])]; i+=10; lr++; break;
 
-        case ADD:   r[get<1>(program[lr])] += pam[r[0]] ; i+=10; lr++;
-                DEBUG << "ADD " << get<1>(program[lr]) << " += " << pam[r[0]] << "\n"; break;;
+        case ADD:   r[get<1>(program[lr])] += pam[r[0]] ; i+=10; lr++; break;;
         case SUB:   if( r[get<1>(program[lr])] >= pam[r[0]] )
                         r[get<1>(program[lr])] -= pam[r[0]];
                     else
@@ -110,6 +110,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         }
         DEBUG << "r0=" << r[0] << ", r1=" << r[1] << ", r2="<< r[2] << ", r3=" << r[3] << ", r4=" << r[4] <<"\n";
     }
+    DEBUG << "Skończono program (czas: " << i << ")." << endl;
     info << "Skończono program (czas: " << i << ")." << endl;
     return 0;
 }

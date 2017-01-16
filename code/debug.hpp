@@ -11,7 +11,7 @@
     { } \
     else \
     { \
-        Logger::out << __FILENAME__ << ":" << __LINE__ << ": " << "ERROR: " << #expr << "\n"; \
+        Logger::out << __FILENAME__ << ":" << __LINE__ << ": " << "ASSERT_ERROR: " << #expr << "\n"; \
         std::exit(EXIT_FAILURE); \
     }
 

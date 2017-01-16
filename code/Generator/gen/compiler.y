@@ -95,6 +95,10 @@
 %token ADD
 %token SHR
 %token SHL
+%token LOAD
+%token STORE
+%token SUB
+%token INC
 %token <std::string> place
 
 %locations
@@ -126,6 +130,10 @@ command     : identifier assign expression semicolon              { driver.saveE
              | JUMP place semicolon                               { driver.jump($2); }
              | JODD num place semicolon                           { driver.jodd($2, $3); }
              | JZERO num place semicolon                          { driver.jzero($2, $3); }
+             | LOAD num semicolon                                 { driver.load($2); }
+             | STORE num semicolon                                 { driver.addCommand(std::string("STORE ") + $2); }
+             | INC num semicolon                                 { driver.addCommand(std::string("INC ") + $2); }
+             | SUB num semicolon                                 { driver.addCommand(std::string("SUB ") + $2); }
              | beginPlace                                         { driver.beginPlace($1); }
 
 expression  : value                             { $$ = jftt::Expression{$1, Operator::none}; }

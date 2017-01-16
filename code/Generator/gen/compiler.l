@@ -80,6 +80,10 @@ JODD                { return token::JODD; }
 ADD                { return token::ADD; }
 SHL                { return token::SHL; }
 SHR                { return token::SHR; }
+LOAD                { return token::LOAD; }
+STORE                { return token::STORE; }
+INC                { return token::INC; }
+SUB                { return token::SUB; }
 
 [ \t\r]+        { }
 \n              { loc->lines(); }

@@ -41,6 +41,8 @@ public:
     void add(const std::string& reg);
     void shl(const std::string& reg);
     void shr(const std::string& reg);
+    void load(const std::string& reg);
+    void addCommand(const std::string& reg);
     void jzero(const std::string& reg, const std::string& place);
 
     void beginPlace(const std::string& place) { code << place; }

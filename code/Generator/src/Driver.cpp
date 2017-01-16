@@ -161,6 +161,7 @@ void Driver::setPositionInZeroRegister(const Variable &variable, unsigned regist
     auto position = getPosition(variable.name);
     if ( variable.hasNameInsideTab)
     {
+        ASSERT(registerNumber < 5 && "register should be lower than 5 and bigger or equal than 0 !");
         auto positionOfVarInsideTab = getPosition(variable.varName);
         setRegister(positionOfVarInsideTab, 0);
         setRegister(position, registerNumber);
@@ -305,6 +306,17 @@ void Driver::shr(const std::string &reg) {
 
 void Driver::saveRegisterToVar(const Variable &var, unsigned registerNumber) {
     findAndSetAction(std::string("STORE ") + std::to_string(registerNumber), var);
+}
+
+void Driver::load(const std::string &reg) {
+    DEBUG << "LOAD " << reg << "\n";
+    code << "LOAD " << reg << "\n";
+}
+
+void Driver::addCommand(const std::string& command) {
+    DEBUG << command << "\n";
+    code << command << "\n";
+
 }
 
 } // namespace jftt
