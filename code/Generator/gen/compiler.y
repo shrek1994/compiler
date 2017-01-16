@@ -123,14 +123,14 @@ command     : identifier assign expression semicolon              { driver.saveE
              | READ identifier semicolon                          { driver.read($2); }
              | WRITE value semicolon                              { driver.write($2); }
              | SKIP semicolon                                     { }
-             | ZERO num semicolon                                 { driver.zero($2); }
-             | SHL num semicolon                                  { driver.shl($2); }
-             | SHR num semicolon                                  { driver.shr($2); }
-             | ADD num semicolon                                  { driver.add($2); }
-             | JUMP place semicolon                               { driver.jump($2); }
-             | JODD num place semicolon                           { driver.jodd($2, $3); }
-             | JZERO num place semicolon                          { driver.jzero($2, $3); }
-             | LOAD num semicolon                                 { driver.load($2); }
+             | ZERO num semicolon                                 { driver.addCommand(std::string("ZERO ") + $2); }
+             | SHL num semicolon                                  { driver.addCommand(std::string("SHL ") + $2); }
+             | SHR num semicolon                                  { driver.addCommand(std::string("SHR ") + $2); }
+             | ADD num semicolon                                  { driver.addCommand(std::string("ADD ") + $2); }
+             | JUMP place semicolon                               { driver.addCommand(std::string("JUMP ") + $2); }
+             | JODD num place semicolon                           { driver.addCommand(std::string("JODD ") + $2 + " " + $3 ); }
+             | JZERO num place semicolon                          { driver.addCommand(std::string("JZERO ") + $2 + " " + $3 ); }
+             | LOAD num semicolon                                 { driver.addCommand(std::string("LOAD ") + $2); }
              | STORE num semicolon                                 { driver.addCommand(std::string("STORE ") + $2); }
              | INC num semicolon                                 { driver.addCommand(std::string("INC ") + $2); }
              | SUB num semicolon                                 { driver.addCommand(std::string("SUB ") + $2); }

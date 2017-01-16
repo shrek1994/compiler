@@ -35,16 +35,7 @@ public:
     void saveSubToFirstRegister(const Variable& leftVar, const Variable& rightVar, unsigned registerNumber = 1);
     void saveRegisterToVar(const Variable& var, unsigned registerNumber);
 
-    void jump(const std::string& place);
-    void jodd(const std::string& reg, const std::string& place);
-    void zero(const std::string& reg);
-    void add(const std::string& reg);
-    void shl(const std::string& reg);
-    void shr(const std::string& reg);
-    void load(const std::string& reg);
     void addCommand(const std::string& reg);
-    void jzero(const std::string& reg, const std::string& place);
-
     void beginPlace(const std::string& place) { code << place; }
 
     std::string releaseCode();

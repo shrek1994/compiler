@@ -247,16 +247,6 @@ void Driver::saveSubToFirstRegister(const Variable &leftVar, const Variable &rig
     }
 }
 
-void Driver::jump(const std::string &place) {
-    DEBUG << "JUMP " << place << "\n";
-    code << "JUMP " << place << "\n";
-}
-
-void Driver::jzero(const std::string& reg, const std::string &place) {
-    DEBUG << "JZERO " << reg << " " << place << "\n";
-    code << "JZERO " << reg << " " << place << "\n";
-}
-
 std::string Driver::releaseCode() {
     auto code = this->code.str();
     this->code.str("");
@@ -279,39 +269,10 @@ void Driver::saveExpression(const jftt::Expression &expression, unsigned int reg
     }
 }
 
-void Driver::zero(const std::string &reg) {
-    DEBUG << "ZERO " << reg << "\n";
-    code << "ZERO " << reg << "\n";
-}
-
-void Driver::jodd(const std::string &reg, const std::string &place) {
-    DEBUG << "JODD " << reg << " " << place << "\n";
-    code << "JODD " << reg << " " << place << "\n";
-}
-
-void Driver::add(const std::string &reg) {
-    DEBUG << "ADD " << reg << "\n";
-    code << "ADD " << reg << "\n";
-}
-
-void Driver::shl(const std::string &reg) {
-    DEBUG << "SHL " << reg << "\n";
-    code << "SHL " << reg << "\n";
-}
-
-void Driver::shr(const std::string &reg) {
-    DEBUG << "SHR " << reg << "\n";
-    code << "SHR " << reg << "\n";
-}
-
 void Driver::saveRegisterToVar(const Variable &var, unsigned registerNumber) {
     findAndSetAction(std::string("STORE ") + std::to_string(registerNumber), var);
 }
 
-void Driver::load(const std::string &reg) {
-    DEBUG << "LOAD " << reg << "\n";
-    code << "LOAD " << reg << "\n";
-}
 
 void Driver::addCommand(const std::string& command) {
     DEBUG << command << "\n";
