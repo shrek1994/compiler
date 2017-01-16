@@ -381,4 +381,58 @@ TEST_F(OptimizerTest, shouldConvertDiv)
     ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
 }
 
+
+TEST_F(OptimizerTest, shouldConvertModulo)
+{
+    in <<
+       "BEGIN "
+               "a := 74;\n"
+               "b := 6;\n"
+               "c := a % b;\n"
+               "WRITE c;\n"
+               "END\n";
+    expected <<
+             "BEGIN\n"
+                     "a := 74;\n"
+                     "b := 6;\n"
+                     "ZERO 1;\n"
+                     "$reg2 := a;\n"
+                     "$reg3 := b;\n"
+
+                     //add:
+                     "%DIVWHILE0%: "+ jftt::varTemp.name + " := $reg3;\n"
+                     "$reg4 := a - " + jftt::varTemp.name +  ";\n"
+                     "JZERO 4 %ENDDIVWHILE0%;\n"
+                     "SHL 3;\n"
+                     "JUMP %DIVWHILE0%;\n"
+
+                     //div:
+                     "%ENDDIVWHILE0%: "
+             + jftt::varTemp.name + " := $reg3;\n"
+                     "$reg4 := b - " + jftt::varTemp.name + ";\n"
+                     "JZERO 4 %DIV0%;\n"
+                     "JUMP %ENDDIV0%;\n"
+                     "%DIV0%: SHL 1;\n"
+             + jftt::varTemp.name + " := $reg3;\n"
+                     "LOAD 4;\n"
+                     "STORE 2;\n"
+                     "SUB 4;\n"
+
+                     "JZERO 4 %PERFORMDIV0%;\n"
+                     "JUMP %SKIPDIV0%;\n"
+                     "%PERFORMDIV0%: INC 1;\n"
+             + jftt::varTemp.name + " := $reg3;\n"
+                     "SUB 2;\n"
+
+
+                     "%SKIPDIV0%: SHR 3;\n"
+                     "JUMP %ENDDIVWHILE0%;\n"
+                     "%ENDDIV0%: c := $reg2;\n"
+
+                     "WRITE c;\n"
+                     "END\n";
+    optimizer->run(in);
+    ASSERT_STREQ(expected.str().c_str(), out.str().c_str());
+}
+
 }

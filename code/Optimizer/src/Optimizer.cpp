@@ -161,12 +161,13 @@ std::string Optimizer::expression(const std::string &var, const jftt::Expression
         case jftt::Operator::none:
         case jftt::Operator::plus:
         case jftt::Operator::minus:
-        case jftt::Operator::modulo:
             return var + " := " + exp.leftValue.name + exp.operat + exp.rightValue.name + ";\n";
-        case jftt::Operator::div:
-            return div(exp.leftValue.name, exp.rightValue.name) + var + " := $reg1;\n";
         case jftt::Operator::mul:
             return mul(exp.leftValue.name, exp.rightValue.name) + var + " := $reg1;\n";
+        case jftt::Operator::div:
+            return div(exp.leftValue.name, exp.rightValue.name) + var + " := $reg1;\n";
+        case jftt::Operator::modulo:
+            return div(exp.leftValue.name, exp.rightValue.name) + var + " := $reg2;\n";
     }
 
 }
@@ -176,6 +177,7 @@ std::string Optimizer::div(const std::string &leftVar, const std::string &rightV
     command += "ZERO 1;\n";
     command += "$reg2 := " + leftVar + ";\n";
     command += "$reg3 := " + rightVar + ";\n";
+
             //add:
     command += "%DIVWHILE" + std::to_string(numOfDiv) + "%: "+ jftt::varTemp.name + " := $reg3;\n";
     command += "$reg4 := " + leftVar + " - " + jftt::varTemp.name +  ";\n";
@@ -199,7 +201,6 @@ std::string Optimizer::div(const std::string &leftVar, const std::string &rightV
     command += "%PERFORMDIV" + std::to_string(numOfDiv) + "%: INC 1;\n";
     command += jftt::varTemp.name + " := $reg3;\n";
     command += "SUB 2;\n";
-
 
     command += "%SKIPDIV" + std::to_string(numOfDiv) + "%: SHR 3;\n";
     command += "JUMP %ENDDIVWHILE" + std::to_string(numOfDiv) + "%;\n";

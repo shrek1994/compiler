@@ -33,7 +33,7 @@ const std::vector<Param> params = {
     Param{"VAR a b c BEGIN b := 12; c := 34; a := b + c; WRITE a; END\n",
           emptyIn,
           "> 46\n",
-          "shouldAssignSumOfVarssToVar"},
+          "shouldAssignSumOfVarsToVar"},
 
     //===========================SUM=TABS[number]=========================
 
@@ -175,6 +175,28 @@ const std::vector<Param> params = {
           emptyIn,
           "> 11\n",
           "shouldAssignDivOfVarsToVar"},
+
+
+        //======================================================================
+        //===========================MODULO=======================================
+
+//TODO mod z tablicami
+    Param{"VAR a BEGIN a := 89 % 8; WRITE a; END\n",
+          emptyIn,
+          "> 1\n",
+          "shouldAssignModOfNumbersToVar"},
+    Param{"VAR a b BEGIN b := 8; a := 89 % b; WRITE a; END\n",
+          emptyIn,
+          "> 1\n",
+          "shouldAssignModOfNumberAndVarToVar"},
+    Param{"VAR a b BEGIN b := 89; a := b % 8; WRITE a; END\n",
+          emptyIn,
+          "> 1\n",
+          "shouldAssignModOfVarAndNumberToVar"},
+    Param{"VAR a b c BEGIN b := 89; c := 8; a := b % c; WRITE a; END\n",
+          emptyIn,
+          "> 1\n",
+          "shouldAssignModOfVarsToVar"},
 
 };
 } // namespace
