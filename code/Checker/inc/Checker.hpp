@@ -13,14 +13,16 @@ class Checker {
 public:
     static const std::string warning;
     static const std::string missingSemicolon;
+    static const std::string error;
+    static const std::string duplicateDeclaration;
 
     Checker(std::ostream& out,
             std::ostream& info = std::cout,
-            std::ostream& error = std::cerr)
-        : out(out), info(info), error(error)
+            std::ostream& err = std::cerr)
+        : out(out), info(info), err(err)
     {}
 
-    void run(std::istream& in);
+    bool run(std::istream& in);
     void createVariable(const jftt::Variable &variable);
 
     const std::vector<std::string>& getVariables() const;
@@ -30,9 +32,12 @@ public:
 private:
     std::ostream& out;
     std::ostream& info;
-    std::ostream& error;
+    std::ostream& err;
     std::vector<std::string> variables;
     std::shared_ptr<Scanner> scanner;
+    bool isCodeCorrect = true;
+
+    void checkIfVaribleDontExist(const jftt::Variable &variable);
 };
 
 } // namespace checker

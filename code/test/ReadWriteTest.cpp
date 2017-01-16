@@ -1,5 +1,4 @@
 #include "CompilerTest.hpp"
-#include "debug.hpp"
 
 namespace {
 

@@ -11,7 +11,11 @@ void compiler::run(std::istream& languageCode, std::ostream& compiledCode) {
     std::stringstream outChceker, outOprimizer;
 
     checker::Checker check(outChceker, info, error);
-    check.run(languageCode);
+    auto isCodeCorrect = check.run(languageCode);
+    if (! isCodeCorrect)
+    {
+        return;
+    }
 
     DEBUG << "code:\n" << outChceker.str() << "\n";
 

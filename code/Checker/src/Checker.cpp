@@ -5,20 +5,26 @@
 namespace checker {
 
 const std::string Checker::warning = "Warning - line: ";
+const std::string Checker::error = "Error - line: ";
 const std::string Checker::missingSemicolon = " - Missing Semicolon";
+const std::string Checker::duplicateDeclaration = " - Duplicate Declaration";
 
-void Checker::run(std::istream& in) {
+bool Checker::run(std::istream& in) {
     scanner = std::make_shared<Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
     DEBUG << "starting checking\n";
-    if (parser->parse())
-        error << "Parse failed!!\n";
+    if (parser->parse()) {
+        err << "Parse failed!!\n";
+        return false;
+    }
     DEBUG << "ended checking\n";
+    return isCodeCorrect;
 }
 
 void Checker::createVariable(const jftt::Variable &variable)
 {
     DEBUG << "push_back(" << variable << ");\n";
+    checkIfVaribleDontExist(variable);
 
     if (! variable.isTab)
     {
@@ -46,6 +52,18 @@ void Checker::repairSemicolon() {
     std::stringstream& txt = static_cast<std::stringstream&>(out);
     auto txtStr = txt.str();
     DEBUG << "repairSemicolon()\n" << txtStr << "\n";
+}
+
+void Checker::checkIfVaribleDontExist(const jftt::Variable &variable) {
+    for (auto var : variables)
+    {
+        if (var == variable.name)
+        {
+            err << error << scanner->getNumOfLine() << duplicateDeclaration << ": '" << variable.name << "'\n";
+            isCodeCorrect = false;
+            return;
+        }
+    }
 }
 
 } // namespace checker
