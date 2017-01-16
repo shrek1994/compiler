@@ -1,7 +1,6 @@
 #include "CompilerTest.hpp"
 
 namespace {
-//TODO co gdy 12 := 23 ?
 const std::string emptyIn = "";
 const std::vector<Param> params = {
     Param{"VAR a BEGIN a := 123; WRITE a; END\n",
@@ -138,6 +137,7 @@ const std::vector<Param> params = {
     //======================================================================
     //============================MUL=======================================
 
+//TODO mul z tablicami
     Param{"VAR a BEGIN a := 43 * 21; WRITE a; END\n",
           emptyIn,
           "> 903\n",
@@ -158,22 +158,23 @@ const std::vector<Param> params = {
     //======================================================================
     //============================DIV=======================================
 
-//    Param{"VAR a BEGIN a := 89 / 8; WRITE a; END\n",
-//          emptyIn,
-//          "> 11\n",
-//          "shouldAssignDivOfNumbersToVar"},
-//    Param{"VAR a b BEGIN b := 8; a := 89 / b; WRITE a; END\n",
-//          emptyIn,
-//          "> 11\n",
-//          "shouldAssignDivOfNumberAndVarToVar"},
-//    Param{"VAR a b BEGIN b := 89; a := b / 8; WRITE a; END\n",
-//          emptyIn,
-//          "> 11\n",
-//          "shouldAssignDivOfVarAndNumberToVar"},
-//    Param{"VAR a b c BEGIN b := 89; c := 8; a := b / c; WRITE a; END\n",
-//          emptyIn,
-//          "> 11\n",
-//          "shouldAssignDivOfVarsToVar"},
+//TODO div z tablicami
+    Param{"VAR a BEGIN a := 89 / 8; WRITE a; END\n",
+          emptyIn,
+          "> 11\n",
+          "shouldAssignDivOfNumbersToVar"},
+    Param{"VAR a b BEGIN b := 8; a := 89 / b; WRITE a; END\n",
+          emptyIn,
+          "> 11\n",
+          "shouldAssignDivOfNumberAndVarToVar"},
+    Param{"VAR a b BEGIN b := 89; a := b / 8; WRITE a; END\n",
+          emptyIn,
+          "> 11\n",
+          "shouldAssignDivOfVarAndNumberToVar"},
+    Param{"VAR a b c BEGIN b := 89; c := 8; a := b / c; WRITE a; END\n",
+          emptyIn,
+          "> 11\n",
+          "shouldAssignDivOfVarsToVar"},
 
 };
 } // namespace
@@ -182,7 +183,6 @@ class AssignTest : public CompilerParamTest {};
 
 TEST_P(AssignTest, shouldCorrectAssign)
 {
-    Logger::enable();
     runTest(GetParam());;
 }
 

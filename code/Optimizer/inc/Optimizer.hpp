@@ -38,6 +38,7 @@ private:
                            const std::string& ifCommands,
                            const std::string& elseCommands);
     std::string mul(const std::string& leftVar, const std::string& rightVar);
+    std::string div(const std::string &leftValue, const std::string &rightValue);
 
     std::ostream& out = std::cout;
     std::ostream& error = std::cerr;
@@ -45,6 +46,7 @@ private:
     unsigned long numOfWhile = 0;
     unsigned long numOfFor = 0;
     unsigned long numOfMul = 0;
+    unsigned long numOfDiv = 0;
 };
 
 } // namespace optimizer
