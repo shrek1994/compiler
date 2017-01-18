@@ -73,8 +73,8 @@ TEST_F(AllTest, wrongVariableName_4)
 
 TEST_F(AllTest, program0)
 {
-    in << "10\n";
-    std::string expectedOut = "? > 0\n> 1\n> 0\n> 1\n";
+    in << "1345601\n";
+    std::string expectedOut = "? > 1\n> 0\n> 0\n> 0\n> 0\n> 0\n> 1\n> 0\n> 0\n> 0\n> 0\n> 1\n> 0\n> 0\n> 0\n> 1\n> 0\n> 0\n> 1\n> 0\n> 1\n";
 
     language <<
              "VAR\n"
@@ -169,6 +169,50 @@ TEST_F(AllTest, program2)
                      "        SKIP;\n"
                      "    ENDIF\n"
                      "END";
+
+    compiler.run(language, generatedCode);
+    interpreter.run(generatedCode, in, out, info);
+
+    EXPECT_STREQ("", this->error.str().c_str());
+    EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
+}
+
+TEST_F(AllTest, program3)
+{
+    in << "1234567890\n"
+          "1234567890987654321\n"
+          "987654321\n";
+    std::string expectedOut = "? ? ? > 674106858\n";
+
+    language <<
+             "{ a ^ b mod c \n"
+                     "? 1234567890\n"
+                     "? 1234567890987654321\n"
+                     "? 987654321\n"
+                     "> 674106858\n"
+                     "}\n"
+                     "VAR\n"
+                     "    a b c wynik pot wybor\n"
+                     "BEGIN\n"
+                     "    READ a;\n"
+                     "    READ b;\n"
+                     "    READ c;\n"
+                     "    wynik:=1;\n"
+                     "    pot:=a%c;\n"
+                     "    WHILE b>0 DO\n"
+                     "\t\twybor:=b%2;\n"
+                     "\t\tIF wybor=1 THEN\n"
+                     "\t\t\twynik:=wynik*pot;\n"
+                     "\t\t\twynik:=wynik%c;\n"
+                     "\t\tELSE\n"
+                     "\t\t\tSKIP;\n"
+                     "\t\tENDIF\n"
+                     "\t\tb:=b/2;\n"
+                     "\t\tpot:=pot*pot;\n"
+                     "\t\tpot:=pot%c;\n"
+                     "    ENDWHILE\n"
+                     "    WRITE wynik;\n"
+             "END";
 
     compiler.run(language, generatedCode);
     interpreter.run(generatedCode, in, out, info);
