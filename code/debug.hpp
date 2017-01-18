@@ -17,6 +17,15 @@
 
 namespace Logger {
 void enable();
+void disable();
 extern bool enableDebug;
 extern std::ostream& out;
+
+class TurnLogsOnThisTest
+{
+public:
+    TurnLogsOnThisTest() { enable(); }
+    ~TurnLogsOnThisTest() { disable(); }
+};
+
 }

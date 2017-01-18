@@ -9,5 +9,10 @@ void enable() {
     enableDebug = true;
 }
 
+void disable() {
+    enableDebug = false;
+}
+
+
 }
 

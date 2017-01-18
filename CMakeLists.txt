@@ -103,7 +103,7 @@ add_executable(runUnitTests
         )
 
 # Link test executable against gtest & gtest_main
-target_link_libraries(runUnitTests gtest pthread)
+target_link_libraries(runUnitTests gtest pthread cln)
 
 add_test(
     NAME runUnitTests

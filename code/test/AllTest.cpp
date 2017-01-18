@@ -185,12 +185,7 @@ TEST_F(AllTest, program3)
     std::string expectedOut = "? ? ? > 674106858\n";
 
     language <<
-             "{ a ^ b mod c \n"
-                     "? 1234567890\n"
-                     "? 1234567890987654321\n"
-                     "? 987654321\n"
-                     "> 674106858\n"
-                     "}\n"
+             "{ a ^ b mod c }\n"
                      "VAR\n"
                      "    a b c wynik pot wybor\n"
                      "BEGIN\n"
@@ -217,10 +212,42 @@ TEST_F(AllTest, program3)
     compiler.run(language, generatedCode);
     interpreter.run(generatedCode, in, out, info);
 
-//    EXPECT_STREQ("", this->info.str().c_str());
     EXPECT_STREQ("", this->error.str().c_str());
     EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
 }
 
+
+TEST_F(AllTest, DISABLED_program4)
+{
+    in << "20\n";
+    std::string expectedOut = "? > 2432902008176640000\n";
+
+    language <<
+             "{ Silnia }\n"
+                     "VAR\n"
+                     "  s[101] n m a j\n"
+                     "BEGIN\n"
+                     "    READ n;\n"
+                     "    s[0]:=1;\n"
+                     "    m:=n;\n"
+                     "    FOR i FROM 1 TO m DO\n"
+                     "\t\ta:=i%2;\n"
+                     "\t\tj:=i-1;\n"
+                     "\t\tIF a=1 THEN\n"
+                     "\t\t\ts[i]:=s[j]*m;\n"
+                     "\t\tELSE\n"
+                     "\t\t\ts[i]:=m*s[j];\n"
+                     "\t\tENDIF\n"
+                     "\t\tm:=m-1;\n"
+                     "    ENDFOR\n"
+                     "    WRITE s[n];\n"
+                     "END";
+
+    compiler.run(language, generatedCode);
+    interpreter.run(generatedCode, in, out, info);
+
+    EXPECT_STREQ("", this->error.str().c_str());
+    EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
+}
 
 } // namespace
