@@ -49,7 +49,7 @@ public:
             interpreter.run(generatedCode, in, out, info);
         });
 
-        ASSERT_TRUE(executionTest.wait_for(executionTime) != std::future_status::timeout);
+        ASSERT_TRUE(executionTest.wait_for(executionTime) != std::future_status::timeout) << param.testName << "\n";
         EXPECT_STREQ(param.expected.c_str(), out.str().c_str())
                 << param.testName << "\n"
                 << info.str()
