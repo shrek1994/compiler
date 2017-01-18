@@ -188,8 +188,10 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         k++;
     }
 //    plik.close();
+    DEBUG << "Skonczono czytanie pliku (" << program.size() << " linii)." << std::endl;
     info << "Skonczono czytanie pliku (" << program.size() << " linii)." << std::endl;
 
+    DEBUG << "Uruchamianie programu." << std::endl;
     info << "Uruchamianie programu." << std::endl;
     lr = 0;
     srand(time(NULL));
@@ -229,6 +231,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
             return -1;
         }
     }
+    DEBUG << "Skonczono program (czas: " << i << ")." << std::endl;
     info << "Skonczono program (czas: " << i << ")." << std::endl;
 
     return 0;

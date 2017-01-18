@@ -281,4 +281,80 @@ TEST_F(AllTest, program5)
     EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
 }
 
+
+TEST_F(AllTest, program6)
+{
+    in << "1\n";
+    std::string expectedOut = "? > 121393\n";
+
+    language << "{ Fibonacci }\n"
+             "VAR\n"
+                     "  tab[123456] a b c d e f g h i j k l m n o p q r s t u v w x y z\n"
+                     "BEGIN\n"
+                     "  READ tab[12345];\n"
+                     "  a:=tab[12345];\n"
+                     "  b:=a;\n"
+                     "  c:=b+a;\n"
+                     "  d:=c+b;\n"
+                     "  e:=d+c;\n"
+                     "  f:=e+d;\n"
+                     "  g:=f+e;\n"
+                     "  h:=g+f;\n"
+                     "  i:=h+g;\n"
+                     "  j:=i+h;\n"
+                     "  k:=j+i;\n"
+                     "  l:=k+j;\n"
+                     "  m:=l+k;\n"
+                     "  n:=m+l;\n"
+                     "  o:=n+m;\n"
+                     "  p:=o+n;\n"
+                     "  q:=p+o;\n"
+                     "  r:=q+p;\n"
+                     "  s:=r+q;\n"
+                     "  t:=s+r;\n"
+                     "  u:=t+s;\n"
+                     "  v:=u+t;\n"
+                     "  w:=v+u;\n"
+                     "  x:=w+v;\n"
+                     "  y:=x+w;\n"
+                     "  z:=y+x;\n"
+                     "  tab[a]:=z;\n"
+                     "  WRITE tab[a];\n"
+                     "END";
+
+    compiler.run(language, generatedCode);
+    interpreter.run(generatedCode, in, out, info);
+
+    EXPECT_STREQ("", this->error.str().c_str());
+    EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
+}
+
+
+TEST_F(AllTest, DISABLED_program7)
+{
+    in << "20\n";
+    std::string expectedOut = "? > 2432902008176640000\n> 100\n";
+    Logger::enable();
+    language <<
+             "VAR\n"
+                     "  s[101] n j\n"
+                     "BEGIN\n"
+                     "    READ n;\n"
+                     "    s[n]:=1;\n"
+                     "    j:=n;\n"
+                     "    n:=n-1;\n"
+                     "    FOR i FROM n DOWNTO 0 DO\n"
+                     "        s[i]:=s[j]*j;\n"
+                     "        j:=j-1;\n"
+                     "    ENDFOR\n"
+                     "    WRITE s[0];\n"
+                     "END";
+
+    compiler.run(language, generatedCode);
+    interpreter.run(generatedCode, in, out, info);
+
+    EXPECT_STREQ("", this->error.str().c_str());
+    EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
+}
+
 } // namespace
