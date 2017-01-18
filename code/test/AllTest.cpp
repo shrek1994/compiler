@@ -133,8 +133,10 @@ TEST_F(AllTest, program1)
 
 TEST_F(AllTest, program2)
 {
-    in << "12345678903\n"; // TODO zmienic na mniejsza
-    std::string expectedOut = "? > 3\n> 1\n> 4115226301\n> 1\n";
+//    in << "12345678903\n";
+//    std::string expectedOut = "? > 3\n> 1\n> 4115226301\n> 1\n";
+    in << "1234567890\n";
+    std::string expectedOut = "? > 2\n> 1\n> 3\n> 2\n> 5\n> 1\n> 3607\n> 1\n> 3803\n> 1\n";
 
     language <<
              "{ Rozklad liczby na czynniki pierwsze }\n"
