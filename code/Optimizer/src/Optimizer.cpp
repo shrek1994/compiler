@@ -138,9 +138,12 @@ std::string Optimizer::ifDownTo(const std::string &var, const std::string &from,
 
     command += var + " := " + from + ";\n";
     command += ifVariable.name + " := " + to + ";\n";
-    command += "%FOR" + std::to_string(numOfFor) + "%: "; //"$reg1 := " + var + " - " + to + ";\n";
-    command += ifCommand(jftt::Condition{var, jftt::compare::biggerOrEqThan, ifVariable.name},
+    command += "%FOR" + std::to_string(numOfFor) + "%: ";
+    command += ifCommand(jftt::Condition{var, jftt::compare::biggerThan, ifVariable.name},
                          commandsInside + decrementVar + repeat,
+                         "SKIP;\n");
+    command += ifCommand(jftt::Condition{var, jftt::compare::eq, ifVariable.name},
+                         commandsInside,
                          "SKIP;\n");
     ++numOfFor;
     return std::move(command);

@@ -40,6 +40,16 @@ const std::vector<Param> params = {
               emptyIn,
               "> 5\n> 4\n> 3\n> 2\n> 1\n",
               "shouldCorrectPerformFor_WithChangingRangeInside_downTo"},
+        Param{"VAR a b BEGIN a := 1; b := 5; \n"
+                      "FOR i FROM b DOWNTO 0 DO\n"
+                      "a := 3;\n"
+                      "b := 3;\n"
+                      "WRITE i;\n"
+                      "ENDFOR\n"
+                      " END\n",
+              emptyIn,
+              "> 5\n> 4\n> 3\n> 2\n> 1\n> 0\n",
+              "shouldCorrectPerformFor_downToZero"},
 };
 
 } // namespace
