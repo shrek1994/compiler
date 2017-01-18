@@ -3,8 +3,9 @@
 #include <sstream>
 #include <iostream>
 #include <memory>
-#include <inc/Condition.hpp>
-#include <inc/Expression.hpp>
+#include <Condition.hpp>
+#include <Expression.hpp>
+#include <Checker.hpp>
 #include "Variable.hpp"
 
 namespace optimizer {
@@ -12,7 +13,9 @@ namespace optimizer {
 class Optimizer {
 public:
     Optimizer() = default;
-    Optimizer(std::ostream &out);
+    Optimizer(std::ostream &out, const std::shared_ptr<checker::Checker>& check)
+            : out(out),
+              check(check) {}
 
     void run(std::istream& in);
 
@@ -39,6 +42,7 @@ private:
                            const std::string& elseCommands);
     std::string mul(const std::string& leftVar, const std::string& rightVar);
     std::string div(const std::string &leftValue, const std::string &rightValue);
+    bool isVarTab(const std::string &var);
 
     std::ostream& out = std::cout;
     std::ostream& error = std::cerr;
@@ -47,8 +51,7 @@ private:
     unsigned long numOfFor = 0;
     unsigned long numOfMul = 0;
     unsigned long numOfDiv = 0;
-
-    bool isVarTab(const std::string &var);
+    std::shared_ptr<checker::Checker> check;
 };
 
 } // namespace optimizer

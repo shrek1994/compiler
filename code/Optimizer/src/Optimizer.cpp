@@ -54,8 +54,6 @@ std::string Optimizer::ifCommand(jftt::Condition condition,
     }
 }
 
-Optimizer::Optimizer(std::ostream &out) : out(out) {}
-
 std::ostream &Optimizer::getOut() const {
     return out;
 }
@@ -115,9 +113,14 @@ std::string Optimizer::ifTo(const std::string &var, const std::string &from,
     std::string command;
     std::string incrementVar = var + " := " + var + " + 1;\n";
     std::string repeat = "JUMP %FOR" + std::to_string(numOfFor) + "%;\n";
+    auto ifVariable = jftt::VariableBuilder().withName("FOR" + std::to_string(numOfFor)).build();
+
+    check->createVariable(ifVariable);
+
     command += var + " := " + from + ";\n";
-    command += "%FOR" + std::to_string(numOfFor) + "%: "; //"$reg1 := " + var + " - " + to + ";\n";
-    command += ifCommand(jftt::Condition{var, jftt::compare::lowerOrEqThan, to},
+    command += ifVariable.name + " := " + to + ";\n";
+    command += "%FOR" + std::to_string(numOfFor) + "%: ";
+    command += ifCommand(jftt::Condition{var, jftt::compare::lowerOrEqThan, ifVariable.name},
                          commandsInside + incrementVar + repeat,
                          "SKIP;\n");
     ++numOfFor;

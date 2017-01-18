@@ -176,10 +176,10 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         if( com=="JODD"  ) { i1 = JODD; plik >> i2;  plik >> i3; }
         if( com=="HALT"  ) { i1 = HALT; }
 
-        if( i1==ERROR ) { cout << "Błąd: Nieznana instrukcja w linii " << k << "." << std::endl; return -1; }
-        if( i2>reg-1 ) { cout << "Błąd: zły rejestr w instrukcji w linii " << k << std::endl; return -1; }
-        if( i2<0 ) { cout << "Błąd: Zły rejestr w instrukcji w linii " << k << std::endl; return -1; }
-        if( i3<0 ) { cout << "Błąd: Zły adress w instrukcji w linii " << k << std::endl; return -1; }
+        if( i1==ERROR ) { cout << "Blad: Nieznana instrukcja w linii " << k << "." << std::endl; return -1; }
+        if( i2>reg-1 ) { cout << "Blad: zły rejestr w instrukcji w linii " << k << std::endl; return -1; }
+        if( i2<0 ) { cout << "Blad: Zły rejestr w instrukcji w linii " << k << std::endl; return -1; }
+        if( i3<0 ) { cout << "Blad: Zły adress w instrukcji w linii " << k << std::endl; return -1; }
 
         if( plik.good() )
         {
@@ -225,7 +225,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         }
         if( lr<0 || lr>=(int)program.size() )
         {
-            cout << "Błąd: Wywołanie nieistniejącej instrukcji nr " << lr << "." << std::endl;
+            cout << "Blad: Wywołanie nieistniejącej instrukcji nr " << lr << "." << std::endl;
             return -1;
         }
     }

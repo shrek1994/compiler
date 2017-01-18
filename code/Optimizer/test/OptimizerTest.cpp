@@ -22,8 +22,9 @@ public:
         error.str("");
     }
 
-    std::stringstream in, out, info, error, expected;
-    std::shared_ptr<Optimizer> optimizer = std::make_shared<Optimizer>(out);
+    std::stringstream in, out, info, error, expected, null;
+    std::shared_ptr<checker::Checker> check = std::make_shared<checker::Checker>(null, null, null);
+    std::shared_ptr<Optimizer> optimizer = std::make_shared<Optimizer>(out, check);
 };
 
 
@@ -260,7 +261,8 @@ TEST_F(OptimizerTest, shouldChangeFor_upTo)
     expected <<
              "BEGIN\n"
                  "i := a;\n"
-                 "%FOR0%: $reg1 := i - b;\n"
+                 "FOR0 := b;\n"
+                 "%FOR0%: $reg1 := i - FOR0;\n"
                  "JZERO 1 %ELSE0%;\n"
                  "SKIP;\n"
                  "JUMP %ENDIF0%;\n"
