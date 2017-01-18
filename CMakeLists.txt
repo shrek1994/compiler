@@ -73,6 +73,19 @@ add_executable(compiler
         ${SOURCE_FILES}
         )
 
+target_link_libraries(compiler cln)
+
+
+add_executable(interpreter
+        interpreter.cc
+        )
+
+
+add_executable(interpreter-cln
+        interpreter-cln.cc
+        )
+
+target_link_libraries(interpreter-cln cln)
 
 ############## GTest ####################
 

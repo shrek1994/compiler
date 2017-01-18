@@ -2,8 +2,10 @@
 #include <fstream>
 #include <memory>
 #include <compiler.hpp>
+#include <debug.hpp>
 
 int main(int numOfArg, char *args[]) {
+    Logger::disable();
     if (numOfArg != 5)
     {
         std::cout <<"Uruchamianie:\n"
