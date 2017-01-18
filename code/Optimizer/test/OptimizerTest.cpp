@@ -286,7 +286,8 @@ TEST_F(OptimizerTest, shouldChangeFor_upDownto)
     expected <<
         "BEGIN\n"
              "i := a;\n"
-             "%FOR0%: $reg1 := b - i;\n"
+             "FOR0 := b;\n"
+             "%FOR0%: $reg1 := FOR0 - i;\n"
              "JZERO 1 %ELSE0%;\n"
              "SKIP;\n"
              "JUMP %ENDIF0%;\n"

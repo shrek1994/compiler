@@ -132,9 +132,14 @@ std::string Optimizer::ifDownTo(const std::string &var, const std::string &from,
     std::string command;
     std::string decrementVar = var + " := " + var + " - 1;\n";
     std::string repeat = "JUMP %FOR" + std::to_string(numOfFor) + "%;\n";
+    auto ifVariable = jftt::VariableBuilder().withName("FOR" + std::to_string(numOfFor)).build();
+
+    check->createVariable(ifVariable);
+
     command += var + " := " + from + ";\n";
+    command += ifVariable.name + " := " + to + ";\n";
     command += "%FOR" + std::to_string(numOfFor) + "%: "; //"$reg1 := " + var + " - " + to + ";\n";
-    command += ifCommand(jftt::Condition{var, jftt::compare::biggerOrEqThan, to},
+    command += ifCommand(jftt::Condition{var, jftt::compare::biggerOrEqThan, ifVariable.name},
                          commandsInside + decrementVar + repeat,
                          "SKIP;\n");
     ++numOfFor;

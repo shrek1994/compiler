@@ -22,14 +22,24 @@ const std::vector<Param> params = {
               "shouldCorrectPerformFor_downTo"},
         Param{"VAR a b BEGIN a := 1; b := 5; \n"
                       "FOR i FROM a TO b DO\n"
-                      "a := 3;\n"
-                      "b := 3;\n"
-                      "WRITE i;\n"
+                          "a := 3;\n"
+                          "b := 3;\n"
+                          "WRITE i;\n"
                       "ENDFOR\n"
                       " END\n",
               emptyIn,
               "> 1\n> 2\n> 3\n> 4\n> 5\n",
               "shouldCorrectPerformFor_WithChangingRangeInside_to"},
+        Param{"VAR a b BEGIN a := 1; b := 5; \n"
+                      "FOR i FROM b DOWNTO a DO\n"
+                          "a := 3;\n"
+                          "b := 3;\n"
+                          "WRITE i;\n"
+                      "ENDFOR\n"
+                      " END\n",
+              emptyIn,
+              "> 5\n> 4\n> 3\n> 2\n> 1\n",
+              "shouldCorrectPerformFor_WithChangingRangeInside_downTo"},
 };
 
 } // namespace
