@@ -50,6 +50,18 @@ const std::vector<Param> params = {
               emptyIn,
               "> 5\n> 4\n> 3\n> 2\n> 1\n> 0\n",
               "shouldCorrectPerformFor_downToZero"},
+
+        Param{"VAR a b[10] "
+                  "BEGIN "
+                      "a := 5; "
+                      "FOR i FROM a DOWNTO 0 DO\n"
+                        "a := b[i] * a;\n"
+                        "WRITE i;\n"
+                      "ENDFOR\n"
+                  " END\n",
+              emptyIn,
+              "> 5\n> 4\n> 3\n> 2\n> 1\n> 0\n",
+              "shouldCorrectPerformFor_downToZeroWithMulTabInside"},
 };
 
 } // namespace

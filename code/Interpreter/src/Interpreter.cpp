@@ -8,6 +8,7 @@
 #include<cstdlib> 	// rand()
 #include<ctime>
 
+
 #ifdef SMALL_NUMBER
 
 int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, std::ostream &info)
@@ -199,6 +200,11 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
     i = 0;
     while( std::get<0>(program[lr])!=HALT )	// HALT
     {
+        auto instruction = std::get<0>(program[lr]);
+        auto regNumber1 = std::get<1>(program[lr]);
+        auto regNumber2 = std::get<2>(program[lr]);
+        DEBUG << "line " << lr << ": " <<instruction << " " << regNumber1 << " " << regNumber2 << "\n";
+
         switch( std::get<0>(program[lr]) )
         {
             case GET:	cout << "? "; cin >> r[std::get<1>(program[lr])]; i+=100; lr++; break;
@@ -230,6 +236,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
             cout << "Blad: Wywołanie nieistniejącej instrukcji nr " << lr << "." << std::endl;
             return -1;
         }
+        DEBUG << "r0=" << r[0] << ", r1=" << r[1] << ", r2="<< r[2] << ", r3=" << r[3] << ", r4=" << r[4] <<"\n";
     }
     DEBUG << "Skonczono program (czas: " << i << ")." << std::endl;
     info << "Skonczono program (czas: " << i << ")." << std::endl;
@@ -237,3 +244,41 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
     return 0;
 }
 #endif // small number
+
+std::ostream &operator<<(std::ostream &out, Instructions instructions) {
+    switch (instructions)
+    {
+        case GET:
+            return out << "GET";
+        case PUT:
+            return out << "PUT";
+        case LOAD:
+            return out << "LOAD";
+        case STORE:
+            return out << "STORE";
+        case COPY:
+            return out << "COPY";
+        case ADD:
+            return out << "ADD";
+        case SUB:
+            return out << "SUB";
+        case SHL:
+        case SHR:
+        case INC:
+            return out;
+        case DEC:
+            return out << "DEC";
+        case ZERO:
+            return out << "ZERO";
+        case JUMP:
+            return out << "JUMP";
+        case JZERO:
+            return out << "JZERO";
+        case JODD:
+            return out << "JODD";
+        case HALT:
+            return out << "HALT";
+        case ERROR:
+            return out << "ERROR";
+    }
+}

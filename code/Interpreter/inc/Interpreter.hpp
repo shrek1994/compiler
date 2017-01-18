@@ -5,6 +5,8 @@
 
 enum Instructions { GET, PUT, LOAD, STORE, COPY, ADD, SUB, SHR, SHL, INC, DEC, ZERO, JUMP, JZERO, JODD, HALT, ERROR };
 
+std::ostream& operator<< (std::ostream& out, Instructions instructions);
+
 class Interpreter
 {
 public:

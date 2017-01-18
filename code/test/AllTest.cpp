@@ -330,11 +330,10 @@ TEST_F(AllTest, program6)
 }
 
 
-TEST_F(AllTest, DISABLED_program7)
+TEST_F(AllTest, program7)
 {
     in << "20\n";
-    std::string expectedOut = "? > 2432902008176640000\n> 100\n";
-    Logger::enable();
+    std::string expectedOut = "? > 2432902008176640000\n";
     language <<
              "VAR\n"
                      "  s[101] n j\n"
