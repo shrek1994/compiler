@@ -217,7 +217,7 @@ TEST_F(AllTest, program3)
 }
 
 
-TEST_F(AllTest, DISABLED_program4)
+TEST_F(AllTest, program4)
 {
     in << "20\n";
     std::string expectedOut = "? > 2432902008176640000\n";
