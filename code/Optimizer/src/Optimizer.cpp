@@ -138,8 +138,22 @@ std::string Optimizer::ifDownTo(const std::string &var, const std::string &from,
     return std::move(command);
 }
 
-std::string Optimizer::mul(const std::string &leftVar, const std::string &rightVar) {
+std::string Optimizer::mul(const std::string &leftVariable, const std::string &rightVariable) {
     std::string command;
+    std::string leftVar = leftVariable;
+    std::string rightVar = rightVariable;
+
+    if (isVarTab(leftVar))
+    {
+        command += jftt::leftVar.name + " := " + leftVariable + ";\n";
+        leftVar = jftt::leftVar.name;
+    }
+    if (isVarTab(rightVar))
+    {
+        command += jftt::rightVar.name + " := " + rightVariable + ";\n";
+        rightVar = jftt::rightVar.name;
+    }
+
     command += "ZERO 1;\n";
     command += "$reg2 := " + leftVar + ";\n";
     command += "$reg3 := " + rightVar + ";\n";
@@ -208,6 +222,10 @@ std::string Optimizer::div(const std::string &leftVar, const std::string &rightV
 
     ++numOfDiv;
     return std::move(command);
+}
+
+bool Optimizer::isVarTab(const std::string &var) {
+    return var[var.size() - 1] == ']';
 }
 
 

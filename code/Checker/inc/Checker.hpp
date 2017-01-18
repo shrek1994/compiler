@@ -32,7 +32,6 @@ public:
     const std::vector<std::string>& getVariables() const;
 
     void warningSemicolon();
-    void repairSemicolon();
 private:
     std::ostream& out;
     std::ostream& info;

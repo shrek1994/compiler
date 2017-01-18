@@ -49,7 +49,7 @@ private:
     void writeNumber(long long value, unsigned registerNumber);
     void loadVariable(const Variable& variable, unsigned registerNumber);
     void findAndSetAction(const std::string& action, const Variable& variable);
-    int getPosition(const std::string& variable);
+    long long getPosition(const std::string& variable);
     void setPositionInZeroRegister(const Variable &variable, unsigned registerNumber);
 
     std::shared_ptr<LexParser> parser  = nullptr;

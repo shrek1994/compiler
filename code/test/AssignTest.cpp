@@ -137,7 +137,6 @@ const std::vector<Param> params = {
     //======================================================================
     //============================MUL=======================================
 
-//TODO mul z tablicami
     Param{"VAR a BEGIN a := 43 * 21; WRITE a; END\n",
           emptyIn,
           "> 903\n",
@@ -154,6 +153,44 @@ const std::vector<Param> params = {
           emptyIn,
           "> 903\n",
           "shouldAssignMulOfVarsToVar"},
+
+        //===========================MUL=TABS[number]=========================
+
+    Param{"VAR a[10] BEGIN a[5] := 43 * 21; WRITE a[5]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfNumbersToVar_Tabs"},
+    Param{"VAR a[10] b[10] BEGIN b[5] := 43; a[5] := b[5] * 21; WRITE a[5]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfVarAndNumberToVar_Tabs"},
+    Param{"VAR a[10] b[10] BEGIN b[5] := 21; a[5] := 43 * b[5]; WRITE a[5]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfNumberAndVarToVar_Tabs"},
+    Param{"VAR a[10] b[10] c[10] BEGIN b[5] := 43; c[5] := 21; a[5] := b[5] * c[5]; WRITE a[5]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfVarsToVar_Tabs"},
+
+        //===========================MUL=TABS[variable]=========================
+
+    Param{"VAR a[10] d BEGIN d := 6; a[d] := 43 * 21; WRITE a[d]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfNumbersToVar_Tabs[variable]"},
+    Param{"VAR a[10] b[10] d BEGIN d := 6; b[d] := 43; a[d] := b[d] * 21; WRITE a[d]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfVarAndNumberToVar_Tabs[variable]"},
+    Param{"VAR a[10] b[10] d BEGIN d := 6; b[d] := 21; a[d] := 43 * b[d]; WRITE a[d]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfNumberAndVarToVar_Tabs[variable]"},
+    Param{"VAR a[10] b[10] c[10] d BEGIN d := 6; b[d] := 43; c[d] := 21; a[d] := b[d] * c[d]; WRITE a[d]; END\n",
+          emptyIn,
+          "> 903\n",
+          "shouldAssignMulOfVarsToVar_Tabs[variable]"},
 
     //======================================================================
     //============================DIV=======================================

@@ -42,7 +42,7 @@ TEST_F(CheckerTest, shouldCheckEmptyCodeCorrectly)
 
 TEST_F(CheckerTest, shouldCorrectReadVariable)
 {
-    std::vector<std::string> vars = { "a", "b" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b" };
     in << "VAR\ta\nb BEGIN SKIP; END\n";
     expected << "BEGIN\nSKIP;\nEND\n";
 
@@ -54,7 +54,7 @@ TEST_F(CheckerTest, shouldCorrectReadVariable)
 
 TEST_F(CheckerTest, shouldCorrectReadTabs)
 {
-    std::vector<std::string> vars = { "a", "b", "abc", "abc", "abc", "abc"};
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b", "abc", "abc", "abc", "abc"};
     in << "VAR\ta\nb abc[4] BEGIN SKIP; END\n";
     expected << "BEGIN\nSKIP;\nEND\n";
 
@@ -66,7 +66,7 @@ TEST_F(CheckerTest, shouldCorrectReadTabs)
 
 TEST_F(CheckerTest, shouldCorrectRemoveComments)
 {
-    std::vector<std::string> vars = { "a", "b", "abc", "abc", "abc", "abc"};
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b", "abc", "abc", "abc", "abc"};
     in << "{sat}VAR {sad}\t{saet} a {stas\nate}\nb {ast} {BEGIN WRITE 5; END} abc[4] "
             "BEGIN {WRITE 4;}SKIP; END{WRITE 5;}\n";
     expected << "BEGIN\nSKIP;\nEND\n";
@@ -81,7 +81,7 @@ TEST_F(CheckerTest, shouldCorrectRemoveComments)
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInAssign)
 {
     auto warning = Checker::warning + Checker::line + "4" + Checker::missingSemicolon + "\n";
-    std::vector<std::string> vars = { "a", "b" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b" };
     in << "VAR\\\n"
             "a b\n"
             "BEGIN\n"
@@ -99,7 +99,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInAssign)
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInRead)
 {
     auto warning = Checker::warning + Checker::line + "6" + Checker::missingSemicolon + "\n";
-    std::vector<std::string> vars = { "a", "b" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b" };
     in << "VAR\\\n"
             "a b\n"
             "BEGIN\n\n\n"
@@ -118,7 +118,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInRead)
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInWrite)
 {
     auto warning = Checker::warning + Checker::line + "5" + Checker::missingSemicolon + "\n";
-    std::vector<std::string> vars = { "a", "b" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b" };
     in << "VAR\\\n"
             "a b\n"
             "BEGIN\n\n"
@@ -136,7 +136,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInWrite)
 TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInSkip)
 {
     auto warning = Checker::warning + Checker::line + "3" + Checker::missingSemicolon + "\n";
-    std::vector<std::string> vars = { "a", "b" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b" };
     in << "VAR\\\n"
             "a b\n"
             "BEGIN SKIP\n"
@@ -152,7 +152,7 @@ TEST_F(CheckerTest, shouldShowWarningAndRepairMissingSemicolonInSkip)
 
 TEST_F(CheckerTest, shouldCorrectAddVariableFromForTo)
 {
-    std::vector<std::string> vars = { "a", "b", "i" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b", "i" };
     in << "VAR\n"
             "a b\n"
             "BEGIN\n"
@@ -174,7 +174,7 @@ TEST_F(CheckerTest, shouldCorrectAddVariableFromForTo)
 
 TEST_F(CheckerTest, shouldCorrectAddVariableFromForDownTo)
 {
-    std::vector<std::string> vars = { "a", "b", "i" };
+    std::vector<std::string> vars = { DEFAULT_VAR, "a", "b", "i" };
     in << "VAR\n"
             "a b\n"
             "BEGIN\n"

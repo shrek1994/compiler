@@ -95,11 +95,9 @@ void Driver::findAndSetAction(const std::string& action, const Variable& variabl
 
 }
 
-int Driver::getPosition(const std::string &variable)
+long long Driver::getPosition(const std::string &variable)
 {
     using namespace checker;
-    if (variable == varTemp.name)
-        return (int)variables.size();
     auto position = std::find(variables.begin(), variables.end(), variable) - variables.begin();
     DEBUG << "getPosition('" << variable << "\') = " << position << "\n";
     if (position >= variables.size())

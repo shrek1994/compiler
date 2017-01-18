@@ -3,7 +3,7 @@
 #include <Generator.hpp>
 #include <memory>
 #include <Interpreter.hpp>
-#include <inc/Variable.hpp>
+#include <Variable.hpp>
 
 namespace {
 
@@ -43,7 +43,7 @@ TEST_F(GeneratorTest, shouldCorrectCompileIf)
             "%ENDIF0%: WRITE 100;\n"
         "END\n";
 
-    gen->run(code, {"a", "b"});
+    gen->run(code, { DEFAULT_VAR, "a", "b"});
     inter->run(generatedCode, in, out, info);
 
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str())
@@ -71,7 +71,7 @@ TEST_F(GeneratorTest, shouldCorrectCompileWhile) {
             "%ENDIF0%: "
             "END\n";
 
-    gen->run(code, {"a", "b"});
+    gen->run(code, { DEFAULT_VAR, "a", "b"});
     inter->run(generatedCode, in, out, info);
 
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str())
@@ -104,7 +104,7 @@ TEST_F(GeneratorTest, shouldCorrectMul)
              "WRITE c;\n"
          "END\n";
 
-    gen->run(code, {"a", "b", "c"});
+    gen->run(code, {DEFAULT_VAR, "a", "b", "c"});
     inter->run(generatedCode, in, out, info);
 
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str())
@@ -160,7 +160,7 @@ TEST_F(GeneratorTest, shouldCorrectDiv)
                  "WRITE c;\n"
                  "END\n";
 
-    gen->run(code, {"a", "b", "c"});
+    gen->run(code, { DEFAULT_VAR, "a", "b", "c"});
     inter->run(generatedCode, in, out, info);
 
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str())
@@ -215,7 +215,7 @@ TEST_F(GeneratorTest, shouldCorrectModulo)
                  "WRITE c;\n"
                  "END\n";
 
-    gen->run(code, {"a", "b", "c"});
+    gen->run(code, { DEFAULT_VAR, "a", "b", "c"});
     inter->run(generatedCode, in, out, info);
 
     EXPECT_STREQ(expected.str().c_str(), out.str().c_str())

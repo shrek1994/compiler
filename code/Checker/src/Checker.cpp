@@ -15,6 +15,11 @@ const std::string Checker::unrecognizedText = " - Unrecognized text";
 bool Checker::run(std::istream& in) {
     scanner = std::make_shared<Scanner>(in, out, Logger::out);
     auto parser = std::make_shared<LexParser>(*scanner, *this);
+
+    variables.push_back(jftt::varTemp.name);
+    variables.push_back(jftt::leftVar.name);
+    variables.push_back(jftt::rightVar.name);
+
     DEBUG << "starting checking\n";
     if (parser->parse()) {
         err << error + line + std::to_string(scanner->getNumOfLine() + 1) + unrecognizedText;
@@ -53,13 +58,6 @@ const std::vector<std::string>& Checker::getVariables() const {
 
 void Checker::warningSemicolon() {
     info << warning << line << scanner->getNumOfLine() << missingSemicolon << "\n";
-}
-
-void Checker::repairSemicolon() {
-    out << ";";
-    std::stringstream& txt = static_cast<std::stringstream&>(out);
-    auto txtStr = txt.str();
-    DEBUG << "repairSemicolon()\n" << txtStr << "\n";
 }
 
 void Checker::checkIfVaribleDontExist(const jftt::Variable &variable) {

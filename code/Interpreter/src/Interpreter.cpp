@@ -66,8 +66,8 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         k++;
     }
 
-    DEBUG << "Skończono czytanie pliku (" << program.size() << " linii)." << endl;
-    info << "Skończono czytanie pliku (" << program.size() << " linii)." << endl;
+    DEBUG << "Skonczono czytanie pliku (" << program.size() << " linii)." << endl;
+    info << "Skonczono czytanie pliku (" << program.size() << " linii)." << endl;
 
     info << "Uruchamianie programu." << endl;
     lr = 0;
@@ -112,8 +112,8 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         }
         DEBUG << "r0=" << r[0] << ", r1=" << r[1] << ", r2="<< r[2] << ", r3=" << r[3] << ", r4=" << r[4] <<"\n";
     }
-    DEBUG << "Skończono program (czas: " << i << ")." << endl;
-    info << "Skończono program (czas: " << i << ")." << endl;
+    DEBUG << "Skonczono program (czas: " << i << ")." << endl;
+    info << "Skonczono program (czas: " << i << ")." << endl;
     return 0;
 }
 #else
@@ -188,7 +188,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
         k++;
     }
 //    plik.close();
-    info << "Skończono czytanie pliku (" << program.size() << " linii)." << std::endl;
+    info << "Skonczono czytanie pliku (" << program.size() << " linii)." << std::endl;
 
     info << "Uruchamianie programu." << std::endl;
     lr = 0;
@@ -229,7 +229,7 @@ int Interpreter::run(std::istream &plik, std::istream &cin, std::ostream &cout, 
             return -1;
         }
     }
-    info << "Skończono program (czas: " << i << ")." << std::endl;
+    info << "Skonczono program (czas: " << i << ")." << std::endl;
 
     return 0;
 }

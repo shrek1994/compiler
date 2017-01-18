@@ -69,6 +69,8 @@ SKIP            { return token::SKIP; }
 \>\=              { return token::biggerOrEqThan; }
 
 TEMP123             { yylval->build<std::string>(yytext); return token::pidentifier; }
+LEFT123             { yylval->build<std::string>(yytext); return token::pidentifier; }
+RIGHT123             { yylval->build<std::string>(yytext); return token::pidentifier; }
 $reg[0-4]           { yylval->build<unsigned>(yytext[4] - 48); return token::reg; }
 \%[A-Z0-9]+\%       { yylval->build<std::string>(yytext); return token::place; }
 \%[A-Z0-9]+\%:      { yylval->build<std::string>(yytext); return token::beginPlace;}

@@ -47,6 +47,8 @@ private:
     unsigned long numOfFor = 0;
     unsigned long numOfMul = 0;
     unsigned long numOfDiv = 0;
+
+    bool isVarTab(const std::string &var);
 };
 
 } // namespace optimizer

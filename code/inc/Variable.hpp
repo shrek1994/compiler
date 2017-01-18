@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#define DEFAULT_VAR jftt::varTemp.name, jftt::leftVar.name, jftt::rightVar.name
+
 namespace jftt
 {
 
@@ -58,5 +60,7 @@ private:
 };
 
 const Variable varTemp = VariableBuilder().withName("TEMP123").build();
+const Variable leftVar = VariableBuilder().withName("LEFT123").build();
+const Variable rightVar = VariableBuilder().withName("RIGHT123").build();
 
 } //namespace jftt
