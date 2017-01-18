@@ -216,7 +216,6 @@ TEST_F(AllTest, program3)
     EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
 }
 
-
 TEST_F(AllTest, program4)
 {
     in << "20\n";
@@ -241,6 +240,38 @@ TEST_F(AllTest, program4)
                      "\t\tm:=m-1;\n"
                      "    ENDFOR\n"
                      "    WRITE s[n];\n"
+                     "END";
+
+    compiler.run(language, generatedCode);
+    interpreter.run(generatedCode, in, out, info);
+
+    EXPECT_STREQ("", this->error.str().c_str());
+    EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
+}
+
+TEST_F(AllTest, program5)
+{
+    in << "20\n";
+    std::string expectedOut = "? > 2432902008176640000\n> 17711\n";
+
+    language <<
+             "{ Silnia + Fibonacci }\n"
+             "VAR\n"
+                     "    f[101] s[101] i[101] n k l\n"
+                     "BEGIN\n"
+                     "    READ n;\n"
+                     "    f[0]:=1;\n"
+                     "    s[0]:=1;\n"
+                     "    i[0]:=0;\n"
+                     "    FOR j FROM 1 TO n DO\n"
+                     "\t\tk:=j-1;\n"
+                     "        l:=k-1;\n"
+                     "\t\ti[j]:=i[k]+1;\n"
+                     "\t\tf[j]:=f[k]+f[l];\n"
+                     "        s[j]:=s[k]*i[j];\n"
+                     "    ENDFOR\n"
+                     "    WRITE s[n];\n"
+                     "    WRITE f[n];\n"
                      "END";
 
     compiler.run(language, generatedCode);
