@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <Variable.hpp>
+#include <map>
 #include "CheckerScanner.hpp"
 
 namespace checker {
@@ -27,7 +28,7 @@ public:
 
     bool run(std::istream& in);
     void createVariable(const jftt::Variable &variable);
-
+    void createLocalVariable(const jftt::Variable &variable);
     const std::vector<std::string>& getVariables() const;
 
     void warningSemicolon();
@@ -37,6 +38,7 @@ private:
     std::ostream& info;
     std::ostream& err;
     std::vector<std::string> variables;
+    std::map<std::string, int> localVariables;
     std::shared_ptr<Scanner> scanner;
     bool isCodeCorrect = true;
 

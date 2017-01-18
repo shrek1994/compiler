@@ -21,6 +21,11 @@ bool Checker::run(std::istream& in) {
         return false;
     }
     DEBUG << "ended checking\n";
+
+    for(auto var : localVariables)
+    {
+        variables.push_back(var.first);
+    }
     return isCodeCorrect;
 }
 
@@ -67,6 +72,10 @@ void Checker::checkIfVaribleDontExist(const jftt::Variable &variable) {
             return;
         }
     }
+}
+
+void Checker::createLocalVariable(const jftt::Variable &variable) {
+    localVariables[variable.name] = 0;
 }
 
 } // namespace checker

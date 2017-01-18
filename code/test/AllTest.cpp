@@ -96,9 +96,10 @@ TEST_F(AllTest, program0)
 
     EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
 }
-TEST_F(AllTest, DISABLED_program1)
+
+TEST_F(AllTest, program1)
 {
-    std::string expectedOut = "? > 0\n> 1\n> 0\n> 1\n";
+    std::string expectedOut = "> 2\n> 3\n> 5\n> 7\n> 11\n> 13\n> 17\n> 19\n> 23\n> 29\n> 31\n> 37\n> 41\n> 43\n> 47\n> 53\n> 59\n> 61\n> 67\n> 71\n> 73\n> 79\n> 83\n> 89\n> 97\n";
 
     language <<
              "{ sito Eratostenesa }\n"
@@ -127,7 +128,51 @@ TEST_F(AllTest, DISABLED_program1)
     interpreter.run(generatedCode, in, out, info);
 
     EXPECT_STREQ("", this->error.str().c_str());
-    EXPECT_STREQ("", this->info.str().c_str());
+    EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
+}
+
+TEST_F(AllTest, program2)
+{
+    in << "12345678903\n"; // TODO zmienic na mniejsza
+    std::string expectedOut = "? > 3\n> 1\n> 4115226301\n> 1\n";
+
+    language <<
+             "{ Rozklad liczby na czynniki pierwsze }\n"
+                     "VAR\n"
+                     "    n m reszta potega dzielnik\n"
+                     "BEGIN\n"
+                     "    READ n;\n"
+                     "    dzielnik := 2;\n"
+                     "    m := dzielnik * dzielnik;\n"
+                     "    WHILE n >= m DO\n"
+                     "        potega := 0;\n"
+                     "        reszta := n % dzielnik;\n"
+                     "        WHILE reszta = 0 DO\n"
+                     "            n := n / dzielnik;\n"
+                     "            potega := potega + 1;\n"
+                     "            reszta := n % dzielnik;\n"
+                     "        ENDWHILE\n"
+                     "        IF potega > 0 THEN { czy znaleziono dzielnik }\n"
+                     "            WRITE dzielnik;\n"
+                     "            WRITE potega;\n"
+                     "        ELSE\n"
+                     "            dzielnik := dzielnik + 1;\n"
+                     "            m := dzielnik * dzielnik;\n"
+                     "        ENDIF\n"
+                     "    ENDWHILE\n"
+                     "    IF n <> 1 THEN { ostatni dzielnik }\n"
+                     "        WRITE n;\n"
+                     "        WRITE 1;\n"
+                     "    ELSE\n"
+                     "        SKIP;\n"
+                     "    ENDIF\n"
+                     "END";
+
+    compiler.run(language, generatedCode);
+    interpreter.run(generatedCode, in, out, info);
+
+//    EXPECT_STREQ("", this->info.str().c_str());
+    EXPECT_STREQ("", this->error.str().c_str());
     EXPECT_STREQ(expectedOut.c_str(), this->out.str().c_str());
 }
 
